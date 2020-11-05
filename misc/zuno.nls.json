@@ -1,0 +1,36 @@
+{
+    "title": "JSON schema for Z-Uno configuration file",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "sketch": {
+            "description": "The main sketch file for Z-Uno to be used",
+            "type": "string",
+            "minLength": 1
+        },
+        "port": {
+            "description": "Serial port through which the sketch and bootloader will be loaded",
+            "type": "string",
+            "minLength": 1
+        },
+        "frequency": {
+            "description": "Radio frequency on which the sketch will work, by default: 'EU' - 'Europe'",
+            "type": "string",
+            "minLength": 1
+        },
+        "security": {
+            "description": "Security mode in which the sketch will work, by default: disabled",
+            "type": "string",
+            "minLength": 1
+        },
+        "cppIgnored": {
+            "type": "string",
+            "enum": [
+                "Enabled",
+                "Disabled"
+            ],
+            "default": "Disabled",
+            "description": "If enabled, then errors in the settings for IntelliSense"
+        }
+    }
+}

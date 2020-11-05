@@ -1,0 +1,20 @@
+{
+	"zuno.command.sketch.title": "Z-Uno: Выбрать скетч файл",
+	"zuno.command.bootloader.title": "Z-Uno: Записать загрузчик",
+	"zuno.command.security.title": "Z-Uno: Выбрать режим безопасности",
+	"zuno.command.frequency.title": "Z-Uno: Выбрать частоту",
+	"zuno.command.install.title": "Z-Uno: Установить необходимые компоненты",
+	"zuno.command.port.title": "Z-Uno: Выбрать последовательный порт",
+	"zuno.command.monitor.title": "Z-Uno: Открыть последовательный порт",
+	"zuno.command.verify.title": "Z-Uno: Проверить",
+	"zuno.command.upload.title": "Z-Uno: Загрузить",
+	"zuno.configuration.title": "Z-Uno: Конфигурация",
+	"zuno.configuration.path.description": "Путь куда будут установленны компоненты Z-Uno. Пример: «C:\\<user>\\Documents\\Z-Uno» для Windows, «/Users/<user>/Documents для Mac, «/home/$user/Documents/Z-Uno» для Linux. (Требуется перезагрузка VsCode после изменения, а так же доступ к указанной папке без административных правов)",
+	"zuno.configuration.outputTerminal.description": "Если включено: информация выводиться вместо выходных данных в терминал.",
+	"zuno.configuration.autoUpdate.description": "Автообновление",
+	"zuno.configuration.autoUpdateTime.description": "Как регулярно проверять наличие новых версий. Например: 86400 секунд - это один день.",
+	"zuno.configuration.baudRate.description": "Скорость передачи по умолчанию для монитора последовательного порта. Значение по умолчанию - 115200. Поддерживаемые значения: 115200, 57600, 38400, 19200, 9600, 4800, 2400, 1800, 1200, 600, 300, 200, 150, 134, 110, 75 и 50.",
+	"zuno.configuration.keyBindings.description": "Если включено то при старте предлагает переназначить клавиши",
+	"zuno.grammars.output": "./syntaxes/zuno.output.nls.ru.tmLanguage",
+	"zuno.jsonValidation.zuno": "./misc/zuno.nls.ru.json"
+}

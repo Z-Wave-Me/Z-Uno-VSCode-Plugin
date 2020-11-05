@@ -1,0 +1,242 @@
+{
+	"name": "vscode-zuno",
+	"displayName": "Z-Uno",
+	"description": "Z-Uno for Visual Studio Code.",
+	"version": "0.1.0",
+	"publisher": "amatilda",
+	"engines": {
+		"vscode": "^1.43.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"icon": "images/zuno.png",
+	"license": "MIT License",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-arduino.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Microsoft/vscode-arduino/issues"
+	},
+	"homepage": "https://github.com/Microsoft/vscode-arduino/blob/master/README.md",
+	"activationEvents": [
+		"workspaceContains:**/*"
+	],
+	"keywords": [
+		"zuno",
+		"C",
+		"C++"
+	],
+	"main": "./src/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.sketch",
+				"title": "%zuno.command.sketch.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.security",
+				"title": "%zuno.command.security.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.frequency",
+				"title": "%zuno.command.frequency.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.install",
+				"title": "%zuno.command.install.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.port",
+				"title": "%zuno.command.port.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.monitor",
+				"title": "%zuno.command.monitor.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.bootloader",
+				"title": "%zuno.command.bootloader.title%",
+				"icon": {
+					"dark": "images/zuno_bootloading_inverse_16.svg",
+					"light": "images/zuno_bootloading_16.svg"
+				}
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.verify",
+				"title": "%zuno.command.verify.title%",
+				"icon": {
+					"dark": "images/zuno_verify_inverse_16.svg",
+					"light": "images/zuno_verify_16.svg"
+				}
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.upload",
+				"title": "%zuno.command.upload.title%",
+				"icon": {
+					"dark": "images/zuno_upload_inverse_16.svg",
+					"light": "images/zuno_upload_16.svg"
+				}
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"when": "resourceExtname == .ino && workspaceFolderCount != 0",
+					"command": "zuno.bootloader",
+					"group": "navigation@3"
+				},
+				{
+					"when": "resourceExtname == .ino && workspaceFolderCount != 0",
+					"command": "zuno.verify",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceExtname == .ino && workspaceFolderCount != 0",
+					"command": "zuno.upload",
+					"group": "navigation@1"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.bootloader",
+				"key": "ctrl+alt+l",
+				"mac": "cmd+alt+l"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.verify",
+				"key": "ctrl+alt+r",
+				"mac": "cmd+alt+r"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.upload",
+				"key": "ctrl+alt+u",
+				"mac": "cmd+alt+u"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "%zuno.configuration.title%",
+			"properties": {
+				"zuno.path": {
+					"type": "string",
+					"default": "",
+					"description": "%zuno.configuration.path.description%"
+				},
+				"zuno.outputTerminal": {
+					"type": "string",
+					"enum": [
+						"Enabled",
+						"Disabled"
+					],
+					"default": "Disabled",
+					"description": "%zuno.configuration.outputTerminal.description%"
+				},
+				"zuno.autoUpdate": {
+					"type": "string",
+					"enum": [
+						"Enabled",
+						"Disabled"
+					],
+					"default": "Enabled",
+					"description": "%zuno.configuration.autoUpdate.description%"
+				},
+				"zuno.keyBindings": {
+					"type": "string",
+					"enum": [
+						"Enabled",
+						"Disabled"
+					],
+					"default": "Enabled",
+					"description": "%zuno.configuration.keyBindings.description%"
+				},
+				"zuno.autoUpdateTime": {
+					"type": "number",
+					"default": "86400",
+					"description": "%zuno.configuration.autoUpdateTime.description%"
+				},
+				"zuno.baudRate": {
+					"type": "number",
+					"default": 115200,
+					"description": "%zuno.configuration.baudRate.description%"
+				}
+			}
+		},
+		"configurationDefaults": {
+			"[cpp]": {
+				"editor.quickSuggestions": true
+			},
+			"[c]": {
+				"editor.quickSuggestions": true
+			}
+		},
+		"languages": [
+			{
+				"id": "zuno-output",
+				"mimetypes": [
+					"text/x-code-output"
+				]
+			},
+			{
+				"id": "cpp",
+				"extensions": [
+					".ino"
+				]
+			}
+		],
+		"grammars": [
+			{
+				"language": "zuno-output",
+				"scopeName": "zuno.output",
+				"path": "%zuno.grammars.output%"
+			}
+		],
+		"jsonValidation": [
+			{
+				"fileMatch": "zuno.json",
+				"url": "%zuno.jsonValidation.zuno%"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm install",
+		"postinstall": "gulp build --mode=production"
+	},
+	"extensionDependencies": [
+		"ms-vscode.cpptools"
+	],
+	"devDependencies": {
+		"@types/vscode": "^1.4.3",
+		"@types/node": "^10.0.40",
+		"del": "^2.2.2",
+		"fancy-log": "^1.3.3",
+		"gulp": "^4.0.2",
+		"gulp-minify": "^3.1.0",
+		"minimist": "^1.2.0",
+		"plugin-error": "^1.0.1",
+		"tslint": "^5.20.1",
+		"fs-plus": "^3.1.1",
+		"supports-color": "^7.1.0",
+		"typescript": "^2.2.1",
+		"webpack": "^4.42.1"
+	},
+	"dependencies": {
+		"node-usb-native": "^0.0.15",
+		"tar": "^6.0.2",
+		"adm-zip": "^0.4.16"
+	}
+}

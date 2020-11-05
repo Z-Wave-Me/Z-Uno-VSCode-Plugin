@@ -1,0 +1,7 @@
+.vscode/**
+src/**
+gulpfile.js
+*.vsix
+*.log
+webpack.config.js
+node_modules/**

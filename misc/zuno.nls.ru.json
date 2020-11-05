@@ -1,0 +1,35 @@
+{
+    "title": "JSON schema for Z-Uno configuration file",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "sketch": {
+            "description": "Основной файл скетч для Z-Uno, который будет использован",
+            "type": "string",
+            "minLength": 1
+        },
+        "port": {
+            "description": "Последовательный порт через который будет загружаться скетч и загрузчик",
+            "type": "string",
+            "minLength": 1
+        },
+        "frequency": {
+            "description": "Радио частота на которой будет работать скетч, по умолчанию: 'EU' - 'Europe'",
+            "type": "string",
+            "minLength": 1
+        },
+        "security": {
+            "description": "Режим безопасности в каком будет работать скетч, по умолчанию: отключена",
+            "type": "string",
+            "minLength": 1
+        },
+        "cppIgnored": {
+            "type": "string",
+            "enum": [
+                "Enabled",
+                "Disabled"
+            ],
+            "default": "Disabled",
+            "description": "Если включено тогда игнорируются ошибки в настройках для IntelliSense"
+    }
+}
