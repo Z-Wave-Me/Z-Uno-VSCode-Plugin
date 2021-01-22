@@ -11,7 +11,6 @@ const String = require("../common/string");
 const File = require("../common/file");
 const Run = require("../common/run");
 
-const OutputPro = require("./outputpro");
 const Output = require("./output");
 const Config = require("./config");
 const StatusBar = require("./statusbar");
@@ -31,8 +30,6 @@ const _this = {
 	b_install: false,//Указывает начали установку и формирования списка для вывода или нет
 	init: async function(context, path_install, array_host)
 	{
-		_this.test = OutputPro.createOutputChannel('test');
-		_this.test.show();
 		_this.path_install = path_install;//Путь там где файлы для сборки лежат
 		_this.array_host = array_host;//Хост системы для конфига качаемого
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SKETCH, _this.sketch));
@@ -54,11 +51,6 @@ const _this = {
 	},
 	monitor: async function()
 	{
-		const hhh = new VsCode.TextEdit(new VsCode.Range(0,200,0,300), "hhjg");
-		_this.test.appendLine('ghjkhjkhj');
-		const fhfg = VsCode.workspace.textDocuments;
-		return ;
-		//const hhh = new VsCode.TextEdit(new VsCode.Range(0,200,0,300), "hhjg");
 		SerialMonitor.openMonitor();
 	},
 	security: async function()
