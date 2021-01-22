@@ -12,7 +12,7 @@ const _this = {
 	OUTPUT_ERROR: '[Error]',
 	OUTPUT_WARNING: '[Warning]',
 /*-------------------------------*/
-	START_NOT_SUPPORT: 'Not supported platform "${Os.platform()}" and CPU architecture "${Os.arch()}"',
+	START_NOT_SUPPORT: `Not supported platform '${Os.platform()}' and CPU architecture '${Os.arch()}'`,
 	START_KEY_QUESTION: 'Want to customize keyboard shortcuts for Z-Uno?',
 	START_KEY_FIND: 'To sort in: \'Z-Uno\'',
 	START_UPDATE_NEW_VERSION: 'New Z-Uno version released',

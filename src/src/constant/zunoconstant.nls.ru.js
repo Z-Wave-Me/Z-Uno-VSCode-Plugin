@@ -12,7 +12,7 @@ const _this = {
 	OUTPUT_ERROR: '[Ошибка]',
 	OUTPUT_WARNING: '[Внимание]',
 /*-------------------------------*/
-	START_NOT_SUPPORT: 'Не поддерживает платформу "${Os.platform()}"" и архитектуру процессора "${Os.arch()}"',
+	START_NOT_SUPPORT: `Не поддерживает платформу '${Os.platform()}' и архитектуру процессора '${Os.arch()}'`,
 	START_KEY_QUESTION: 'Хотите настроить сочетания клавиш для Z-Uno?',
 	START_KEY_FIND: 'Чтобы отсортировать введите: \'Z-Uno\'',
 	START_UPDATE_NEW_VERSION: 'Вышла новая версия Z-Uno',
