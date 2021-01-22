@@ -59,7 +59,7 @@ The following settings are as per sketch settings of the Z-Uno extension. You ca
 - `cppIgnored` - If enabled, then errors in the settings for IntelliSense.
 
 ## Change Log
-See the [Change log](https://github.com/Microsoft/vscode-arduino/blob/master/CHANGELOG.md) for details about the changes in each version.
+See the [Change log](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/main/CHANGELOG.md) for details about the changes in each version.
 
 ## Supported Operating Systems
 Currently this extension supports the following operating systems:
@@ -69,10 +69,10 @@ Currently this extension supports the following operating systems:
 - Ubuntu 16.04 (64-bit)
 
 ## Support
-You can find the full list of issues on the [Issue Tracker](https://github.com/Microsoft/vscode-arduino/issues). You can submit a [bug or feature suggestion](https://github.com/Microsoft/vscode-arduino/issues/new), and participate in community driven [discussions](https://gitter.im/Microsoft/vscode-arduino).
+You can find the full list of issues on the [Issue Tracker](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues). You can submit a [bug or feature suggestion](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues/new), and participate in community driven [forum](https://forum.z-wave.me/index.php).
 
 ## License
-This extension is licensed under the [MIT License](https://github.com/Microsoft/vscode-arduino/blob/master/LICENSE.txt). Please see the [Third Party Notice](https://github.com/Microsoft/vscode-arduino/blob/master/ThirdPartyNotices.txt) file for additional copyright notices and terms.
+This extension is licensed under the [MIT License](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/main/LICENSE.txt). Please see the [Third Party Notice](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/main/ThirdPartyNotices.txt) file for additional copyright notices and terms.
 
 ## Contact Us
-If you would like to help build the best Z-Uno experience with VS Code, you can reach us directly at [gitter chat room](https://gitter.im/Microsoft/vscode-arduino).
+If you would like to help build the best Z-Uno experience with VS Code, you can reach us directly at [forum](https://forum.z-wave.me/index.php).
