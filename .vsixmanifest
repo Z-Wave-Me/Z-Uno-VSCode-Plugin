@@ -14,14 +14,14 @@
       <Property Id="Microsoft.VisualStudio.Code.ExtensionPack" Value="" />
       <Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
       
-        <Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/Microsoft/vscode-arduino.git" />
-        <Property Id="Microsoft.VisualStudio.Services.Links.Getstarted" Value="https://github.com/Microsoft/vscode-arduino.git" />
+        <Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin.git" />
+        <Property Id="Microsoft.VisualStudio.Services.Links.Getstarted" Value="https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin.git" />
         
-          <Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/Microsoft/vscode-arduino.git" />
+          <Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin.git" />
         
       
-      <Property Id="Microsoft.VisualStudio.Services.Links.Support" Value="https://github.com/Microsoft/vscode-arduino/issues" />
-      <Property Id="Microsoft.VisualStudio.Services.Links.Learn" Value="https://github.com/Microsoft/vscode-arduino/blob/master/README.md" />
+      <Property Id="Microsoft.VisualStudio.Services.Links.Support" Value="https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues" />
+      <Property Id="Microsoft.VisualStudio.Services.Links.Learn" Value="https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/master/README.md" />
       
       
       <Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
