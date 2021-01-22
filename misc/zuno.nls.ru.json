@@ -4,22 +4,22 @@
     "type": "object",
     "properties": {
         "sketch": {
-            "description": "Основной файл скетч для Z-Uno, который будет использован",
+            "description": "Основной скетч файл для Z-Uno, который будет использован",
             "type": "string",
             "minLength": 1
         },
         "port": {
-            "description": "Последовательный порт через который будет загружаться скетч и загрузчик",
+            "description": "Последовательный порт для загрузки скетча и загрузчика",
             "type": "string",
             "minLength": 1
         },
         "frequency": {
-            "description": "Радио частота на которой будет работать скетч, по умолчанию: 'EU' - 'Europe'",
+            "description": "Радио частота работы скетча, по умолчанию: 'EU' - 'Europe'",
             "type": "string",
             "minLength": 1
         },
         "security": {
-            "description": "Режим безопасности в каком будет работать скетч, по умолчанию: отключена",
+            "description": "Режим шифрования передачи Z-Wave команд, по умолчанию: отключена (без шифрования)",
             "type": "string",
             "minLength": 1
         },
@@ -30,6 +30,6 @@
                 "Disabled"
             ],
             "default": "Disabled",
-            "description": "Если включено тогда игнорируются ошибки в настройках для IntelliSense"
+            "description": "Если включено, то игнорируются ошибки в настройках для IntelliSense"
     }
 }

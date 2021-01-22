@@ -9,17 +9,17 @@
             "minLength": 1
         },
         "port": {
-            "description": "Serial port through which the sketch and bootloader will be loaded",
+            "description": "Serial port to upload the sketch and bootloader",
             "type": "string",
             "minLength": 1
         },
         "frequency": {
-            "description": "Radio frequency on which the sketch will work, by default: 'EU' - 'Europe'",
+            "description": "Radio frequency of the sketch, by default: 'EU' - 'Europe'",
             "type": "string",
             "minLength": 1
         },
         "security": {
-            "description": "Security mode in which the sketch will work, by default: disabled",
+            "description": "Security mode for sending Z-Wave commands, by default: disabled (without security)",
             "type": "string",
             "minLength": 1
         },
@@ -30,7 +30,7 @@
                 "Disabled"
             ],
             "default": "Disabled",
-            "description": "If enabled, then errors in the settings for IntelliSense"
+            "description": "If enabled, then errors are ignored in the IntelliSense settings"
         }
     }
 }

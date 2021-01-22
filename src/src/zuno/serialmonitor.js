@@ -298,7 +298,7 @@ function _createMonitor(obj, port, arg)
 		});
 		obj.obj_monitor = obj_monitor;
 		obj_monitor.on("data", (data) => {
-			_outputHex(obj.output, data);
+			_outputHexAnsii(obj.output, data);
 		});
 		obj_monitor.on("close", (err) => {
 			if (err != undefined)

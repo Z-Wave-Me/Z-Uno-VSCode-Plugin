@@ -1,7 +1,5 @@
 # Visual Studio Code extension for Z-Uno
 
-## Блалаллллла
-
 ## Commands
 This extension provides several commands in the Command Palette (<kbd>F1</kbd> or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) for working with `*.ino` files:
 

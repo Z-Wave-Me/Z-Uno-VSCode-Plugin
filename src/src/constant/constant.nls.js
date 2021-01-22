@@ -5,8 +5,8 @@
 
 const _this = {
 /*-------------------------------*/
-	FILE_NOT_PATH: 'There is no such way',
-	FILE_NOT: 'No such file exists',
+	FILE_NOT_PATH: 'There is no path',
+	FILE_NOT: 'There is no file',
 	FILE_NOT_DIR: 'This is not a directory',
 	FILE_FAILED_DIR: 'Failed to create folder',
 	FILE_FAILED_MOVE: 'Failed to move files',

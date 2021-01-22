@@ -1,7 +1,7 @@
 {
 	"zuno.command.sketch.title": "Z-Uno: Select sketch file",
 	"zuno.command.bootloader.title": "Z-Uno: Burn bootloader",
-	"zuno.command.security.title": "Z-Uno: Select mode security",
+	"zuno.command.security.title": "Z-Uno: Select security mode",
 	"zuno.command.frequency.title": "Z-Uno: Select frequency",
 	"zuno.command.install.title": "Z-Uno: Install the necessary components",
 	"zuno.command.port.title": "Z-Uno: Select serial port",
@@ -9,12 +9,12 @@
 	"zuno.command.verify.title": "Z-Uno: Verify",
 	"zuno.command.upload.title": "Z-Uno: Upload",
 	"zuno.configuration.title": "Z-Uno: Configuration",
-	"zuno.configuration.path.description": "The path where the Z-Uno components will be installed. Example: “C:\\<user>\\Documents\\Z-Uno” for Windows, “/Users/<user>/Documents for Mac,“/home/$user/Documents/Z-Uno ”for Linux. (Requires a reboot of VsCode after the change, as well as access to the specified folder without administrative rights)",
-	"zuno.configuration.outputTerminal.description": "If enabled: information is displayed instead of the output in the terminal.",
+	"zuno.configuration.path.description": "Path for installing Z-Uno components. Example: «C:\\<user>\\Documents\\Z-Uno» for Windows, «/Users/<user>/Documents» for Mac, «/home/$user/Documents/Z-Uno» for Linux. Requires restart of VS Code after the change, as well as access to the specified folder without administrator rights.",
+	"zuno.configuration.outputTerminal.description": "If enabled, the information is output to the terminal, instead of the output data.",
 	"zuno.configuration.autoUpdate.description": "Auto update.",
-	"zuno.configuration.autoUpdateTime.description": "How to regularly check for new versions. For example: 86400 seconds is one day.",
-	"zuno.configuration.baudRate.description": "Default baud rate for the serial port monitor. The default value is 115200. Supported values are 115200, 57600, 38400, 19200, 9600, 4800, 2400, 1800, 1200, 600, 300, 200, 150, 134, 110, 75 and 50",
-	"zuno.configuration.keyBindings.description": "If enabled, at startup it suggests reassigning keys.",
+	"zuno.configuration.autoUpdateTime.description": "How often to check for new versions. For example: 86400 - one day.",
+	"zuno.configuration.baudRate.description": "Default baudrate for the serial port monitor. The default value is 115200. Supported values are 115200, 57600, 38400, 19200, 9600, 4800, 2400, 1800, 1200, 600, 300, 200, 150, 134, 110, 75 and 50",
+	"zuno.configuration.keyBindings.description": "If enabled, it offers to reassign the keys at startup",
 	"zuno.grammars.output": "./syntaxes/zuno.output.nls.tmLanguage",
 	"zuno.jsonValidation.zuno": "./misc/zuno.nls.json"
 }

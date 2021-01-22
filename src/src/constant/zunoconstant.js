@@ -85,7 +85,7 @@ _this. BARPRIORITY =
 /*-------------------------------*/
 _this.FILE =
 {
-	JSON_URL: 'http://85.143.217.104:8080/Z-UnoG2/beta-index/package_z-wave2.me_index.json',// FIXME добавить может стоит кака настраиваемый параметр?
+	JSON_URL: 'https://rus.z-wave.me/files/z-uno/g2/beta-index/package_z-wave2.me_index.json',
 	JSON_LOAD: 'install.json',
 	JSON_SETTING: 'setting.json'
 }
