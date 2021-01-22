@@ -235,7 +235,7 @@
 		"webpack": "^4.42.1"
 	},
 	"dependencies": {
-		"node-usb-native": "^0.0.15",
+		"node-usb-native": "^0.0.18",
 		"tar": "^6.0.2",
 		"adm-zip": "^0.4.16"
 	}
