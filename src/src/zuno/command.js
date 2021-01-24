@@ -225,7 +225,13 @@ const _this = {
 				'-S', Path.join(tools, ZunoConstant.ZMAKE.GCC_LIB),
 				'-B', tmp,
 				'-T', Path.join(tools, ZunoConstant.ZMAKE.GCC_BIN),
-				'-lcl',Path.join(tools, ZunoConstant.ZMAKE.LIB_CLANG)
+				'-lcl',Path.join(tools, ZunoConstant.ZMAKE.LIB_CLANG),
+				'-O', 'BO:-mfloat-abi=softfp',
+				'-O', 'BO:-mfpu=fpv4-sp-d16',
+				'-O', 'LO:-mfloat-abi=softfp',
+				'-O', 'LO:-mfpu=fpv4-sp-d16',
+				'-O', 'BO:-lm',
+				'-O', 'LO:-lm'
 			];
 			const args_size = [
 				'arduino_size', path_sketch,
