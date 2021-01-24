@@ -3,7 +3,7 @@
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
 	"version": "0.1.0",
-	"publisher": "amatilda",
+	"publisher": "Z-Wave-Me",
 	"engines": {
 		"vscode": "^1.43.0"
 	},
