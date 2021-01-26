@@ -74,16 +74,16 @@ async function _start()
 		{
 			if (Fs.existsSync(path_install) == false)
 			{
-				path_install = false;
 				VsCode.window.showWarningMessage(`${Constant.FILE_NOT_PATH} : ${path_install} .`);
+				path_install = false;
 			}
 			else
 			{
 				const st = await File.stat(path_install);
 				if (st == false || st.isDirectory() == false)
 				{
-					path_install = false;
 					VsCode.window.showWarningMessage(`${Constant.FILE_NOT_DIR} : ${path_install} .`);
+					path_install = false;
 				}
 			}
 		}

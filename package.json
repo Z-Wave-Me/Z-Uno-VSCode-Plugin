@@ -2,8 +2,9 @@
 	"name": "vscode-zuno",
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
-	"version": "0.1.0",
-	"publisher": "Z-Wave-Me",
+	"version": "0.1.2",
+	"publisher": "Z-WaveMe",
+	"preview": true,
 	"engines": {
 		"vscode": "^1.43.0"
 	},
@@ -14,12 +15,12 @@
 	"license": "MIT License",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Microsoft/vscode-arduino.git"
+		"url": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin.git"
 	},
 	"bugs": {
-		"url": "https://github.com/Microsoft/vscode-arduino/issues"
+		"url": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues"
 	},
-	"homepage": "https://github.com/Microsoft/vscode-arduino/blob/master/README.md",
+	"homepage": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/master/README.md",
 	"activationEvents": [
 		"workspaceContains:**/*"
 	],
@@ -238,5 +239,8 @@
 		"node-usb-native": "^0.0.18",
 		"tar": "^6.0.2",
 		"adm-zip": "^0.4.16"
+	},
+	"__metadata": {
+		"publisherDisplayName": "Z-Wave-Me"
 	}
 }
