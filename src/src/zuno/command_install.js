@@ -37,11 +37,15 @@ const _this = {
 			const element = obj[key];
 			if (element != false)
 			{
-				if (await File.delete(Path.join(dest), key) == false)
+				const path_delete = Path.join(dest, key);
+				if (await File.stat(path_delete) != false)
 				{
-					await File.delete(dest);
-					await File.delete(src);
-					return (false);
+					if (await File.delete(path_delete) == false)
+					{
+						await File.delete(dest);
+						await File.delete(src);
+						return (false);
+					}
 				}
 			}
 		}
