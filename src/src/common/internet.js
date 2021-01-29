@@ -12,36 +12,16 @@ const Path = require('path');
 const Constant = require("../constant/constant");
 
 module.exports = {
-	getSize: async function(url)
-	{
-		let				res;
-		let				i;
-
-		i = 0;//Счетчик что бы не зациклились
-		while (i < 5)
-		{
-			res = await _getSize(url);
-			if (res == false)
-				return (false);
-			else if (res.statusCode == 200)//Провераем нормально выолнен запрос или нет
-				return(res.headers['content-length']);
-			else if (res.statusCode == 301)//Провераем может перенаправили ресурс
-			{
-				url = res.headers.location;
-				i++;
-			}
-			else
-				return(false);
-		}
-	},
 	downLoad: async function(url, path_file)
 	{
-		const size = await this.getSize(url);//Получаем размер файла для того что бы показать прогресс скачивания
-		if (size == false)
+		const array = await _getSizeBig(url);//Получаем размер файла для того что бы показать прогресс скачивания
+		if (array == false)
 		{
 			VsCode.window.showWarningMessage(`${Constant.INTERNET_DOWNLOAD_FAILED}: ${url}`);
 			return (false);
 		}
+		url = array[0];
+		let size = array[1];
 		return ( await VsCode.window.withProgress({//Показывает прогресс
 			location: VsCode.ProgressLocation.Notification,//Где будет отображаться
 			title: Path.basename(path_file),//Постоянный загголовок
@@ -98,6 +78,29 @@ function _downLoadError(msg, req)
 {
 	VsCode.window.showWarningMessage(msg);
 	req.destroy();//Прекращаем качать файл раз ошибка
+}
+
+async function _getSizeBig(url)
+{
+	let				res;
+	let				i;
+
+	i = 0;//Счетчик что бы не зациклились
+	while (i < 5)
+	{
+		res = await _getSize(url);
+		if (res == false)
+			return (false);
+		else if (res.statusCode == 200)//Провераем нормально выолнен запрос или нет
+			return([url, res.headers['content-length']]);
+		else if (res.statusCode == 301)//Провераем может перенаправили ресурс
+		{
+			url = res.headers.location;
+			i++;
+		}
+		else
+			return(false);
+	}
 }
 
 function _getSize(url)

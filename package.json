@@ -2,7 +2,7 @@
 	"name": "vscode-zuno",
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"publisher": "Z-WaveMe",
 	"preview": true,
 	"engines": {
@@ -29,7 +29,7 @@
 		"C",
 		"C++"
 	],
-	"main": "./src/src/extension",
+	"main": "./out/src/extension",
 	"contributes": {
 		"commands": [
 			{
