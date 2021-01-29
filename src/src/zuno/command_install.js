@@ -117,9 +117,10 @@ const _this = {
 			}
 		}
 	},
-	getJsonLoad: async function(path_install, array_host)
+	getJsonLoad: async function(path_install, array_host, path_install_home)
 	{
 		const install = Path.join(path_install, ZunoConstant.FILE.JSON_LOAD);
+		const install_home = Path.join(path_install_home, ZunoConstant.FILE.JSON_LOAD);
 		let array;
 		try {array = JSON.parse(Fs.readFileSync(install, 'utf8')); } catch (error) {array = false;}
 		if (array == false)
@@ -134,6 +135,8 @@ const _this = {
 			VsCode.window.showWarningMessage(`${Constant.FILE_NOT_JSON} : ${install} .`);
 			return (false);
 		}
+		if (install != install_home)
+			File.move(install, install_home);
 		return (array);
 	}
 }

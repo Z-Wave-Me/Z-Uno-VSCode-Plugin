@@ -16,6 +16,7 @@ const _this = {
 	START_KEY_QUESTION: 'Хотите настроить сочетания клавиш для Z-Uno?',
 	START_KEY_FIND: 'Чтобы отсортировать введите: \'Z-Uno\'',
 	START_UPDATE_NEW_VERSION: 'Вышла новая версия Z-Uno',
+	START_UPDATE_NEW_HOW: 'Обновить сейчас',
 	START_UPDATE_LATER: 'Напомнить позже',
 	START_UPDATE_SKIP: 'Пропустить эту версию',
 /*-------------------------------*/

@@ -325,7 +325,7 @@ const _this = {
 	{
 		if (CommandGeneral.installProloge(_this, _this.path_install, _this.array_host) == false)
 			return ;
-		const array = await CommandInstall.getJsonLoad(_this.path_install, _this.array_host);
+		const array = await CommandInstall.getJsonLoad(_this.path_install, _this.array_host, '');
 		if (array == false)
 			return (CommandGeneral.installEpilogue(_this));
 		const file_setting = Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING);
@@ -482,7 +482,7 @@ async function _checkFile(path_install, array_host)
 	const time = new Date().getTime();
 	if (Math.abs(time - parseInt((array_setting.time == undefined) ? 0 : array_setting.time)) < (VsConfig.getAutoUpdateTime() * 1000))
 		return ;
-	const array = await CommandInstall.getJsonLoad(Os.tmpdir(), _this.array_host);
+	const array = await CommandInstall.getJsonLoad(Os.tmpdir(), _this.array_host, path_install);
 	if (array == false)
 		return ;
 	const platforms = array.packages.platforms;
@@ -496,9 +496,14 @@ async function _checkFile(path_install, array_host)
 	array_setting.time = time;
 	if (update_version_last != update_version || update_version_last != version)
 	{
-		const ans = await VsCode.window.showInformationMessage(`${ZunoConstant.START_UPDATE_NEW_VERSION}: ${update_version_last}`, ZunoConstant.START_UPDATE_LATER, ZunoConstant.START_UPDATE_SKIP);
+		const ans = await VsCode.window.showInformationMessage(`${ZunoConstant.START_UPDATE_NEW_VERSION}: ${update_version_last}`, ZunoConstant.START_UPDATE_NEW_HOW, ZunoConstant.START_UPDATE_LATER, ZunoConstant.START_UPDATE_SKIP);
 		if (ans == ZunoConstant.START_UPDATE_SKIP)
 			array_setting.update_version = update_version_last;
+		else if (ans == ZunoConstant.START_UPDATE_NEW_HOW)
+		{
+			Config.setSettting(file_settings, array_setting);
+			return (_this.install());
+		}
 	}
 	Config.setSettting(file_settings, array_setting);
 }

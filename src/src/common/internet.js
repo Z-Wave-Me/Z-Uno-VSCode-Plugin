@@ -12,19 +12,27 @@ const Path = require('path');
 const Constant = require("../constant/constant");
 
 module.exports = {
-	getSize: function(url)
+	getSize: async function(url)
 	{
-		const f = (url[4] == 's') ? Https : Http;//Определяем какой протокол
-		return (new Promise(function (resolve, reject) {//Для того что бы синхроно можно было дождаться результата
-			const req = f.request(url, function(res) { 
-				if (res.statusCode == 200)//Провераем нормально выолнен запрос или нет
-					resolve(res.headers['content-length']); 
-				else
-					resolve(false);
-			});//Размер получаем
-			req.on('error', function (err) { resolve(false); });//Наслучий ошибки что бы вечно не ожидала данную функцию
-			req.end();//Завершаем передачу пакета
-		}));
+		let				res;
+		let				i;
+
+		i = 0;//Счетчик что бы не зациклились
+		while (i < 5)
+		{
+			res = await _getSize(url);
+			if (res == false)
+				return (false);
+			else if (res.statusCode == 200)//Провераем нормально выолнен запрос или нет
+				return(res.headers['content-length']);
+			else if (res.statusCode == 301)//Провераем может перенаправили ресурс
+			{
+				url = res.headers.location;
+				i++;
+			}
+			else
+				return(false);
+		}
 	},
 	downLoad: async function(url, path_file)
 	{
@@ -90,4 +98,16 @@ function _downLoadError(msg, req)
 {
 	VsCode.window.showWarningMessage(msg);
 	req.destroy();//Прекращаем качать файл раз ошибка
+}
+
+function _getSize(url)
+{
+	const f = (url[4] == 's') ? Https : Http;//Определяем какой протокол
+	return (new Promise(function (resolve, reject) {//Для того что бы синхроно можно было дождаться результата
+		const req = f.request(url, function(res) { 
+			resolve(res);
+		});//Размер получаем
+		req.on('error', function (err) { resolve(false); });//Наслучий ошибки что бы вечно не ожидала данную функцию
+		req.end();//Завершаем передачу пакета
+	}));
 }

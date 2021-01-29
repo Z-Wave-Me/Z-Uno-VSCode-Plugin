@@ -16,6 +16,7 @@ const _this = {
 	START_KEY_QUESTION: 'Want to customize keyboard shortcuts for Z-Uno?',
 	START_KEY_FIND: 'To sort in: \'Z-Uno\'',
 	START_UPDATE_NEW_VERSION: 'New Z-Uno version released',
+	START_UPDATE_NEW_HOW: 'Update how',
 	START_UPDATE_LATER: 'Remind me later',
 	START_UPDATE_SKIP: 'Skip this version',
 /*-------------------------------*/
