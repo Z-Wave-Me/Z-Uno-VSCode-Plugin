@@ -18,7 +18,8 @@
 		"url": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin.git"
 	},
 	"bugs": {
-		"url": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues"
+		"url": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues",
+		"email": "support@z-wave.me"
 	},
 	"homepage": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/master/README.md",
 	"activationEvents": [

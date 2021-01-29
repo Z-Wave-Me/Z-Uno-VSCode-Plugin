@@ -41,8 +41,8 @@ _this.REGEXP =
 /*-------------------------------*/
 _this.MEMORY =
 {
-	STORAGE: 32768,
-	DYNAMIC: 2048,// FIXME эти данные лутчше сделать что бы с нитренета можно было получать
+	STORAGE: 40704,
+	DYNAMIC: 8192,// FIXME эти данные лутчше сделать что бы с нитренета можно было получать
 }
 
 /*-------------------------------*/
@@ -97,6 +97,7 @@ _this.PATH =
 	WORKSPACE: _workspaceFolders,
 	TMP_BUILD: Path.join(Os.tmpdir(), `${_this.DIR.CORE}_${new Date().getTime()}`),
 	JSON_WORKSPACE: Path.join(_workspaceFolders, '.vscode', 'zuno.json'),
+	JSON_DIR: Path.join(_workspaceFolders, '.vscode'),
 	JSON_CPPTOOLS: Path.join(_workspaceFolders, '.vscode', 'c_cpp_properties.json')
 }
 

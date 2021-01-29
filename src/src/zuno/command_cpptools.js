@@ -160,6 +160,7 @@ function _saveNew(name, includePath, forcedInclude)
 	};
 	try
 	{
+		Fs.mkdirSync(ZunoConstant.PATH.JSON_DIR);
 		Fs.writeFileSync(ZunoConstant.PATH.JSON_CPPTOOLS, JSON.stringify(array, null, 4));
 	} catch (error) {}
 	VsCode.commands.executeCommand(ZunoConstant.CPP.RESCAN_WORKSPACE);
