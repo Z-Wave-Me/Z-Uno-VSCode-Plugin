@@ -153,7 +153,7 @@ function _saveNew(name, includePath, forcedInclude)
 		configurations: [{
 			name: name,
 			includePath: includePath,
-			forcedInclude: [forcedInclude],
+			forcedInclude: forcedInclude,
 			intelliSenseMode: INTELLISENSEMODE
 		}],
 		version: VERSION
