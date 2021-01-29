@@ -407,6 +407,12 @@ const _this = {
 			}
 			Config.setSettting(file_setting, array_setting_new);
 			VsCode.window.showInformationMessage(ZunoConstant.INSTALL_SUCCESS);
+			const path_stub = Path.join(path_core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_CLANG);
+			try {
+				Fs.writeFileSync(Path.join(path_stub, 'Custom_defs.h'), ' ');
+				Fs.writeFileSync(Path.join(path_stub, 'ZUNO_AutoChannels.h'), ' ');
+				Fs.writeFileSync(Path.join(path_stub, 'ZUNO_AutoDef.h'), ' ');
+			} catch (error) {};
 			return (CommandGeneral.installEpilogue(_this));
 		});
 	},

@@ -22,7 +22,8 @@ const _this = {
 		const includePath = [
 			Path.join(hardware, ZunoConstant.ZMAKE.CORE, '**'),
 			Path.join(hardware, ZunoConstant.ZMAKE.LIB, '**'),
-			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.GCC_LIB, '**')
+			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.GCC_LIB, '**'),
+			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_CLANG, '**')
 		];
 		const name = array_host.host_cpp;
 		let array;
