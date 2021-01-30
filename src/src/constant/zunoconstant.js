@@ -24,7 +24,6 @@ _this.ZMAKE =
 	ARDUINO: Path.join('cores', 'includes', 'Arduino.h'),
 	LIB: 'libraries',
 	BOOT: 'bootloaders',
-	BOOT_FILE: 'zuno_bootloader.bin',
 	LIB_CLANG: 'libclang',
 	EXE: Path.join('zme_make', Os.platform() == 'win32' ? 'zme_make.exe' : 'zme_make'),
 	GCC_LIB: Path.join('gcc', 'lib', 'gcc', 'arm-none-eabi', '7.2.1', 'include'),

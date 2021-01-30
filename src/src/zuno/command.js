@@ -116,8 +116,7 @@ const _this = {
 	{
 		if (CommandGeneral.installProloge(_this, _this.path_install, _this.array_host) == false)
 			return ;
-		const bootloader = ZunoConstant.ZMAKE.BOOT_FILE;
-		const path_bootloader = Path.join(_this.path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.HARDWARE, ZunoConstant.ZMAKE.BOOT, bootloader);
+		const path_bootloader = Path.join(_this.path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.HARDWARE, ZunoConstant.ZMAKE.BOOT);
 		const zmake = Path.join(_this.path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.EXE);
 		if (Fs.existsSync(path_bootloader) == false || Fs.existsSync(zmake) == false)
 		{
@@ -140,18 +139,19 @@ const _this = {
 			title: ZunoConstant.UPLOAD_BOOTLOADER_TITLE,
 		}, async () => {
 			const arg_bootloader = [
-				'boot', path_bootloader,
+				'boot',
+				'-c', path_bootloader,
 				'-d', port
 			];
 			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 			{
-				await Task.execute(zmake, arg_bootloader, bootloader);
+				await Task.execute(zmake, arg_bootloader, path_bootloader);
 				SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
 				return (CommandGeneral.installEpilogue(_this));
 			}
 			Output.show();//Покажим кансоль если скрыта
-			Output.start(`${ZunoConstant.UPLOAD_BOOTLOADER_START + bootloader}`);
+			Output.start(`${ZunoConstant.UPLOAD_BOOTLOADER_START}`);
 			let code = await Run.spawn(zmake, Output.data, Output.data, arg_bootloader);
 			SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
 			if (code === false)
@@ -159,7 +159,7 @@ const _this = {
 			else if (code != 0)
 				Output.error(`${ZunoConstant.SYSTEM_EXIT_CODE}: ${code}`);
 			else
-				Output.end(`${ZunoConstant.UPLOAD_BOOTLOADER_END + bootloader}`);
+				Output.end(`${ZunoConstant.UPLOAD_BOOTLOADER_END}`);
 			Output.show();//Выведем все что записали в кансоль или ждать придеться долго
 			return (CommandGeneral.installEpilogue(_this));
 		});

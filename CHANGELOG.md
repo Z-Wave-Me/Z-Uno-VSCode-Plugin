@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.1.5
+- Release date: January 30, 2021
+
 ## Version 0.1.4
 - Release date: January 29, 2021
 
