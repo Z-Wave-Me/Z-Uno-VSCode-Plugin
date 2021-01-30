@@ -27,7 +27,7 @@ _this.ZMAKE =
 	LIB_CLANG: 'libclang',
 	EXE: Path.join('zme_make', Os.platform() == 'win32' ? 'zme_make.exe' : 'zme_make'),
 	GCC_LIB: Path.join('gcc', 'lib', 'gcc', 'arm-none-eabi', '7.2.1', 'include'),
-	GCC_EXE: Path.join('gcc', 'bin', 'arm-none-eabi-gcc'),
+	GCC_EXE: Path.join('gcc', 'bin', Os.platform() == 'win32' ? 'arm-none-eabi-gcc.exe' : 'arm-none-eabi-gcc'),
 	GCC_BIN: Path.join('gcc', 'bin')
 }
 

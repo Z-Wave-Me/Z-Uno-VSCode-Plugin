@@ -11,7 +11,7 @@ const ZunoConstant = require("../constant/zunoconstant");
 const Constant = require("../constant/constant");
 
 const VERSION						= 4;
-const INTELLISENSEMODE				= "${default}";
+const INTELLISENSEMODE				= "gcc-arm";
 
 //Создаем обьект для эксорта комманд
 const _this = {
@@ -25,41 +25,44 @@ const _this = {
 			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.GCC_LIB, '**'),
 			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_CLANG, '**')
 		];
+		const compiler_path = Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.GCC_EXE);
 		const name = array_host.host_cpp;
 		let array;
 		try {array = JSON.parse(Fs.readFileSync(ZunoConstant.PATH.JSON_CPPTOOLS, 'utf8')); } catch (error) {array = false;}
 		if (array == false)//Если вообще такого нет файла
-			return (_saveNew(name, includePath, forcedInclude));
+			return (_saveNew(name, includePath, forcedInclude, compiler_path));
 		const index = _scanName(array, name, includePath, forcedInclude);
 		if (index == false || Config.getCppIgnored() == true)
 			return ;
 		const configurations = array.configurations[index];
-		if (configurations.includePath == undefined || configurations.forcedInclude == undefined  || configurations.intelliSenseMode == undefined)
-			return (_actionJson(array, index, name, includePath, forcedInclude));
+		if (configurations.includePath == undefined || configurations.forcedInclude == undefined  || configurations.intelliSenseMode == undefined || configurations.compilerPath == undefined)
+			return (_actionJson(array, index, name, includePath, forcedInclude, compiler_path));
 		if (Array.isArray(configurations.includePath) == false || Array.isArray(configurations.forcedInclude) == false)
-			return (_actionJson(array, index, name, includePath, forcedInclude));
+			return (_actionJson(array, index, name, includePath, forcedInclude, compiler_path));
 		if (_testArray(includePath, configurations.includePath) == false)
-			return (_actionJson(array, index, name, includePath, forcedInclude));
+			return (_actionJson(array, index, name, includePath, forcedInclude, compiler_path));
 		if (_testArray(forcedInclude, configurations.forcedInclude) == false)
-			return (_actionJson(array, index, name, includePath, forcedInclude));
+			return (_actionJson(array, index, name, includePath, forcedInclude, compiler_path));
 	}
 }
 
 module.exports = _this;
 
 
-async function _actionJson(array, index, name, includePath, forcedInclude)
+async function _actionJson(array, index, name, includePath, forcedInclude, compiler_path)
 {
 	const ans = await VsCode.window.showWarningMessage(ZunoConstant.CPP_TOOLS_INCOMPLETE_CONFIG, Constant.DIALOG_OVERWRITE, Constant.DIALOG_SUPPLEMENT, Constant.DIALOG_IGNORED);
 	if (ans == undefined)
 		return ;
 	if (ans == Constant.DIALOG_OVERWRITE)
-		return (_saveNew(name, includePath, forcedInclude));
+		return (_saveNew(name, includePath, forcedInclude, compiler_path));
 	if (ans == Constant.DIALOG_IGNORED)
 		return (Config.setCppIgnored(true));
 	const configurations = array.configurations[index];
 	if (configurations.intelliSenseMode == undefined)
 		configurations.intelliSenseMode = INTELLISENSEMODE;
+	if (configurations.compilerPath == undefined)
+		configurations.intelliSenseMode = compiler_path;
 	if (configurations.includePath == undefined || Array.isArray(configurations.includePath) == false)
 		configurations.includePath = includePath;
 	if (configurations.forcedInclude == undefined || Array.isArray(configurations.forcedInclude) == false)
@@ -148,14 +151,15 @@ function _scanName(array, name, includePath, forcedInclude)
 	return (false);
 }
 
-function _saveNew(name, includePath, forcedInclude)
+function _saveNew(name, includePath, forcedInclude, compiler_path)
 {
 	const array = {
 		configurations: [{
 			name: name,
 			includePath: includePath,
 			forcedInclude: forcedInclude,
-			intelliSenseMode: INTELLISENSEMODE
+			intelliSenseMode: INTELLISENSEMODE,
+			compilerPath: compiler_path
 		}],
 		version: VERSION
 	};
