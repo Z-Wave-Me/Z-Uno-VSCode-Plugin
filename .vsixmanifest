@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Language="en-US" Id="vscode-zuno" Version="0.1.6" Publisher="Z-WaveMe"/>
+    <Identity Language="en-US" Id="vscode-zuno" Version="0.1.7" Publisher="Z-WaveMe"/>
     <DisplayName>Z-Uno</DisplayName>
     <Description xml:space="preserve">Z-Uno for Visual Studio Code</Description>
     <Tags>zuno,iot,C,C++,keybindings,json,zuno-output,cpp,__ext_ino</Tags>

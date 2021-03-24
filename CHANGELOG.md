@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.1.7
+- Update node-usb-native
+- Release date: March 24, 2021
+
 ## Version 0.1.6
 - Release date: January 30, 2021
 
