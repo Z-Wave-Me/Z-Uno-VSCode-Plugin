@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.1.9
+- Fix serial monitor text output
+- Release date: May 26, 2021
+
 ## Version 0.1.8
 - Update node-usb-native to v0.0.20 to fix serial and port selecting
 - Release date: May 26, 2021

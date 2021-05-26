@@ -298,7 +298,7 @@ function _createMonitor(obj, port, arg)
 		});
 		obj.obj_monitor = obj_monitor;
 		obj_monitor.on("data", (data) => {
-			_outputHexAnsii(obj.output, data);
+			obj.output.append(data.toString());
 		});
 		obj_monitor.on("close", (err) => {
 			if (err != undefined)
@@ -336,7 +336,7 @@ function _outputHexAnsii(output, data)
 	let i = 0;
 	for (const value of data)
 	{
-		output.append(ALPHA[value >>> 4] + ALPHA[value & 0xF] + ' ');
+		output.append(data.toString());
 	}
 	
 }
