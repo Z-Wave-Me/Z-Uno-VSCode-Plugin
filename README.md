@@ -3,12 +3,12 @@
 ## Commands
 This extension provides several commands in the Command Palette (<kbd>F1</kbd> or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) for working with `*.ino` files:
 
-- **Z-Uno: Burn bootloader**: Загрузить загрузчик.
-- **Z-Uno: Install the necessary components**: Установка и удаление компонентов необходимых для работы.
-- **Z-Uno: Open serial monitor**: Open the serial monitor in the integrated output window.
-- **Z-Uno: Select serial port**: Change the current serial port для прошивки платы.
-- **Z-Uno: Select mode security**: Изменить режим безопастности.
-- **Z-Uno: Select frequency**: Изменить частоту работы радиомодуля.
+- **Z-Uno: Burn bootloader**: Update the bootloader to get new features and fixes.
+- **Z-Uno: Install the necessary components**: Components for compilation and debugging.
+- **Z-Uno: Open serial monitor**: Serial monitor displays debugging information.
+- **Z-Uno: Select serial port**: Change the current serial port to flash the firmware.
+- **Z-Uno: Select mode security**: Security mode can be S0, S2, without security.
+- **Z-Uno: Select frequency**: Select the radio frequency according to your region (EU, US, RU, etc.)
 - **Z-Uno: Upload**: Build sketch and upload to Z-Uno board.
 - **Z-Uno: Verify**: Build sketch.
 

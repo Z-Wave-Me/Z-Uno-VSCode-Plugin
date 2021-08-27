@@ -1,7 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Version 0.1.10
+## Version 0.1.12
+- Change README.md
+- Release date: August 27, 2021
+
+
+## Version 0.1.11
 - Fix: Rebuilding node-usb-native - as a temporary solution - https://github.com/microsoft/vscode-arduino/issues/1312 - node v14.4.0
 - Release date: August 24, 2021
 
