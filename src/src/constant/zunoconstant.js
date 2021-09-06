@@ -66,7 +66,8 @@ _this.DIR =
 	CORE: 'Z-Uno2G',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
 	CACHE: 'cache',
 	HARDWARE: 'hardware',
-	TOOLS: 'tools'
+	TOOLS: 'tools',
+	EXAMPLES: Path.join('libraries', 'Z-Uno-2G', 'examples')
 }
 
 /*-------------------------------*/

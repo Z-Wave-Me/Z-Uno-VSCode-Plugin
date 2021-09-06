@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.1.13
+- Add: Examples
+- Release date: 06.09.2021
+
+
+
 ## Version 0.1.12
 - Change README.md
 - Release date: August 27, 2021

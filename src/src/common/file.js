@@ -6,6 +6,16 @@ const Fs = require('fs');
 const Path = require('path');
 
 const _this = {
+	readdir: function (path)
+	{
+		return (new Promise((resolve, reject) => {
+			Fs.readdir(path, (error, children) => {
+				if (error != undefined)
+					resolve(false);
+				resolve(children);
+			});
+		}));
+	},
 	stat: function (path)
 	{
 		return (new Promise((resolve, reject) => {

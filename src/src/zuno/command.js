@@ -25,6 +25,8 @@ const CommandInstall = require("./command_install");
 const CppTools = require("./command_cpptools");
 const CommandUpdate = require("./command_update");
 
+const Examples = require("./examples");
+
 //Создаем обьект для эксорта комманд
 const _this = {
 	b_install: false,//Указывает начали установку и формирования списка для вывода или нет
@@ -47,7 +49,7 @@ const _this = {
 		StatusBar.settings.init();
 		StatusBar.port.init();
 		SerialMonitor.init(context);
-		_checkFile(path_install, array_host);
+		_checkFile(path_install, array_host, context);
 	},
 	monitor: async function()
 	{
@@ -466,10 +468,11 @@ async function _update_critical()
 	return ;
 }
 
-async function _checkFile(path_install, array_host)
+async function _checkFile(path_install, array_host, context)
 {
 	if (CommandGeneral.installProloge(_this, path_install, array_host) == false)//Проверим все ли есть необходимое
 		return ;
+	new Examples.Examples(context, path_install);
 	await CppTools.cppTools(path_install, array_host);
 	const file_settings = Path.join(path_install, ZunoConstant.FILE.JSON_SETTING);
 	const array_setting = Config.getSettting(file_settings);//Получим наши настройки
