@@ -2,7 +2,7 @@
 	"name": "vscode-zuno",
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
-	"version": "0.1.13",
+	"version": "0.2.0",
 	"publisher": "Z-WaveMe",
 	"preview": true,
 	"engines": {
@@ -23,7 +23,9 @@
 	},
 	"homepage": "https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/master/README.md",
 	"activationEvents": [
-		"workspaceContains:**/*"
+		"onFileSystem:file",
+		"onFileSystem:ftp",
+		"onFileSystem:ssh"
 	],
 	"keywords": [
 		"zuno",
@@ -133,6 +135,7 @@
 		"views": {
 			"explorer": [
 				{
+					"when": "workspaceFolderCount != 0",
 					"id": "zunoExamples",
 					"name": "Zuno Examples"
 				}
@@ -245,7 +248,6 @@
 		"webpack": "^4.42.1"
 	},
 	"dependencies": {
-		"node-usb-native": "^0.0.20",
 		"tar": "^6.0.2",
 		"adm-zip": "^0.4.16"
 	},

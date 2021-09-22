@@ -10,9 +10,9 @@ function getEntry() {
     encoding: 'utf8'
   });
   const mod = JSON.parse(npmListRes);
-  const unbundledModule = ['tar', 'adm-zip',
+  const unbundledModule = ['tar', 'adm-zip'
   // usb-native modules can not be bundled
-  'node-usb-native', 'usb-detection', '@serialport/bindings', 'bindings', 'serialport'];
+  ];
   
   for (const mod of unbundledModule) {
     const p = 'node_modules/' + mod;

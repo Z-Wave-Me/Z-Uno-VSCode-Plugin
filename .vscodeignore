@@ -1,7 +1,9 @@
 .vscode/**
+.gitignore
 src/**
 gulpfile.js
 *.vsix
 *.log
 webpack.config.js
 node_modules/**
+serial_monitor/**

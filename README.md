@@ -64,9 +64,9 @@ See the [Change log](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/blob/main/
 ## Supported Operating Systems
 Currently this extension supports the following operating systems:
 
-- Windows 7 and later (32-bit and 64-bit)
-- macOS 10.10 and later
-- Ubuntu 16.04 (64-bit)
+- Windows 7 (32-bit and 64-bit) and later
+- macOS Catalina and later
+- Ubuntu 18.04 (64-bit) and later
 
 ## Support
 You can find the full list of issues on the [Issue Tracker](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues). You can submit a [bug or feature suggestion](https://github.com/Z-Wave-Me/Z-Uno-VSCode-Plugin/issues/new), and participate in community driven [forum](https://forum.z-wave.me/index.php).

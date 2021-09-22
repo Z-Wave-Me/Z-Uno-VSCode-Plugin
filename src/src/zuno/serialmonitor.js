@@ -3,7 +3,11 @@
 
 //Подключаем необходимые модули
 const VsCode = require("vscode");
+const Path = require("path");
+const Os = require("os");
+const Child_process = require("child_process");
 
+const File = require("../common/file");
 const String = require("../common/string");
 const Utils = require('../common/utils');
 const Constant = require("../constant/constant");
@@ -20,9 +24,24 @@ const SERIALMONITOR_COUNT_BAR			= 1;
 const _this = {
 	element_resume: false,//Сохраняем структуру приостановленого монитора для resumeMonitor
 	b_process: false,//Указывает начали изменения для отамарности доступа своебразного
-	init: function(context)
+	init: async function(context)
 	{
+		let platform = Os.platform();
+		switch (platform)
+		{
+			case 'darwin':
+				if (parseInt(Os.release()) >= 20)
+					platform = Path.join(platform, '20')
+				else
+					platform = Path.join(platform, '19')
+				break;
+			default:
+				break ;
+		}
+		_this.exe = Path.join(context.extensionPath, 'bin', 'serial_monitor',platform, 'serial_monitor');
 		_this.extensions = context;
+		if (platform != 'win32')
+			await File.chmod(_this.exe, 0o777);
 	},
 	startUpload: function(port)
 	{
@@ -33,7 +52,7 @@ const _this = {
 				const element = SERIALMONITOR_ARRAY[index];
 				if (element == undefined)
 					continue ;
-				if (element.obj_monitor.path == port)
+				if (element.port == port)
 				{
 					_this.element_resume = element;
 					return ;
@@ -41,30 +60,26 @@ const _this = {
 			}
 		} catch (error){}
 	},
-	pauseMonitor: function()
+	pauseMonitor: async function()
 	{
 		const element = _this.element_resume;
 		if (element == false)
 			return ;
-		try
-		{//На случай если в это время монитор из-за ошибки прекратит свою работу
-			element.upload = false;//Указываем что данный монитор потом будем заново после прошивки запускать
-			element.obj_monitor.close('pause');
-		} catch (error){_this.element_resume = false;}
-
+		element.upload = false;//Указываем что данный монитор потом будем заново после прошивки запускать
+		if (await _sendCmdChild(element, "pause", 1000) == false) {
+			child.kill();
+			_this.element_resume = false;
+		}
 	},
 	resumeMonitor: async function()
 	{
 		const element = _this.element_resume;
 		if (element == false)
 			return ;
-		try
-		{//На случай если в это время монитор из-за ошибки прекратит свою работу
-			_this.element_resume = false;
-			element.upload = true;
-			if (await _createMonitor(element, element.obj_monitor.path, element.arg) == false)
-				VsCode.window.showErrorMessage(ZunoConstant.SERIALMONITOR_FALIED_READ.replace('${port}', obj_monitor.path));
-		} catch (error){}
+		_this.element_resume = false;
+		element.upload = true;
+		if (await _sendCmdChild(element, "resume", 1000) == false)
+			child.kill();
 	},
 	finishUpload: function()
 	{
@@ -82,15 +97,14 @@ const _this = {
 			return (_epilogueInfo(ZunoConstant.SERIALMONITOR_LIMITS_OPEN));
 		SERIALMONITOR_ARRAY[index] = {};
 		const obj = SERIALMONITOR_ARRAY[index];
-		const array_options = await _openOptions(obj);
-		if (array_options == false)
+		if (await _openOptions(obj) == false)
 			return (_epilogue());
-		const port = array_options.port;
+		const port = obj.port
 		obj.index = index;
 		obj.upload = true;//Указываем что данный монитор можно полностью удалять
 		obj.output = VsCode.window.createOutputChannel(`${ZunoConstant.SERIALMONITOR_CHANNEL} ${port}`);
 		obj.bar_monitor = VsCode.window.createStatusBarItem(VsCode.StatusBarAlignment.Right, 0 + SERIALMONITOR_PRIORITY + index * SERIALMONITOR_COUNT_BAR);
-		if (await _createMonitor(obj, port, array_options.arg) == false)
+		if (await _createMonitor(obj) == false)
 			return (_epilogueError(`${ZunoConstant.SERIALMONITOR_NOT_OPEN}: ${port}`));
 		obj.output.show();
 		obj.bar_monitor.command = `${ZunoConstant.CMD.SERIALMONITOR_CURRENT_OPTIONS + index}`;
@@ -106,19 +120,20 @@ const _this = {
 	getPort: async function(oldport)
 	{
 		let array;
-		try {array = await require("node-usb-native").SerialPort.list();} catch (error) {}//Получаем список портов
-		if (array == undefined)
-		{
-			VsCode.window.showInformationMessage(ZunoConstant.PORT_NOT_AVIABLE);
+		try {
+			array = JSON.parse(Child_process.execFileSync(_this.exe, ["list-ports"]));
+		} catch (error) {
 			return (false);
 		}
+		if (array == false)
+			return (false);
 		const select = await VsCode.window.showQuickPick(array.map((list) => {
 			let description;
-			if (parseInt(list.productId, 16) == 0xEA60 && parseInt(list.vendorId, 16) == 0x10C4)//Переводиться в числа так как на разных осях может не быть приставки в строке '0x'
+			if (list.pid == 0xEA60 && list.vid == 0x10C4)//Переводиться в числа так как на разных осях может не быть приставки в строке '0x'
 				description = ZunoConstant.DIR.CORE;
 			else
 				description = list.manufacturer;
-			return {description: description, label: list.path};
+			return {description: description, label: list.device};
 		}).sort((a, b) => { return (String.cmpUp(a.label, b.label));}), {placeHolder: (oldport == false) ? ZunoConstant.PORT_PLACEHOLDER : oldport});
 		if (select == undefined)
 			return (false);
@@ -202,7 +217,6 @@ async function _getBaudRate(oldvalue)
 
 function _openOptionsConversion(array, obj)
 {
-	const out = {arg: {hupcl: false}};
 	const len = array.length;
 	const currentoptions = [
 		['close', ZunoConstant.SERIALMONITOR_CURRENTOPTIONS_TEXT_CLOSE, ZunoConstant.SERIALMONITOR_CURRENTOPTIONS_TEXT_CLOSE_DECRIPTION],
@@ -214,16 +228,16 @@ function _openOptionsConversion(array, obj)
 		switch (element[0])
 		{
 			case 'port':
-				out.port = element[1];
+				obj.port = element[1];
 				break;
 			case 'baudRate':
 				currentoptions.push(element);
-				out.arg.baudRate = parseInt(element[1]);
+				obj.baudRate = element[1];
 				break;
 		}
 	}
 	obj.currentoptions = currentoptions;
-	return (out);
+	return (true);
 }
 
 async function _optionsCurrentMonitor(obj_index)
@@ -233,7 +247,7 @@ async function _optionsCurrentMonitor(obj_index)
 	const obj = SERIALMONITOR_ARRAY[obj_index];
 	if (obj.upload == false)//Покуда шьеться не можно настаивать состояние монитора
 		return (_epilogueInfo(ZunoConstant.SERIALMONITOR_CURRENTOPTIONS_NOT_UPLOAD));
-	const obj_monitor = obj.obj_monitor;
+	const child = obj.child;
 	const currentoptions = obj.currentoptions;
 	obj.output.show(true);
 	let index = 0;
@@ -246,99 +260,81 @@ async function _optionsCurrentMonitor(obj_index)
 	switch (element[0])
 	{
 		case 'close':
-			obj_monitor.close();
-			_epilogue()
-			return (_epilogue());
+			child.kill(); // Прощесамо убить.
+			break ;
 		case 'pause':
 			obj.bar_monitor.tooltip = `${ZunoConstant.SERIALMONITOR_BAR_TOOLTIP_MONITOR}; ${ZunoConstant.STATUS}: ${ZunoConstant.STATUS_PAUSE}`;
 			currentoptions[select.index] = ['resume', ZunoConstant.SERIALMONITOR_CURRENTOPTIONS_TEXT_RESUME, ZunoConstant.SERIALMONITOR_CURRENTOPTIONS_TEXT_RESUME_DECRIPTION];
-			obj_monitor.pause();
-			return (_epilogue());
+			if (await _sendCmdChild(obj, "pause", 1000) == false) {
+				child.kill();
+				VsCode.window.showErrorMessage(ZunoConstant.SERIALMONITOR_OPTIONS_PAUSE_CHANGE);
+				break ;
+			}
+			break ;
 		case 'resume':
 			obj.bar_monitor.tooltip = `${ZunoConstant.SERIALMONITOR_BAR_TOOLTIP_MONITOR}; ${ZunoConstant.STATUS}: ${ZunoConstant.STATUS_ACTIVE}`;
 			currentoptions[select.index] = ['pause', ZunoConstant.SERIALMONITOR_CURRENTOPTIONS_TEXT_PAUSE, ZunoConstant.SERIALMONITOR_CURRENTOPTIONS_TEXT_PAUSE_DECRIPTION];
-			obj_monitor.resume();
-			return (_epilogue());
+			if (await _sendCmdChild(obj, "resume", 1000) == false) {
+				child.kill();
+				VsCode.window.showErrorMessage(ZunoConstant.SERIALMONITOR_OPTIONS_RESUME_CHANGE);
+				break ;
+			}
+			break ;
 		case 'baudRate':
 			const newbaudRate = await _getBaudRate(element[1]);
-			if (await _changeBaudRate(newbaudRate, obj_monitor) == false)
-				return (_epilogue());
+			if (await _sendCmdChild(obj, "baudrate " + newbaudRate, 1000) == false) {
+				child.kill();
+				VsCode.window.showErrorMessage(ZunoConstant.SERIALMONITOR_OPTIONS_BAUDRATE_CHANGE);
+				break ;
+			}
 			element[1] = newbaudRate;
-			return (_epilogue());
+			break ;
 	}
+	return (_epilogue());
 }
 
-function _changeBaudRate(newbaudRate, obj_monitor)
+function _sendCmdChild(obj, cmd, timout)
 {
 	return new Promise((resolve, reject) => {
-		obj_monitor.update({baudRate: parseInt(newbaudRate)}, (err) => {
-			if (err)
-			{
-				VsCode.window.showErrorMessage(ZunoConstant.SERIALMONITOR_OPTIONS_BAUDRATE_CHANGE);
+		let timeoutObj = setTimeout(() => {
+			resolve(false);
+		}, timout);
+		obj.child.stderr.once("data", (data) => {
+			if (data.toString() != obj.ok)
 				resolve(false);
-			}
-			else
-				resolve(true);
+			try {
+				clearTimeout(timeoutObj);
+			} catch (error) {}
+			resolve(true);
 		});
+		obj.child.stdin.write(cmd + "\n");
 	});
 }
 
-function _createMonitor(obj, port, arg)
+
+function _createMonitor(obj)
 {
+	obj.ok = '0';
 	return (new Promise((resolve, reject) => {
-		const obj_monitor = require("node-usb-native").SerialPort(port, arg, (err) => {
-			if (err == undefined)
-				resolve (true);
-			else
-			{
-				Utils.setLastError(err);
-				_disposeMonitor(obj);
-				resolve (false);
-			}
+		const child = Child_process.spawn(_this.exe, ['open', '-d', obj.port, '-b', obj.baudRate, '-o', obj.ok], {stdio: ['pipe', 'pipe', 'pipe']});
+		child.on("close", (err) => {
+			if (err != undefined)
+				VsCode.window.showErrorMessage(ZunoConstant.SERIALMONITOR_FALIED_READ.replace('${port}', obj.port));
+			_disposeMonitor(obj);
+			resolve(false);
 		});
-		obj.obj_monitor = obj_monitor;
-		obj_monitor.on("data", (data) => {
+		child.stdout.on("data", (data) => {
 			obj.output.append(data.toString());
 		});
-		obj_monitor.on("close", (err) => {
-			if (err != undefined)
-			{
-				VsCode.window.showErrorMessage(ZunoConstant.SERIALMONITOR_FALIED_READ.replace('${port}', obj_monitor.path));
-				Utils.setLastError(err);
+		child.stderr.once("data", (data) => {
+			if (data.toString() != obj.ok) {
+				_disposeMonitor(obj);
+				resolve(false);
 			}
-			else if (obj.upload == false)
-			{//При таком случае значит нужно закрыть но потом стартовать с теми же параметрами дабы не было заметно сие действие пользователю
-				obj.arg = arg;
-				return ;
-			}
-			_disposeMonitor(obj);
+			obj.child = child;
+			resolve(true);
 		});
 	}));
-}
-
-const ALPHA			= '0123456789ABCDEF'
-
-let _outputHexIndex = 0
-function _outputHex(output, data)
-{
-	for (const value of data)
-	{
-		_outputHexIndex++;
-		if (_outputHexIndex % 0x10 == 0)
-			output.appendLine(ALPHA[value >>> 4] + ALPHA[value & 0xF]);
-		else
-			output.append(ALPHA[value >>> 4] + ALPHA[value & 0xF] + ' ');
-	}
-}
-
-function _outputHexAnsii(output, data)
-{
-	let i = 0;
-	for (const value of data)
-	{
-		output.append(data.toString());
-	}
-	
 }
 
 function _disposeMonitor(obj)

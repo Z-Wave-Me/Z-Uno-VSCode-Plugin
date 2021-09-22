@@ -121,14 +121,12 @@ const _this = {
 	{
 		const install = Path.join(path_install, ZunoConstant.FILE.JSON_LOAD);
 		const install_home = Path.join(path_install_home, ZunoConstant.FILE.JSON_LOAD);
+		if (await Internet.downLoad(ZunoConstant.FILE.JSON_URL, install) == false)
+			return (false);
 		let array;
 		try {array = JSON.parse(Fs.readFileSync(install, 'utf8')); } catch (error) {array = false;}
 		if (array == false)
-		{//Если битый или нету то будем качать с интернета
-			if (await Internet.downLoad(ZunoConstant.FILE.JSON_URL, install) == false)
-				return (false);
-			try {array = JSON.parse(Fs.readFileSync(install, 'utf8')); } catch (error) {array = false;}
-		}
+			return (false);
 		if (_validateJson(array, array_host.host_install) == false)
 		{
 			File.unlink(install);

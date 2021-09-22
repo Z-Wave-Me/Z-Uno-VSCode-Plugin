@@ -63,6 +63,8 @@ const _this = {
 	SERIALMONITOR_OPTIONS_PLACEHOLDER: 'Open the monitor with the current settings or change them',
 	SERIALMONITOR_OPTIONS_PORT_DECRIPTION: 'Serial port',
 	SERIALMONITOR_OPTIONS_NOT_PORT: 'To open the monitor you need to select the port. Would you like to specify it?',
+	SERIALMONITOR_OPTIONS_PAUSE_CHANGE: 'Unable to suspend the monitor',
+	SERIALMONITOR_OPTIONS_RESUME_CHANGE: 'Unable to resume monitor',
 	SERIALMONITOR_OPTIONS_BAUDRATE_CHANGE: 'Failed to change baudrate',
 	SERIALMONITOR_OPTIONS_BAUDRATE_DECRIPTION: 'Baudrate',
 	SERIALMONITOR_OPTIONS_BAUDRATE_MANUAL: 'Select manually...',

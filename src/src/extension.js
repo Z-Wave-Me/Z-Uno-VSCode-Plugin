@@ -54,6 +54,8 @@ function _platform()
 			array_host = {host_install: 'i686-mingw32', host_cpp: 'Win32'};
 			break;
 		case 'darwin':
+			if (parseInt(Os.release()) < 19)
+				break ;
 			array_host = {host_install: 'x86_64-apple-darwin', host_cpp: 'Mac'};
 			break;
 		case 'linux':

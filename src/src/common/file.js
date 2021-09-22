@@ -16,6 +16,16 @@ const _this = {
 			});
 		}));
 	},
+	chmod: function (path, mode)
+	{
+		return (new Promise((resolve, reject) => {
+			Fs.chmod(path, mode, (err) => {
+				if (err != undefined)
+					resolve(false);
+				resolve(true);
+			});
+		}));
+	},
 	stat: function (path)
 	{
 		return (new Promise((resolve, reject) => {

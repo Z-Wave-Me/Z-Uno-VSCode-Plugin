@@ -1,4 +1,5 @@
 out/**
+bin/**
 *.log
 package-lock.json
 node_modules/**

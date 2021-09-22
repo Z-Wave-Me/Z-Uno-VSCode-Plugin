@@ -63,6 +63,8 @@ const _this = {
 	SERIALMONITOR_OPTIONS_PLACEHOLDER: 'Откройте монитор с текущими настройками или измените их',
 	SERIALMONITOR_OPTIONS_PORT_DECRIPTION: 'Последовательный порт',
 	SERIALMONITOR_OPTIONS_NOT_PORT: 'Чтобы открыть монитор нужно выбрать порт. Хотите выбрать?',
+	SERIALMONITOR_OPTIONS_PAUSE_CHANGE: 'Не удалось приостановить работу монитора',
+	SERIALMONITOR_OPTIONS_RESUME_CHANGE: 'Не удалось возобновить работу монитора',
 	SERIALMONITOR_OPTIONS_BAUDRATE_CHANGE: 'Не удалось изменить скорость передачи данных',
 	SERIALMONITOR_OPTIONS_BAUDRATE_DECRIPTION: 'Скорость передачи данных',
 	SERIALMONITOR_OPTIONS_BAUDRATE_MANUAL: 'Выбрать вручную...',
