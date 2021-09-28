@@ -411,6 +411,7 @@ const _this = {
 			VsCode.window.showInformationMessage(ZunoConstant.INSTALL_SUCCESS);
 			const path_stub = Path.join(path_core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_CLANG);
 			try {
+				Fs.writeFileSync(Path.join(path_stub, 'Custom_decl.h'), ' ');
 				Fs.writeFileSync(Path.join(path_stub, 'Custom_defs.h'), ' ');
 				Fs.writeFileSync(Path.join(path_stub, 'ZUNO_AutoChannels.h'), ' ');
 				Fs.writeFileSync(Path.join(path_stub, 'ZUNO_AutoDef.h'), ' ');
@@ -473,7 +474,7 @@ async function _checkFile(path_install, array_host, context)
 	if (CommandGeneral.installProloge(_this, path_install, array_host) == false)//Проверим все ли есть необходимое
 		return ;
 	new Examples.Examples(context, path_install);
-	await CppTools.cppTools(path_install, array_host);
+	await CppTools.cppTools(path_install);
 	const file_settings = Path.join(path_install, ZunoConstant.FILE.JSON_SETTING);
 	const array_setting = Config.getSettting(file_settings);//Получим наши настройки
 	const version = array_setting.version;

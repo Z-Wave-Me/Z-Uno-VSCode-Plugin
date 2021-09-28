@@ -15,7 +15,7 @@ const INTELLISENSEMODE				= "gcc-arm";
 
 //Создаем обьект для эксорта комманд
 const _this = {
-	cppTools: async function(path_install, array_host)
+	cppTools: async function(path_install)
 	{
 		const hardware = Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.HARDWARE);
 		const forcedInclude = [Path.join(hardware, ZunoConstant.ZMAKE.ARDUINO)];
@@ -26,12 +26,12 @@ const _this = {
 			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_CLANG, '**')
 		];
 		const compiler_path = Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.GCC_EXE);
-		const name = array_host.host_cpp;
+		const name = "Zuno";
 		let array;
 		try {array = JSON.parse(Fs.readFileSync(ZunoConstant.PATH.JSON_CPPTOOLS, 'utf8')); } catch (error) {array = false;}
 		if (array == false)//Если вообще такого нет файла
 			return (_saveNew(name, includePath, forcedInclude, compiler_path));
-		const index = _scanName(array, name, includePath, forcedInclude);
+		const index = _scanName(array, name, includePath, forcedInclude, compiler_path);
 		if (index == false || Config.getCppIgnored() == true)
 			return ;
 		const configurations = array.configurations[index];
@@ -42,6 +42,8 @@ const _this = {
 		if (_testArray(includePath, configurations.includePath) == false)
 			return (_actionJson(array, index, name, includePath, forcedInclude, compiler_path));
 		if (_testArray(forcedInclude, configurations.forcedInclude) == false)
+			return (_actionJson(array, index, name, includePath, forcedInclude, compiler_path));
+		if (configurations.intelliSenseMode != INTELLISENSEMODE || configurations.compilerPath != compiler_path)
 			return (_actionJson(array, index, name, includePath, forcedInclude, compiler_path));
 	}
 }
@@ -59,14 +61,10 @@ async function _actionJson(array, index, name, includePath, forcedInclude, compi
 	if (ans == Constant.DIALOG_IGNORED)
 		return (Config.setCppIgnored(true));
 	const configurations = array.configurations[index];
-	if (configurations.intelliSenseMode == undefined)
-		configurations.intelliSenseMode = INTELLISENSEMODE;
-	if (configurations.compilerPath == undefined)
-		configurations.intelliSenseMode = compiler_path;
-	if (configurations.includePath == undefined || Array.isArray(configurations.includePath) == false)
-		configurations.includePath = includePath;
-	if (configurations.forcedInclude == undefined || Array.isArray(configurations.forcedInclude) == false)
-		configurations.forcedInclude = forcedInclude;
+	configurations.intelliSenseMode = INTELLISENSEMODE;
+	configurations.compilerPath = compiler_path;
+	configurations.includePath = includePath;
+	configurations.forcedInclude = forcedInclude;
 	_supplementJson(includePath, configurations.includePath);//Допишем нужные значения не самый лутчий вариант но может и это нужно будет
 	_supplementJson(forcedInclude, configurations.forcedInclude);
 	try
@@ -113,7 +111,7 @@ function _testArray(array1, array2)
 	return (true);
 }
 
-function _scanName(array, name, includePath, forcedInclude)
+function _scanName(array, name, includePath, forcedInclude, compiler_path)
 {
 	const configurations = array.configurations;
 	if (Array.isArray(configurations) == true)
@@ -129,7 +127,8 @@ function _scanName(array, name, includePath, forcedInclude)
 			name: name,
 			includePath: includePath,
 			forcedInclude: forcedInclude,
-			intelliSenseMode: INTELLISENSEMODE
+			intelliSenseMode: INTELLISENSEMODE,
+			compilerPath: compiler_path
 		});
 	}
 	else
@@ -138,7 +137,8 @@ function _scanName(array, name, includePath, forcedInclude)
 			name: name,
 			includePath: includePath,
 			forcedInclude: forcedInclude,
-			intelliSenseMode: INTELLISENSEMODE
+			intelliSenseMode: INTELLISENSEMODE,
+			compilerPath: compiler_path
 		}];
 		array.version = VERSION;
 	}
@@ -146,7 +146,7 @@ function _scanName(array, name, includePath, forcedInclude)
 	{
 		Fs.writeFileSync(ZunoConstant.PATH.JSON_CPPTOOLS, JSON.stringify(array, null, 4));
 	} catch (error) {}
-	VsCode.window.showInformationMessage(ZunoConstant.CPP_TOOLS_ADD_CONFIG);
+	VsCode.window.showInformationMessage(ZunoConstant.CPP_TOOLS_ADD_CONFIG.replace('${name}', name));
 	VsCode.commands.executeCommand(ZunoConstant.CPP.CONFIGURATION_SELECT);
 	return (false);
 }
@@ -165,7 +165,8 @@ function _saveNew(name, includePath, forcedInclude, compiler_path)
 	};
 	try
 	{
-		Fs.mkdirSync(ZunoConstant.PATH.JSON_DIR);
+		if (Fs.accessSync(ZunoConstant.PATH.JSON_DIR) == false)
+			Fs.mkdirSync(ZunoConstant.PATH.JSON_DIR);
 		Fs.writeFileSync(ZunoConstant.PATH.JSON_CPPTOOLS, JSON.stringify(array, null, 4));
 	} catch (error) {}
 	VsCode.commands.executeCommand(ZunoConstant.CPP.RESCAN_WORKSPACE);

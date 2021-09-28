@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.1
+- Release date: 28.09.2021
+
+### Changed
+- Now the plugin configures intellisense in a slightly different way - it adds its own "Zyno" setting - by analogy with "Win32"...
+
+
+
 ## Version 0.2.0
 - Release date: 22.09.2021
 
