@@ -36,6 +36,7 @@ const _this = {
 		_this.array_host = array_host;//Хост системы для конфига качаемого
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SKETCH, _this.sketch));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.FREQUENCY, _this.frequency));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.POWER, _this.power));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOOTLOADER, _this.bootloader));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SECURITY, _this.security));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PORT, _this.port));
@@ -59,26 +60,39 @@ const _this = {
 	{
 		const security = StatusBar.security.get();
 		const select = await VsCode.window.showQuickPick(ZunoConstant.SECURITY.map((element) => {
-			return {description: element[1], label: element[0]};
+			return {description: element[1], label: element[0], _zuno_tmp: element[2]};
 		}), {placeHolder: `${security[0]} - ${security[1]}`});
 		if (select == undefined)
 			return (false);
 		const out = select.label;
 		Config.setSecurity(out);
-		StatusBar.security.set([out, select.description]);
+		StatusBar.security.set([out, select.description, select._zuno_tmp]);
+		return (out);
+	},
+	power: async function()
+	{
+		const pow = StatusBar.power.get();
+		const select = await VsCode.window.showQuickPick(ZunoConstant.POWER.map((element) => {
+			return {description: element[1], label: element[0], _zuno_tmp: element[2]};
+		}), {placeHolder: `${pow[0]} - ${pow[1]}`});
+		if (select == undefined)
+			return (false);
+		const out = select.label;
+		Config.setPower(out);
+		StatusBar.power.set([out, select.description, select._zuno_tmp]);
 		return (out);
 	},
 	frequency: async function()
 	{
 		const freq = StatusBar.frequency.get();
 		const select = await VsCode.window.showQuickPick(ZunoConstant.FREQUENCY.map((element) => {
-			return {description: element[1], label: element[0]};
+			return {description: element[1], label: element[0], _zuno_tmp: element[2]};
 		}), {placeHolder: `${freq[0]} - ${freq[1]}`});
 		if (select == undefined)
 			return (false);
 		const out = select.label;
-		Config.setFrequency([out]);
-		StatusBar.frequency.set([out, select.description]);
+		Config.setFrequency(out);
+		StatusBar.frequency.set([out, select.description, select._zuno_tmp]);
 		return (out);
 	},
 	settings: async function()
@@ -86,7 +100,8 @@ const _this = {
 		const options =
 		[
 			['security', StatusBar.security.get()[0], ZunoConstant.SECURITY_PLACEHOLDER],
-			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER]
+			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER],
+			['power', StatusBar.power.get()[0], ZunoConstant.POWER_PLACEHOLDER]
 		];
 		while (0xFF)
 		{
@@ -110,6 +125,12 @@ const _this = {
 					if (frequency == false)
 						break ;
 					element[1] = frequency;
+					break;
+				case 'power':
+					const power = await _this.power();
+					if (power == false)
+						break ;
+					element[1] = power;
 					break;
 			}
 		}
@@ -255,8 +276,9 @@ const _this = {
 				const args_update = [
 					'upload', path_sketch,
 					'-B', tmp,
-					'-p', `sec=${StatusBar.security.get()[0][1]}`,
-					'-fr', StatusBar.frequency.get()[0],
+					'-p', `sec=${StatusBar.security.get()[2]}`,
+					'-fr', StatusBar.frequency.get()[2],
+					'-p', `main_pow=${StatusBar.power.get()[2]}`,
 					'-d', port
 				];
 				SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
@@ -299,8 +321,9 @@ const _this = {
 			code = await Run.spawn(zmake, Output.data, Output.data, [
 				'upload', path_sketch,
 				'-B', tmp,
-				'-p', `sec=${StatusBar.security.get()[0][1]}`,
-				'-fr', StatusBar.frequency.get()[0],
+				'-p', `sec=${StatusBar.security.get()[2]}`,
+				'-p', `main_pow=${StatusBar.power.get()[2]}`,
+				'-fr', StatusBar.frequency.get()[2],
 				'-d', port
 			]);
 			SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново

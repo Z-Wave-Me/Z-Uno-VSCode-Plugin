@@ -18,8 +18,13 @@
             "type": "string",
             "minLength": 1
         },
+        "power": {
+            "description": "Мощность передачи по радио, по умолчанию: +0dBm - нормальная",
+            "type": "string",
+            "minLength": 1
+        },
         "security": {
-            "description": "Режим шифрования передачи Z-Wave команд, по умолчанию: отключена (без шифрования)",
+            "description": "Режим шифрования передачи Z-Wave команд, по умолчанию: S0 - отключена (без шифрования)",
             "type": "string",
             "minLength": 1
         },

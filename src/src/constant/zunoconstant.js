@@ -50,6 +50,7 @@ _this.CMD =
 	BOOTLOADER: 'zuno.bootloader',
 	SECURITY: 'zuno.security',
 	FREQUENCY: 'zuno.frequency',
+	POWER: 'zuno.power',
 	SKETCH: 'zuno.sketch',
 	PORT: 'zuno.port',
 	MONITOR: 'zuno.monitor',
@@ -63,7 +64,7 @@ _this.CMD =
 /*-------------------------------*/
 _this.DIR =
 {
-	CORE: 'Z-Uno2G',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
+	CORE: 'Z-Uno2',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
 	CACHE: 'cache',
 	HARDWARE: 'hardware',
 	TOOLS: 'tools',
@@ -85,7 +86,7 @@ _this. BARPRIORITY =
 /*-------------------------------*/
 _this.FILE =
 {
-	JSON_URL: 'https://rus.z-wave.me/files/z-uno/g2/beta-index/package_z-wave2.me_index.json',
+	JSON_URL: 'http://z-uno.z-wave.me/files/z-uno2/package_z-wave2.me_index.json',
 	JSON_LOAD: 'install.json',
 	JSON_SETTING: 'setting.json'
 }
@@ -101,7 +102,7 @@ _this.PATH =
 	JSON_CPPTOOLS: Path.join(_workspaceFolders, '.vscode', 'c_cpp_properties.json')
 }
 
-_this.SERIALMONITOR_OPTIONS_BAUDRATE_LIST = ['50', '75', '110', '134', '150', '200', '300', '600', '1200', '1800', '2400', '4800', '9600', '19200', '38400', '57600', '115200', _this.SERIALMONITOR_OPTIONS_BAUDRATE_MANUAL];
+_this.SERIALMONITOR_OPTIONS_BAUDRATE_LIST = ['50', '75', '110', '134', '150', '200', '300', '600', '1200', '1800', '2400', '4800', '9600', '19200', '38400', '57600', '115200', '230400', '460800', '500000', '576000', _this.SERIALMONITOR_OPTIONS_BAUDRATE_MANUAL];
 
 _this.WORKBENCH =
 {

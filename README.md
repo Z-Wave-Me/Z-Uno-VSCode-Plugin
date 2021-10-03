@@ -1,5 +1,7 @@
 # Visual Studio Code extension for Z-Uno
 
+*Note:* This plugin only works with Z-Uno-2G
+
 ## Commands
 This extension provides several commands in the Command Palette (<kbd>F1</kbd> or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) for working with `*.ino` files:
 
@@ -9,6 +11,7 @@ This extension provides several commands in the Command Palette (<kbd>F1</kbd> o
 - **Z-Uno: Select serial port**: Change the current serial port to flash the firmware.
 - **Z-Uno: Select mode security**: Security mode can be S0, S2, without security.
 - **Z-Uno: Select frequency**: Select the radio frequency according to your region (EU, US, RU, etc.)
+- **Z-Uno: Select radio signal strength**: Select radio signal strength to +0dBm, +5dBm and +10dBm
 - **Z-Uno: Upload**: Build sketch and upload to Z-Uno board.
 - **Z-Uno: Verify**: Build sketch.
 
@@ -48,7 +51,8 @@ The following settings are as per sketch settings of the Z-Uno extension. You ca
     "sketch": "example.ino",
     "port": "COM5",
     "frequency": "EU",
-    "security": "Disabled",
+    "security": "S0",
+    "power": "+0dBm",
     "cppIgnored": "Disabled"
 }
 ```

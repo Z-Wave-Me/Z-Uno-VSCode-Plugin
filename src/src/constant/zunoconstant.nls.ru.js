@@ -104,28 +104,37 @@ const _this = {
 	STATUS_INSTALL: 'Установленно',
 	STATUS_NOT_INSTALL: 'Не установленно',
 /*-------------------------------*/
-	SECURITY_DEFAULT: ['S0', 'Отключено'],
+	SECURITY_DEFAULT: ['S0', 'Отключено', '0'],
 	SECURITY_PLACEHOLDER: 'Выберите режим шифрования',
 	SECURITY:
 	[
-		['S0', 'Отключено'],
-		['S1', 'Включено']
+		['S0', 'Отключено', '0'],
+		['S2', 'Включено', '2']
+	],
+	/*-------------------------------*/
+	POWER_DEFAULT: ['+0dBm', 'Нормальная', '0'],
+	POWER_PLACEHOLDER: 'Выберите мощность радиосигнала',
+	POWER:
+	[
+		['+0dBm', 'Нормальная', '0'],
+		['+5dBm', 'Увеличенная', '50'],
+		['+10dBm', 'Ультра', '100']
 	],
 /*-------------------------------*/
-	FREQUENCY_DEFAULT: ['EU', 'Europe'],
+	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
 	FREQUENCY_PLACEHOLDER: 'Выберите частоту',
 	FREQUENCY:
 	[
-		['ANZ', 'Australia & New Zealand, Brazil'],
-		['CN', 'China'],
-		['EU', 'Europe'],
-		['HK', 'Hong Kong'],
-		['IL', 'Israel'],
-		['IN', 'India'],
-		['JP', 'Japan'],
-		['KR', 'Korea'],
-		['RU', 'Russian'],
-		['US', 'USA']
+		['ANZ', 'Australia & New Zealand, Brazil', 'ANZ'],
+		['CN', 'China', 'CN'],
+		['EU', 'Europe', 'EU'],
+		['HK', 'Hong Kong', 'HK'],
+		['IL', 'Israel', 'IL'],
+		['IN', 'India', 'IN'],
+		['JP', 'Japan', 'JP'],
+		['KR', 'Korea', 'KR'],
+		['RU', 'Russian', 'RU'],
+		['US', 'USA', 'US']
 	]
 }
 

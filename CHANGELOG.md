@@ -1,6 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.4
+- Release date: 03.10.2021
+
+### Changed
+- Now use the Serial monitor based on C for Linux.
+- Distribution download path has changed.
+
+### Added
+- Added the ability to adjust the power of the tx Z-Uno-2G radio.
+
+
+
+
 ## Version 0.2.1
 - Release date: 28.09.2021
 

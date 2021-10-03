@@ -1,0 +1,20 @@
+{
+	// Используйте IntelliSense, чтобы узнать о возможных атрибутах.
+	// Наведите указатель мыши, чтобы просмотреть описания существующих атрибутов.
+	// Для получения дополнительной информации посетите: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		
+		{
+			"name": "(Windows) Запустить",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}\\..\\Debug\\${workspaceFolderBasename}.exe",
+			"args": ["open", "-d", "com50", "-b", "115200", "-o", "0"],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"console": "externalTerminal"
+		}
+	]
+}

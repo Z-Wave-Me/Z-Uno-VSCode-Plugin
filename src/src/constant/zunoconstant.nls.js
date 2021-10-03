@@ -104,28 +104,37 @@ const _this = {
 	STATUS_INSTALL: 'Installed',
 	STATUS_NOT_INSTALL: 'Not installed',
 /*-------------------------------*/
-	SECURITY_DEFAULT: ['S0', 'Disabled'],
+	SECURITY_DEFAULT: ['S0', 'Disabled', '0'],
 	SECURITY_PLACEHOLDER: 'Select a security',
 	SECURITY:
 	[
-		['S0', 'Disabled'],
-		['S1', 'Enabled']
+		['S0', 'Disabled', '0'],
+		['S2', 'Enabled', '2']
+	],
+	/*-------------------------------*/
+	POWER_DEFAULT: ['+0dBm', 'Normal', '0'],
+	POWER_PLACEHOLDER: 'Select radio signal strength',
+	POWER:
+	[
+		['+0dBm', 'Normal', '0'],
+		['+5dBm', 'Magnified', '50'],
+		['+10dBm', 'Ultra', '100']
 	],
 /*-------------------------------*/
-	FREQUENCY_DEFAULT: ['EU', 'Europe'],
+	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
 	FREQUENCY_PLACEHOLDER: 'Select a frequency',
 	FREQUENCY:
 	[
-		['ANZ', 'Australia & New Zealand, Brazil'],
-		['CN', 'China'],
-		['EU', 'Europe'],
-		['HK', 'Hong Kong'],
-		['IL', 'Israel'],
-		['IN', 'India'],
-		['JP', 'Japan'],
-		['KR', 'Korea'],
-		['RU', 'Russian'],
-		['US', 'USA']
+		['ANZ', 'Australia & New Zealand, Brazil', 'ANZ'],
+		['CN', 'China', 'CN'],
+		['EU', 'Europe', 'EU'],
+		['HK', 'Hong Kong', 'HK'],
+		['IL', 'Israel', 'IL'],
+		['IN', 'India', 'IN'],
+		['JP', 'Japan', 'JP'],
+		['KR', 'Korea', 'KR'],
+		['RU', 'Russian', 'RU'],
+		['US', 'USA', 'US']
 	]
 }
 

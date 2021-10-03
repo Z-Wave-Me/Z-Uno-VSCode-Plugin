@@ -3,6 +3,7 @@
 	"zuno.command.bootloader.title": "Z-Uno: Burn bootloader",
 	"zuno.command.security.title": "Z-Uno: Select security mode",
 	"zuno.command.frequency.title": "Z-Uno: Select frequency",
+	"zuno.command.power.title": "Z-Uno: Select radio signal strength",
 	"zuno.command.install.title": "Z-Uno: Install the necessary components",
 	"zuno.command.port.title": "Z-Uno: Select serial port",
 	"zuno.command.monitor.title": "Z-Uno: Open serial monitor",

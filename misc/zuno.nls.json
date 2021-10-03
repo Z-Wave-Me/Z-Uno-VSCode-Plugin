@@ -18,8 +18,13 @@
             "type": "string",
             "minLength": 1
         },
+        "power": {
+            "description": "Radio transmission power, by default: +0dBm - normal",
+            "type": "string",
+            "minLength": 1
+        },
         "security": {
-            "description": "Security mode for sending Z-Wave commands, by default: disabled (without security)",
+            "description": "Security mode for sending Z-Wave commands, by default: S0 - disabled (without security)",
             "type": "string",
             "minLength": 1
         },

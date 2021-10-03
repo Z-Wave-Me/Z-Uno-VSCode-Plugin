@@ -104,6 +104,18 @@ const _this = {
 			return (_this.port.value);
 		}
 	},
+	power:
+	{
+		value: Config.getPower(),
+		set(power)
+		{
+			_this.power.value = power;
+		},
+		get()
+		{
+			return (_this.power.value);
+		}
+	},
 	frequency:
 	{
 		value: Config.getFrequency(),
