@@ -27,22 +27,24 @@ const _this = {
 	},
 	getUpdateMemoryUsage: function()
 	{
-		if (_this.updateMemoryUsage.storage > ZunoConstant.MEMORY.STORAGE || _this.updateMemoryUsage.dynamic > ZunoConstant.MEMORY.DYNAMIC)
+		if (_this.updateMemoryUsage.storage > ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE || _this.updateMemoryUsage.dynamic > ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC)
 			return (false);
 		return (true);
 	},
 	updateMemoryUsage: function(data)
 	{
-		const array = data.toString().match(/\d+/g);
-		_this.updateMemoryUsage.storage = array[0];
-		_this.updateMemoryUsage.dynamic = array[1];
+		data = data.toString();
+		_this.updateMemoryUsage.storage = data.match(ZunoConstant.BOARD_CURRENT.text_match)[0x0].match(/\d+/g);
+		_this.updateMemoryUsage.dynamic = data.match(ZunoConstant.BOARD_CURRENT.ram_match)[0x0].match(/\d+/g);
 	},
 	printUpdateMemoryUsage: function(typeout = true)
 	{
 		const storage = _this.updateMemoryUsage.storage;
 		const dynamic = _this.updateMemoryUsage.dynamic;
-		const storage_max = ZunoConstant.MEMORY.STORAGE;
-		const dynamic_max = ZunoConstant.MEMORY.DYNAMIC;
+		const storage_max = ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE;
+		let dynamic_max = ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC;
+		if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
+			dynamic_max = dynamic;
 		let message_storage = ZunoConstant.UPLOAD_USAGE_MEMORY_STORAGE.replace('${STORAGE_USE}', storage);
 		let message_dynamic = ZunoConstant.UPLOAD_USAGE_MEMORY_DYNAMIC.replace('${DYNAMIC_USE}', dynamic);
 		message_storage = message_storage.replace('${STORAGE_MAX}', storage_max);

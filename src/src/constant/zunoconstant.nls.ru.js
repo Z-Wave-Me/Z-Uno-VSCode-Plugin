@@ -6,6 +6,12 @@ const Os = require("os");
 
 const _this = {
 /*-------------------------------*/
+	Z_UNO_DESCRIPTION: ' - первое поколение платы Z-Uno.',
+	Z_UNO2_DESCRIPTION: ' - второе поколение платы Z-Uno2.',
+	Z_UNO2_BETA_DESCRIPTION: ' - второе поколение платы Z-Uno2 бета.',
+	Z_UNO_INFO_RESTART: 'Чтобы изменения вступили в силу - перезагрузите проект.',
+
+/*-------------------------------*/
 	OUTPUT_START: '[Начало]',
 	OUTPUT_END: '[Готово]',
 	OUTPUT_INFO: '[Информация]',
@@ -35,6 +41,9 @@ const _this = {
 /*-------------------------------*/
 	MONITOR_TOOLTIP: 'Открыть последовательный порт',
 	MONITOR_BAR_TEXT: '$(plug)',
+/*-------------------------------*/
+	BOARD_PLACEHOLDER: 'Выберите тип платы',
+	BOARD_BAR_TEXT: '<Выберите плату>',
 /*-------------------------------*/
 	BOOTLOADER_TOOLTIP: 'Записать загрузчик',
 	BOOTLOADER_BAR_TEXT: '$(triangle-up)',
@@ -107,6 +116,12 @@ const _this = {
 	SECURITY_DEFAULT: ['S0', 'Отключено', '0'],
 	SECURITY_PLACEHOLDER: 'Выберите режим шифрования',
 	SECURITY:
+	[
+		['S0', 'Отключено', '0'],
+		['S1', 'S1', '1'],
+		['S2', 'Включено', '2']
+	],
+	SECURITY2:
 	[
 		['S0', 'Отключено', '0'],
 		['S2', 'Включено', '2']

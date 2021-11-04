@@ -65,7 +65,7 @@ class FileSystemProviderExamples {
 
 class Examples {
 	constructor(context, path_install) {
-		const treeDataProvider = new FileSystemProviderExamples(Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.HARDWARE, ZunoConstant.DIR.EXAMPLES), Path.join(context.extensionPath, 'images', 'examples'));
+		const treeDataProvider = new FileSystemProviderExamples(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.HARDWARE, ZunoConstant.BOARD_CURRENT.EXAMPLES), Path.join(context.extensionPath, 'images', 'examples'));
 		context.subscriptions.push(VsCode.window.createTreeView('zunoExamples', { treeDataProvider }));
 		VsCode.commands.registerCommand('zunoExamples.openFile', (resource) => this.openResource(resource));
 	}

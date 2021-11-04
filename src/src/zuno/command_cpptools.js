@@ -17,16 +17,20 @@ const INTELLISENSEMODE				= "gcc-arm";
 const _this = {
 	cppTools: async function(path_install)
 	{
-		const hardware = Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.HARDWARE);
-		const forcedInclude = [Path.join(hardware, ZunoConstant.ZMAKE.ARDUINO)];
+		const hardware = Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.HARDWARE);
+		const forcedInclude = [];
+		for (let index = 0; index < ZunoConstant.BOARD_CURRENT.ZMAKE.FORCE.length; index++)
+			forcedInclude.push(Path.join(hardware, ZunoConstant.BOARD_CURRENT.ZMAKE.FORCE[index]));
 		const includePath = [
-			Path.join(hardware, ZunoConstant.ZMAKE.CORE, '**'),
+			Path.join(hardware, ZunoConstant.BOARD_CURRENT.ZMAKE.CORE, '**'),
 			Path.join(hardware, ZunoConstant.ZMAKE.LIB, '**'),
-			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.GCC_LIB, '**'),
-			Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_CLANG, '**')
+			Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB, '**'),
+			Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_FAKE, '**')
 		];
-		const compiler_path = Path.join(path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.GCC_EXE);
-		const name = "Zuno";
+		let compiler_path = "";
+		if (ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_EXE != "")
+			compiler_path = Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_EXE);
+		const name = ZunoConstant.BOARD_CURRENT.core;
 		let array;
 		try {array = JSON.parse(Fs.readFileSync(ZunoConstant.PATH.JSON_CPPTOOLS, 'utf8')); } catch (error) {array = false;}
 		if (array == false)//Если вообще такого нет файла

@@ -7,6 +7,7 @@
 	"zuno.command.install.title": "Z-Uno: Установить необходимые компоненты",
 	"zuno.command.port.title": "Z-Uno: Выбрать последовательный порт",
 	"zuno.command.monitor.title": "Z-Uno: Открыть последовательный порт",
+	"zuno.command.board.title": "Z-Uno: Выберите тип платы",
 	"zuno.command.verify.title": "Z-Uno: Проверить",
 	"zuno.command.upload.title": "Z-Uno: Загрузить",
 	"zuno.configuration.title": "Z-Uno: Конфигурация",

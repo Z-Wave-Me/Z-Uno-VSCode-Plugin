@@ -26,7 +26,7 @@ const _this = {
 			obj.tooltip = ZunoConstant.SKETCH_PLACEHOLDER;
 			if (sketch != false)
 			{
-				_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, Crc.hash(sketch, 'md5'));
+				_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, Crc.hash(sketch, 'md5'));
 				obj.text = Path.basename(sketch)
 			}
 			else
@@ -36,7 +36,7 @@ const _this = {
 		set: function(sketch, path_sketch)
 		{
 			_this.sketch.value = sketch;
-			_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, Crc.hash(path_sketch, 'md5'));
+			_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, Crc.hash(path_sketch, 'md5'));
 			_this.sketch.obj.text = Path.basename(sketch);
 		},
 		getActiveSketch()
@@ -49,7 +49,7 @@ const _this = {
 		getTmp(path_sketch)
 		{
 			if (_this.sketch.path_tmp == undefined )
-				return (Path.join(ZunoConstant.PATH.TMP_BUILD, Crc.hash(path_sketch, 'md5')));
+				return (Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, Crc.hash(path_sketch, 'md5')));
 			return (_this.sketch.path_tmp);
 		},
 		get()
@@ -79,6 +79,61 @@ const _this = {
 			obj.tooltip = ZunoConstant.SETTINGS_TOOLTIP;
 			obj.text = ZunoConstant.SETTING_BAR_TEXT;
 			obj.show();
+		}
+	},
+	board:
+	{
+		obj: undefined,
+		value: undefined,
+		array: undefined,
+		init()
+		{
+			let board = Config.getBoard();
+			let array = false;
+			for (let key in ZunoConstant.BOARD)
+			{
+				if (ZunoConstant.BOARD[key].core == board)
+				{
+					array = true;
+					break ;
+				}
+			}
+			if (array == false)
+				board = ZunoConstant.BOARD.ZUNO2.core;
+			const obj = VsCode.window.createStatusBarItem(VsCode.StatusBarAlignment.Right, ZunoConstant.BARPRIORITY.BOARD);
+			this.obj = obj;
+			obj.command = ZunoConstant.CMD.BOARD;
+			obj.tooltip = ZunoConstant.BOARD_PLACEHOLDER;
+			this.set(board);
+			obj.show();
+		},
+		set(board)
+		{
+			this.value = board;
+			this.obj.text = board;
+			for (let key in ZunoConstant.BOARD)
+			{
+				if (ZunoConstant.BOARD[key].core == this.value)
+				{
+					this.array = ZunoConstant.BOARD[key];
+					break ;
+				}
+			}
+		},
+		getArrayString()
+		{
+			let array = [];
+			for (let key in ZunoConstant.BOARD)
+				array.push({description: ZunoConstant.BOARD[key].description, label: ZunoConstant.BOARD[key].core});
+			return (array);
+		},
+		getArray()
+		{
+			return (this.array);
+		},
+		get()
+		{
+			return (this.value);
 		}
 	},
 	port:

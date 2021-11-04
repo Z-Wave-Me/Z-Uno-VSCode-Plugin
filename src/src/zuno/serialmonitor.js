@@ -129,8 +129,8 @@ const _this = {
 			return (false);
 		const select = await VsCode.window.showQuickPick(array.map((list) => {
 			let description;
-			if (list.pid == 0xEA60 && list.vid == 0x10C4)//Переводиться в числа так как на разных осях может не быть приставки в строке '0x'
-				description = ZunoConstant.DIR.CORE;
+			if (list.pid == ZunoConstant.BOARD_CURRENT.pid && list.vid == ZunoConstant.BOARD_CURRENT.vid)//Переводиться в числа так как на разных осях может не быть приставки в строке '0x'
+				description = ZunoConstant.BOARD_CURRENT.core;
 			else
 				description = list.manufacturer;
 			return {description: description, label: list.device};

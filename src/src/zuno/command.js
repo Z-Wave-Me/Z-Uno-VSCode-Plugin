@@ -40,17 +40,31 @@ const _this = {
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOOTLOADER, _this.bootloader));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SECURITY, _this.security));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PORT, _this.port));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOARD, _this.board));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MONITOR, _this.monitor));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SETTING, _this.settings));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.VERIFY, _this.verify));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.UPLOAD, _this.verify, _this));//_this - дает понять что раз контекст есть значит upload а не verify
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.INSTALL, _this.install));
+		StatusBar.board.init();
 		StatusBar.sketch.init(context);
 		StatusBar.monitor.init();
 		StatusBar.settings.init();
 		StatusBar.port.init();
 		SerialMonitor.init(context);
+		ZunoConstant.BOARD_CURRENT = StatusBar.board.getArray();
 		_checkFile(path_install, array_host, context);
+	},
+	board: async function()
+	{
+		const select = await VsCode.window.showQuickPick(StatusBar.board.getArrayString(), {placeHolder: `${StatusBar.board.get()} - ${ZunoConstant.BOARD_PLACEHOLDER}`});
+		if (select == undefined)
+			return ;
+		if (select.label == ZunoConstant.BOARD_CURRENT.core)
+			return ;
+		VsCode.window.showInformationMessage(ZunoConstant.Z_UNO_INFO_RESTART);
+		Config.setBoard(select.label);
+		StatusBar.board.set(select.label);
 	},
 	monitor: async function()
 	{
@@ -59,7 +73,7 @@ const _this = {
 	security: async function()
 	{
 		const security = StatusBar.security.get();
-		const select = await VsCode.window.showQuickPick(ZunoConstant.SECURITY.map((element) => {
+		const select = await VsCode.window.showQuickPick(ZunoConstant.BOARD_CURRENT.security.map((element) => {
 			return {description: element[1], label: element[0], _zuno_tmp: element[2]};
 		}), {placeHolder: `${security[0]} - ${security[1]}`});
 		if (select == undefined)
@@ -97,12 +111,13 @@ const _this = {
 	},
 	settings: async function()
 	{
-		const options =
+		let options =
 		[
 			['security', StatusBar.security.get()[0], ZunoConstant.SECURITY_PLACEHOLDER],
-			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER],
-			['power', StatusBar.power.get()[0], ZunoConstant.POWER_PLACEHOLDER]
+			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER]
 		];
+		if (ZunoConstant.BOARD_CURRENT.power == true)
+			options.push(['power', StatusBar.power.get()[0], ZunoConstant.POWER_PLACEHOLDER]);
 		while (0xFF)
 		{
 			let index = 0;
@@ -139,11 +154,11 @@ const _this = {
 	{
 		if (CommandGeneral.installProloge(_this, _this.path_install, _this.array_host) == false)
 			return ;
-		const path_bootloader = Path.join(_this.path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.HARDWARE, ZunoConstant.ZMAKE.BOOT);
-		const zmake = Path.join(_this.path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.EXE);
+		const path_bootloader = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.HARDWARE, ZunoConstant.ZMAKE.BOOT);
+		const zmake = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.EXE);
 		if (Fs.existsSync(path_bootloader) == false || Fs.existsSync(zmake) == false)
 		{
-			await File.delete(Path.join(_this.path_install, ZunoConstant.DIR.CORE));
+			await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
 			await File.unlink(Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING));
 			VsCode.window.showErrorMessage(ZunoConstant.INSTALL_INVALID_CORE);
 			CommandGeneral.installEpilogue(_this);
@@ -161,11 +176,25 @@ const _this = {
 			location: VsCode.ProgressLocation.Notification,
 			title: ZunoConstant.UPLOAD_BOOTLOADER_TITLE,
 		}, async () => {
-			const arg_bootloader = [
-				'boot',
-				'-c', path_bootloader,
-				'-d', port
-			];
+			let arg_bootloader;
+			if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
+			{
+				arg_bootloader = [
+					'boot',
+					'-p', path_bootloader,
+					'--param', `sec=${StatusBar.security.get()[2]}`,
+					'-fr', StatusBar.frequency.get()[2],
+					'-d', port
+				];
+			}
+			else
+			{
+				arg_bootloader = [
+					'boot',
+					'-c', path_bootloader,
+					'-d', port
+				];
+			}
 			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 			{
@@ -207,8 +236,8 @@ const _this = {
 			VsCode.commands.executeCommand(ZunoConstant.CMD.SKETCH);
 			return (CommandGeneral.installEpilogue(_this));
 		}
-		const hardware = Path.join(_this.path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.HARDWARE);
-		const tools = Path.join(_this.path_install, ZunoConstant.DIR.CORE, ZunoConstant.DIR.TOOLS);
+		const hardware = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.HARDWARE);
+		const tools = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS);
 		const tmp = StatusBar.sketch.getTmp(path_sketch);
 		if (Fs.existsSync(tmp) == false)
 		{
@@ -218,10 +247,10 @@ const _this = {
 				return (CommandGeneral.installEpilogue(_this));
 			}
 		}
-		const zmake = Path.join(tools, ZunoConstant.ZMAKE.EXE);
+		const zmake = Path.join(tools, ZunoConstant.BOARD_CURRENT.ZMAKE.EXE);
 		if (Fs.existsSync(zmake) == false)
 		{
-			await File.delete(Path.join(_this.path_install, ZunoConstant.DIR.CORE));
+			await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
 			await File.unlink(Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING));
 			VsCode.window.showErrorMessage(ZunoConstant.INSTALL_INVALID_CORE);
 			CommandGeneral.installEpilogue(_this);
@@ -241,25 +270,65 @@ const _this = {
 			location: VsCode.ProgressLocation.Notification,
 			title: ((this == undefined)? ZunoConstant.UPLOAD_VERIFY_TITLE : ZunoConstant.UPLOAD_TITLE),
 		}, async () => {
-			const args_build = [
-				'build', path_sketch,
-				'-S', Path.join(hardware, ZunoConstant.ZMAKE.CORE),
-				'-S', Path.join(hardware, ZunoConstant.ZMAKE.LIB),
-				'-S', Path.join(tools, ZunoConstant.ZMAKE.GCC_LIB),
-				'-B', tmp,
-				'-T', Path.join(tools, ZunoConstant.ZMAKE.GCC_BIN),
-				'-lcl',Path.join(tools, ZunoConstant.ZMAKE.LIB_CLANG),
-				'-O', 'BO:-mfloat-abi=softfp',
-				'-O', 'BO:-mfpu=fpv4-sp-d16',
-				'-O', 'LO:-mfloat-abi=softfp',
-				'-O', 'LO:-mfpu=fpv4-sp-d16',
-				'-O', 'BO:-lm',
-				'-O', 'LO:-lm'
-			];
-			const args_size = [
-				'arduino_size', path_sketch,
-				'-B', Path.join(tmp, Path.basename(sketch).replace(Path.extname(sketch), ''))
-			];
+			let args_build;
+			let args_size;
+			if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
+			{
+				let tmp_sketch = Path.join(tmp, Path.basename(path_sketch));
+				if (await File.copyFile(path_sketch, tmp_sketch) == false)
+					return (CommandGeneral.installEpilogue(_this));
+				args_build = [
+					'build', tmp_sketch,
+					'-r', hardware,
+					'-p', Path.join(tools, ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_BIN)
+				];
+				args_size = [
+					'size', tmp_sketch
+				];
+			}
+			else
+			{
+				args_build = [
+					'build', path_sketch,
+					'-S', Path.join(hardware, ZunoConstant.BOARD_CURRENT.ZMAKE.CORE),
+					'-S', Path.join(hardware, ZunoConstant.ZMAKE.LIB),
+					'-S', Path.join(tools, ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB),
+					'-B', tmp,
+					'-T', Path.join(tools, ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_BIN),
+					'-lcl',Path.join(tools, ZunoConstant.ZMAKE.LIB_CLANG),
+					'-O', 'BO:-mfloat-abi=softfp',
+					'-O', 'BO:-mfpu=fpv4-sp-d16',
+					'-O', 'LO:-mfloat-abi=softfp',
+					'-O', 'LO:-mfpu=fpv4-sp-d16',
+					'-O', 'BO:-lm',
+					'-O', 'LO:-lm'
+				];
+				args_size = [
+					'arduino_size', path_sketch,
+					'-B', Path.join(tmp, Path.basename(sketch).replace(Path.extname(sketch), ''))
+				];
+			}
+			let args_update;
+			if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
+			{
+				args_update = [
+					'prog', Path.join(tmp, Path.basename(path_sketch)),
+					'-p', `sec=${StatusBar.security.get()[2]}`,
+					'-fr', StatusBar.frequency.get()[2],
+					'-d', port
+				];
+			}
+			else
+			{
+				args_update = [
+					'upload', path_sketch,
+					'-B', tmp,
+					'-p', `sec=${StatusBar.security.get()[2]}`,
+					'-fr', StatusBar.frequency.get()[2],
+					'-p', `main_pow=${StatusBar.power.get()[2]}`,
+					'-d', port
+				];
+			}
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 			{
 				if (await Task.execute(zmake, args_build, sketch) != 0)
@@ -273,14 +342,6 @@ const _this = {
 						CommandUpdate.printUpdateMemoryUsage(false);
 					return (CommandGeneral.installEpilogue(_this));
 				}
-				const args_update = [
-					'upload', path_sketch,
-					'-B', tmp,
-					'-p', `sec=${StatusBar.security.get()[2]}`,
-					'-fr', StatusBar.frequency.get()[2],
-					'-p', `main_pow=${StatusBar.power.get()[2]}`,
-					'-d', port
-				];
 				SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
 				const out = await Task.execute(zmake, args_update, sketch);
 				if (out == true)
@@ -318,14 +379,7 @@ const _this = {
 			if (code != 0)
 				return (CommandGeneral.installEpilogue(_this));
 			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
-			code = await Run.spawn(zmake, Output.data, Output.data, [
-				'upload', path_sketch,
-				'-B', tmp,
-				'-p', `sec=${StatusBar.security.get()[2]}`,
-				'-p', `main_pow=${StatusBar.power.get()[2]}`,
-				'-fr', StatusBar.frequency.get()[2],
-				'-d', port
-			]);
+			code = await Run.spawn(zmake, Output.data, Output.data, args_update);
 			SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
 			if (code === false)
 				return (_update_critical());
@@ -355,18 +409,18 @@ const _this = {
 			return (CommandGeneral.installEpilogue(_this));
 		const file_setting = Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING);
 		const array_platforms = array.packages.platforms;
-		const path_core = Path.join(_this.path_install, ZunoConstant.DIR.CORE);
+		const path_core = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core);
 		const array_setting = Config.getSettting(file_setting);
 		const old_version = array_setting.version;
 		if (old_version == undefined)
 			await File.delete(path_core);
 		const select = await VsCode.window.showQuickPick(array_platforms.map((element) => {
 			const description = (element.version == old_version) ? ZunoConstant.STATUS_INSTALL: ZunoConstant.STATUS_NOT_INSTALL;
-			return {description: description, label: `${ZunoConstant.DIR.CORE} ${element.version}:`};
+			return {description: description, label: `${ZunoConstant.BOARD_CURRENT.core} ${element.version}:`};
 		}).sort((a, b) => {return (String.cmpDown(a.label, b.label));}), {placeHolder: ZunoConstant.INSTALL_PLACEHOLDER});
 		if (select == undefined)
 			return (CommandGeneral.installEpilogue(_this));
-		const new_version = select.label.replace(`${ZunoConstant.DIR.CORE} `, '').replace(':', '');
+		const new_version = select.label.replace(`${ZunoConstant.BOARD_CURRENT.core} `, '').replace(':', '');
 		if (new_version == old_version)
 		{
 			const ans = await VsCode.window.showInformationMessage(ZunoConstant.INSTALL_DELETE_NOT_INSTALL, Constant.DIALOG_YES, Constant.DIALOG_NOT);
@@ -432,12 +486,11 @@ const _this = {
 			}
 			Config.setSettting(file_setting, array_setting_new);
 			VsCode.window.showInformationMessage(ZunoConstant.INSTALL_SUCCESS);
-			const path_stub = Path.join(path_core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_CLANG);
+			const path_stub = Path.join(path_core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_FAKE);
+			await File.mkdir(path_stub);
 			try {
-				Fs.writeFileSync(Path.join(path_stub, 'Custom_decl.h'), ' ');
-				Fs.writeFileSync(Path.join(path_stub, 'Custom_defs.h'), ' ');
-				Fs.writeFileSync(Path.join(path_stub, 'ZUNO_AutoChannels.h'), ' ');
-				Fs.writeFileSync(Path.join(path_stub, 'ZUNO_AutoDef.h'), ' ');
+				for (let index = 0; index < ZunoConstant.BOARD_CURRENT.LIB_FAKE.length; index++)
+					Fs.writeFileSync(Path.join(path_stub, ZunoConstant.BOARD_CURRENT.LIB_FAKE[index]), ' ');
 			} catch (error) {};
 			return (CommandGeneral.installEpilogue(_this));
 		});
@@ -482,7 +535,7 @@ module.exports = _this;
 
 async function _update_critical()
 {
-	await File.delete(Path.join(_this.path_install, ZunoConstant.DIR.CORE));
+	await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
 	await File.unlink(Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING));
 	Output.error(`${ZunoConstant.SYSTEM_EXIT_CODE}: 1`);
 	Output.show();//Выведем все что записали в кансоль или ждать придеться долго

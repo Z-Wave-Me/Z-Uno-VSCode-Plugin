@@ -7,6 +7,7 @@
 	"zuno.command.install.title": "Z-Uno: Install the necessary components",
 	"zuno.command.port.title": "Z-Uno: Select serial port",
 	"zuno.command.monitor.title": "Z-Uno: Open serial monitor",
+	"zuno.command.board.title": "Z-Uno: Select board type",
 	"zuno.command.verify.title": "Z-Uno: Verify",
 	"zuno.command.upload.title": "Z-Uno: Upload",
 	"zuno.configuration.title": "Z-Uno: Configuration",

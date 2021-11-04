@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.6
+- Release date: 04.11.2021
+
+### Added
+- Added support multiple boards.
+
+
+
 ## Version 0.2.4
 - Release date: 03.10.2021
 
@@ -10,7 +18,6 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added the ability to adjust the power of the tx Z-Uno-2G radio.
-
 
 
 

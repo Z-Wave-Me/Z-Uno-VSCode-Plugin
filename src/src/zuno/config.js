@@ -22,6 +22,11 @@ const _this = {//У нас активируеться только когда п
 	},
 	getSecurity()//Получает используемую при загрузки скетча security из настроект текущего проекта
 	{
+		let array;
+		if (ZunoConstant.BOARD_CURRENT == undefined)
+			array = ZunoConstant.SECURITY;
+		else
+			array = ZunoConstant.BOARD_CURRENT.security;//Это при загрузки файла не выставленно поэтому ругаеться - поэтому провераем
 		return (_arrayFind(ZunoConstant.SECURITY, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'security'), ZunoConstant.SECURITY_DEFAULT));
 	},
 	setSecurity(value)//Сохраняет используемый скетч из настроект текущего проекта
@@ -62,15 +67,30 @@ const _this = {//У нас активируеться только когда п
 	{
 		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'port', value);
 	},
+	getBoard()//Получает используемый плату
+	{
+		return (_get(ZunoConstant.PATH.JSON_WORKSPACE, 'board'));
+	},
+	setBoard(value)//Сохраняет используемый плату
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'board', value);
+	},
 	getSettting(file)//Получает ивалидирует общие настройки находящиеся в папке куда устанавливаеться необходимые капоненты
 	{
 		try {//Если битый то просто false возратим
 			const array = JSON.parse(Fs.readFileSync(file, "utf8"));
-			return (array);
+			if (array[ZunoConstant.BOARD_CURRENT.core] == undefined)
+				return ({});
+			return (array[ZunoConstant.BOARD_CURRENT.core]);
 		} catch (error) { return ({}); }
 	},
-	setSettting(file, array)//Сохраняет общие настройки находящиеся в папке куда устанавливаеться необходимые капоненты
+	setSettting(file, save)//Сохраняет общие настройки находящиеся в папке куда устанавливаеться необходимые капоненты
 	{
+		let array = {};
+		try {//Если битый то просто false возратим
+			array = JSON.parse(Fs.readFileSync(file, "utf8"));
+		} catch (error) { }
+		array[ZunoConstant.BOARD_CURRENT.core] = save;
 		Fs.writeFileSync(file, JSON.stringify(array, null, 4));
 	},
 	getVersion(file)//Получает версию ядра из общих настройки находящиеся в папке куда устанавливаеться необходимые капоненты

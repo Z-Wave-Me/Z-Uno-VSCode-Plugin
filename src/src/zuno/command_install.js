@@ -119,12 +119,17 @@ const _this = {
 	},
 	getJsonLoad: async function(path_install, array_host, path_install_home)
 	{
-		const install = Path.join(path_install, ZunoConstant.FILE.JSON_LOAD);
-		const install_home = Path.join(path_install_home, ZunoConstant.FILE.JSON_LOAD);
-		if (await Internet.downLoad(ZunoConstant.FILE.JSON_URL, install) == false)
+		const install = Path.join(path_install, ZunoConstant.BOARD_CURRENT.JSON_LOAD);
+		const install_home = Path.join(path_install_home, ZunoConstant.BOARD_CURRENT.JSON_LOAD);
+		if (await Internet.downLoad(ZunoConstant.BOARD_CURRENT.JSON_URL, install) == false)
 			return (false);
 		let array;
-		try {array = JSON.parse(Fs.readFileSync(install, 'utf8')); } catch (error) {array = false;}
+		try {
+			array = JSON.parse(Fs.readFileSync(install, 'utf8'));
+			if (Array.isArray(array.packages) == true)
+				array.packages = array.packages[0x0];
+		} catch (error) {array = false;}
+
 		if (array == false)
 			return (false);
 		if (_validateJson(array, array_host.host_install) == false)
@@ -144,7 +149,7 @@ module.exports = _this;
 function _validateJson(array, host)
 {
 	try {
-		if (array.packages.name != ZunoConstant.DIR.CORE)
+		if (array.packages.name != ZunoConstant.BOARD_CURRENT.core)
 			return (false);
 		const platforms = array.packages.platforms;
 		const tools = array.packages.tools;

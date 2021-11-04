@@ -6,6 +6,12 @@ const Os = require("os");
 
 const _this = {
 /*-------------------------------*/
+	Z_UNO_DESCRIPTION: ' - first generation of Z-Uno board.',
+	Z_UNO2_DESCRIPTION: ' - the second generation of the Z-Uno2 board.',
+	Z_UNO2_BETA_DESCRIPTION: ' - the second generation of the Z-Uno2 board beta.',
+	Z_UNO_INFO_RESTART: 'For the changes to take effect, reload the project.',
+
+/*-------------------------------*/
 	OUTPUT_START: '[Starting]',
 	OUTPUT_END: '[Done]',
 	OUTPUT_INFO: '[Info]',
@@ -35,6 +41,9 @@ const _this = {
 /*-------------------------------*/
 	MONITOR_TOOLTIP: 'Open serial monitor',
 	MONITOR_BAR_TEXT: '$(plug)',
+/*-------------------------------*/
+	BOARD_PLACEHOLDER: 'Select board type',
+	BOARD_BAR_TEXT: '<Select board>',
 /*-------------------------------*/
 	BOOTLOADER_TOOLTIP: 'Burn bootloader',
 	BOOTLOADER_BAR_TEXT: '$(triangle-up)',
@@ -107,6 +116,12 @@ const _this = {
 	SECURITY_DEFAULT: ['S0', 'Disabled', '0'],
 	SECURITY_PLACEHOLDER: 'Select a security',
 	SECURITY:
+	[
+		['S0', 'Disabled', '0'],
+		['S1', 'S1', '1'],
+		['S2', 'Enabled', '2']
+	],
+	SECURITY2:
 	[
 		['S0', 'Disabled', '0'],
 		['S2', 'Enabled', '2']
