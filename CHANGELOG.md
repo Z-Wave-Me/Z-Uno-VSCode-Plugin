@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+## Version 0.2.7
+- Release date: 15.11.2021
+
+### Added
+- Fix: update bootloader
+
+
+
 ## Version 0.2.6
 - Release date: 04.11.2021
 

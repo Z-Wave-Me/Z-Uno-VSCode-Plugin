@@ -63,6 +63,7 @@ const _this = {
 		if (select.label == ZunoConstant.BOARD_CURRENT.core)
 			return ;
 		VsCode.window.showInformationMessage(ZunoConstant.Z_UNO_INFO_RESTART);
+		// VsCode.commands.executeCommand('workbench.action.reloadWindow');//Перезагрузим окно
 		Config.setBoard(select.label);
 		StatusBar.board.set(select.label);
 	},
@@ -155,7 +156,7 @@ const _this = {
 		if (CommandGeneral.installProloge(_this, _this.path_install, _this.array_host) == false)
 			return ;
 		const path_bootloader = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.HARDWARE, ZunoConstant.ZMAKE.BOOT);
-		const zmake = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.EXE);
+		const zmake = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.BOARD_CURRENT.ZMAKE.EXE);
 		if (Fs.existsSync(path_bootloader) == false || Fs.existsSync(zmake) == false)
 		{
 			await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
