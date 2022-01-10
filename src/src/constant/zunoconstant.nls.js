@@ -127,14 +127,8 @@ const _this = {
 		['S2', 'Enabled', '2']
 	],
 	/*-------------------------------*/
-	POWER_DEFAULT: ['+0dBm', 'Normal', '0'],
-	POWER_PLACEHOLDER: 'Select radio signal strength',
-	POWER:
-	[
-		['+0dBm', 'Normal', '0'],
-		['+5dBm', 'Magnified', '50'],
-		['+10dBm', 'Ultra', '100']
-	],
+	POWER_PLACEHOLDER: 'Select RF power from + 0.0dBm to + 14.0dBm',
+	POWER_NOT_REGULAR: 'Enter a number between 0.0 and 14.0',
 /*-------------------------------*/
 	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
 	FREQUENCY_PLACEHOLDER: 'Select a frequency',

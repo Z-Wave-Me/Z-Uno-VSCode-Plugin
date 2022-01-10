@@ -35,7 +35,16 @@ const _this = {//У нас активируеться только когда п
 	},
 	getPower()//Получает используемую при загрузки скетча мощность передаваемого радио сигнала из настроект текущего проекта
 	{
-		return (_arrayFind(ZunoConstant.POWER, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'power'), ZunoConstant.POWER_DEFAULT));
+		let value;
+		value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'power');
+		if (typeof value == "number" && Number.isInteger(value) == true)
+		{
+			if (value < ZunoConstant.POWER.POWER_MIN || value > ZunoConstant.POWER.POWER_MAX)
+				value = ZunoConstant.POWER.POWER_DEFAULT;
+		}
+		else
+			value = ZunoConstant.POWER.POWER_DEFAULT;
+		return (value);
 	},
 	setPower(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{

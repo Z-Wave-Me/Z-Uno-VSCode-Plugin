@@ -29,7 +29,8 @@ _this.ZMAKE =
 /*-------------------------------*/
 _this.REGEXP =
 {
-	SKETCH: /\.((ino))$/
+	SKETCH: /\.((ino))$/,
+	POWER: /(\d+)([.,](\d))$/
 }
 
 /*-------------------------------*/
@@ -155,7 +156,7 @@ _this.BOARD =
 }
 
 /*-------------------------------*/
-_this. BARPRIORITY =
+_this.BARPRIORITY =
 {
 	SKETCH: 90,
 	BOOTLOADER: 80,
@@ -197,5 +198,13 @@ _this.CPP =
 	RESCAN_WORKSPACE: 'C_Cpp.RescanWorkspace'
 }
 
+/*-------------------------------*/
+_this.POWER =
+{
+	POWER_DEFAULT: 0,
+	POWER_MAX: 140,
+	POWER_MULTI: 10,
+	POWER_MIN: 0
+}
 
 module.exports = _this;

@@ -86,16 +86,28 @@ const _this = {
 	},
 	power: async function()
 	{
-		const pow = StatusBar.power.get();
-		const select = await VsCode.window.showQuickPick(ZunoConstant.POWER.map((element) => {
-			return {description: element[1], label: element[0], _zuno_tmp: element[2]};
-		}), {placeHolder: `${pow[0]} - ${pow[1]}`});
+		let pow = StatusBar.power.get();
+		const select = await VsCode.window.showInputBox({
+			placeHolder: Math.trunc(pow / ZunoConstant.POWER.POWER_MULTI) + '.' + (pow % ZunoConstant.POWER.POWER_MULTI),
+			validateInput: async (value) => {
+				if (value && ZunoConstant.REGEXP.POWER.test(value.trim()) == true)
+				{
+					value = value.trim() * 10;
+					if (value < ZunoConstant.POWER.POWER_MIN || value > ZunoConstant.POWER.POWER_MAX)
+						return (ZunoConstant.POWER_NOT_REGULAR);
+					return (null);
+				}
+				else
+					return (ZunoConstant.POWER_NOT_REGULAR);
+			}
+		});
 		if (select == undefined)
 			return (false);
-		const out = select.label;
-		Config.setPower(out);
-		StatusBar.power.set([out, select.description, select._zuno_tmp]);
-		return (out);
+		pow = select.trim() * ZunoConstant.POWER.POWER_MULTI;
+		Config.setPower(pow);
+		StatusBar.power.set(pow);
+		return (pow);
+
 	},
 	frequency: async function()
 	{
@@ -118,7 +130,10 @@ const _this = {
 			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER]
 		];
 		if (ZunoConstant.BOARD_CURRENT.power == true)
-			options.push(['power', StatusBar.power.get()[0], ZunoConstant.POWER_PLACEHOLDER]);
+		{
+			let value = StatusBar.power.get();
+			options.push(['power', '+' + Math.trunc(value / ZunoConstant.POWER.POWER_MULTI) + '.' + (value % ZunoConstant.POWER.POWER_MULTI) + 'dBm', ZunoConstant.POWER_PLACEHOLDER]);
+		}
 		while (0xFF)
 		{
 			let index = 0;
@@ -146,7 +161,7 @@ const _this = {
 					const power = await _this.power();
 					if (power == false)
 						break ;
-					element[1] = power;
+					element[1] = '+' + Math.trunc(power / ZunoConstant.POWER.POWER_MULTI) + '.' + (power % ZunoConstant.POWER.POWER_MULTI) + 'dBm';
 					break;
 			}
 		}
