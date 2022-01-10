@@ -1,6 +1,7 @@
 {
 	"zuno.command.sketch.title": "Z-Uno: Select sketch file",
 	"zuno.command.bootloader.title": "Z-Uno: Burn bootloader",
+	"zuno.command.rf_logging.title": "Z-Uno: Enable or disable radio logging",
 	"zuno.command.security.title": "Z-Uno: Select security mode",
 	"zuno.command.frequency.title": "Z-Uno: Select frequency",
 	"zuno.command.power.title": "Z-Uno: Select radio signal strength",

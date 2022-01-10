@@ -37,6 +37,7 @@ _this.REGEXP =
 _this.CMD =
 {
 	BOOTLOADER: 'zuno.bootloader',
+	RF_LOGGING: 'zuno.rf_logging',
 	SECURITY: 'zuno.security',
 	FREQUENCY: 'zuno.frequency',
 	POWER: 'zuno.power',

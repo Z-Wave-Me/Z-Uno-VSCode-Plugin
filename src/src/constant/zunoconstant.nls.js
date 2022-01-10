@@ -126,6 +126,14 @@ const _this = {
 		['S0', 'Disabled', '0'],
 		['S2', 'Enabled', '2']
 	],
+/*-------------------------------*/
+	RF_LOGGING_DEFAULT: ['Off', 'Disabled', '0'],
+	RF_LOGGING_PLACEHOLDER: 'Enables radio logging',
+	RF_LOGGING:
+	[
+		['Off', 'Disabled', '0'],
+		['On', 'Enabled', '1']
+	],
 	/*-------------------------------*/
 	POWER_PLACEHOLDER: 'Select RF power from + 0.0dBm to + 14.0dBm',
 	POWER_NOT_REGULAR: 'Enter a number between 0.0 and 14.0',

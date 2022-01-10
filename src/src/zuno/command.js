@@ -39,6 +39,7 @@ const _this = {
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.POWER, _this.power));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOOTLOADER, _this.bootloader));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SECURITY, _this.security));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.RF_LOGGING, _this.rf_logging));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PORT, _this.port));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOARD, _this.board));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MONITOR, _this.monitor));
@@ -70,6 +71,19 @@ const _this = {
 	monitor: async function()
 	{
 		SerialMonitor.openMonitor();
+	},
+	rf_logging: async function()
+	{
+		const rf_logging = StatusBar.rf_logging.get();
+		const select = await VsCode.window.showQuickPick(ZunoConstant.RF_LOGGING.map((element) => {
+			return {description: element[1], label: element[0], _zuno_tmp: element[2]};
+		}), {placeHolder: `${rf_logging[0]} - ${rf_logging[1]}`});
+		if (select == undefined)
+			return (false);
+		const out = select.label;
+		Config.setRfLogging(out);
+		StatusBar.rf_logging.set([out, select.description, select._zuno_tmp]);
+		return (out);
 	},
 	security: async function()
 	{
@@ -127,7 +141,8 @@ const _this = {
 		let options =
 		[
 			['security', StatusBar.security.get()[0], ZunoConstant.SECURITY_PLACEHOLDER],
-			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER]
+			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER],
+			['rf_logging', StatusBar.rf_logging.get()[0], ZunoConstant.RF_LOGGING_PLACEHOLDER]
 		];
 		if (ZunoConstant.BOARD_CURRENT.power == true)
 		{
@@ -145,6 +160,12 @@ const _this = {
 			const element = options[select.index];
 			switch (element[0])
 			{
+				case 'rf_logging':
+					const rf_logging = await _this.rf_logging();
+					if (rf_logging == false)
+						break ;
+					element[1] = rf_logging;
+					break;
 				case 'security':
 					const security = await _this.security();
 					if (security == false)
@@ -330,6 +351,7 @@ const _this = {
 				args_update = [
 					'prog', Path.join(tmp, Path.basename(path_sketch)),
 					'-p', `sec=${StatusBar.security.get()[2]}`,
+					'-p', `logging=${StatusBar.rf_logging.get()[2]}`,
 					'-fr', StatusBar.frequency.get()[2],
 					'-d', port
 				];
@@ -341,7 +363,8 @@ const _this = {
 					'-B', tmp,
 					'-p', `sec=${StatusBar.security.get()[2]}`,
 					'-fr', StatusBar.frequency.get()[2],
-					'-p', `main_pow=${StatusBar.power.get()[2]}`,
+					'-p', `main_pow=${StatusBar.power.get()}`,
+					'-p', `flag_rflog=${StatusBar.rf_logging.get()[2]}`,
 					'-d', port
 				];
 			}

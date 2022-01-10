@@ -183,6 +183,18 @@ const _this = {
 			return (_this.frequency.value);
 		}
 	},
+	rf_logging:
+	{
+		value: Config.getRfLogging(),
+		set(rf_logging)
+		{
+			_this.rf_logging.value = rf_logging;
+		},
+		get()
+		{
+			return (_this.rf_logging.value);
+		}
+	},
 	security:
 	{
 		value: Config.getSecurity(),

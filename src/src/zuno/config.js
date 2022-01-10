@@ -20,6 +20,14 @@ const _this = {//У нас активируеться только когда п
 	{
 		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'sketch', value);
 	},
+	getRfLogging()
+	{
+		return (_arrayFind(ZunoConstant.RF_LOGGING, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'rf_logging'), ZunoConstant.RF_LOGGING_DEFAULT));
+	},
+	setRfLogging(value)//Сохраняет используемый скетч из настроект текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'rf_logging', value);
+	},
 	getSecurity()//Получает используемую при загрузки скетча security из настроект текущего проекта
 	{
 		let array;

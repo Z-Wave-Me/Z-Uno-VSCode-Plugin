@@ -1,6 +1,7 @@
 {
 	"zuno.command.sketch.title": "Z-Uno: Выбрать скетч файл",
 	"zuno.command.bootloader.title": "Z-Uno: Записать загрузчик",
+	"zuno.command.rf_logging.title": "Z-Uno: Включите или отключите логирование по радио",
 	"zuno.command.security.title": "Z-Uno: Выбрать режим шифрования",
 	"zuno.command.frequency.title": "Z-Uno: Выбрать частоту",
 	"zuno.command.power.title": "Z-Uno: Выбрать мощность радиосигнала",
