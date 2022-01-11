@@ -2,7 +2,7 @@
 	"name": "vscode-zuno",
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
-	"version": "0.2.7",
+	"version": "0.2.8",
 	"publisher": "Z-WaveMe",
 	"preview": true,
 	"engines": {
@@ -44,6 +44,11 @@
 				"when": "workspaceFolderCount != 0",
 				"command": "zuno.rf_logging",
 				"title": "%zuno.command.rf_logging.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.eraseNVM",
+				"title": "%zuno.command.eraseNVM.title%"
 			},
 			{
 				"when": "workspaceFolderCount != 0",

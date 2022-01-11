@@ -134,6 +134,13 @@ const _this = {
 		['Off', 'Отключено', '0'],
 		['On', 'Включено', '1']
 	],
+/*-------------------------------*/
+	UTILITES_DEFAULT: 'Утилиты - ',
+	UTILITES_PLACEHOLDER: 'Список дополнительных команд',
+	UTILITES_ERASENVM_PLACEHOLDER: 'Полностью стирает данные NVM устройства',
+	UTILITES_ERASENVM_TITLE: 'Z-Uno: Cтираем NVM...',
+	UTILITES_ERASENVM_START: 'Cтираем NVM - ',
+	UTILITES_ERASENVM_END: 'Завершено стирание NVM - ',
 	/*-------------------------------*/
 	POWER_PLACEHOLDER: 'Выберите мощность радиосигнала от +0.0dBm до +14.0dBm',
 	POWER_NOT_REGULAR: 'Введите число от 0.0 до 14.0',

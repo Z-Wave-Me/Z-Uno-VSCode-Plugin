@@ -40,6 +40,7 @@ const _this = {
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOOTLOADER, _this.bootloader));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SECURITY, _this.security));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.RF_LOGGING, _this.rf_logging));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.ERASENVM, _this.eraseNVM));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PORT, _this.port));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOARD, _this.board));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MONITOR, _this.monitor));
@@ -123,6 +124,24 @@ const _this = {
 		return (pow);
 
 	},
+	utilities: async function()
+	{
+		let options =
+		[
+			['eraseNVM', ZunoConstant.UTILITES_ERASENVM_PLACEHOLDER]
+		];
+		const select = await VsCode.window.showQuickPick(options.map((element) => {
+			return {description: element[1], label: element[0]};
+		}), {placeHolder: ZunoConstant.UTILITES_PLACEHOLDER});
+		if (select == undefined)
+			return ;
+		switch (select.label)
+		{
+			case 'eraseNVM':
+				await _this.eraseNVM();
+				break ;
+		}
+	},
 	frequency: async function()
 	{
 		const freq = StatusBar.frequency.get();
@@ -149,6 +168,7 @@ const _this = {
 			let value = StatusBar.power.get();
 			options.push(['power', '+' + Math.trunc(value / ZunoConstant.POWER.POWER_MULTI) + '.' + (value % ZunoConstant.POWER.POWER_MULTI) + 'dBm', ZunoConstant.POWER_PLACEHOLDER]);
 		}
+		options.push(['utilities', ZunoConstant.UTILITES_DEFAULT, ZunoConstant.UTILITES_PLACEHOLDER]);
 		while (0xFF)
 		{
 			let index = 0;
@@ -160,6 +180,9 @@ const _this = {
 			const element = options[select.index];
 			switch (element[0])
 			{
+				case 'utilities':
+					await _this.utilities();
+					break;
 				case 'rf_logging':
 					const rf_logging = await _this.rf_logging();
 					if (rf_logging == false)
@@ -186,6 +209,67 @@ const _this = {
 					break;
 			}
 		}
+	},
+	eraseNVM: async function()
+	{
+		if (CommandGeneral.installProloge(_this, _this.path_install, _this.array_host) == false)
+			return ;
+		const zmake = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.BOARD_CURRENT.ZMAKE.EXE);
+		if (Fs.existsSync(zmake) == false)
+		{
+			await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
+			await File.unlink(Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING));
+			VsCode.window.showErrorMessage(ZunoConstant.INSTALL_INVALID_CORE);
+			CommandGeneral.installEpilogue(_this);
+			return (_this.install());
+		}
+		const port =StatusBar.port.get();
+		if (port == false)
+		{
+			VsCode.window.showInformationMessage(ZunoConstant.UPLOAD_SELECT_PORT);
+			VsCode.commands.executeCommand(ZunoConstant.CMD.PORT);
+			return (CommandGeneral.installEpilogue(_this));
+		}
+		SerialMonitor.startUpload(port);
+		await VsCode.window.withProgress({
+			location: VsCode.ProgressLocation.Notification,
+			title: ZunoConstant.UTILITES_ERASENVM_TITLE,
+		}, async () => {
+			let arg_bootloader;
+			if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
+			{
+				arg_bootloader = [
+					'erase',
+					'-d', port
+				];
+			}
+			else
+			{
+				arg_bootloader = [
+					'eraseNVM',
+					'-d', port
+				];
+			}
+			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
+			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
+			{
+				await Task.execute(zmake, arg_bootloader, path_bootloader);
+				SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
+				return (CommandGeneral.installEpilogue(_this));
+			}
+			Output.show();//Покажим кансоль если скрыта
+			Output.start(`${ZunoConstant.UTILITES_ERASENVM_START}`);
+			let code = await Run.spawn(zmake, Output.data, Output.data, arg_bootloader);
+			SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
+			if (code === false)
+				return (_update_critical());
+			else if (code != 0)
+				Output.error(`${ZunoConstant.SYSTEM_EXIT_CODE}: ${code}`);
+			else
+				Output.end(`${ZunoConstant.UTILITES_ERASENVM_END}`);
+			Output.show();//Выведем все что записали в кансоль или ждать придеться долго
+			return (CommandGeneral.installEpilogue(_this));
+		});
 	},
 	bootloader: async function()
 	{

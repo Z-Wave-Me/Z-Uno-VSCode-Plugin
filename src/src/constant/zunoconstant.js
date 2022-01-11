@@ -38,6 +38,7 @@ _this.CMD =
 {
 	BOOTLOADER: 'zuno.bootloader',
 	RF_LOGGING: 'zuno.rf_logging',
+	ERASENVM: 'zuno.eraseNVM',
 	SECURITY: 'zuno.security',
 	FREQUENCY: 'zuno.frequency',
 	POWER: 'zuno.power',

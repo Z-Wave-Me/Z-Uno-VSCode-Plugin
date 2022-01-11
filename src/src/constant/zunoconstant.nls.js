@@ -134,6 +134,13 @@ const _this = {
 		['Off', 'Disabled', '0'],
 		['On', 'Enabled', '1']
 	],
+/*-------------------------------*/
+	UTILITES_DEFAULT: 'Utilities - ',
+	UTILITES_PLACEHOLDER: 'List of additional commands',
+	UTILITES_ERASENVM_PLACEHOLDER: 'Erases device NVM data completely',
+	UTILITES_ERASENVM_TITLE: 'Z-Uno: Erasing NVM...',
+	UTILITES_ERASENVM_START: 'Erasing NVM - ',
+	UTILITES_ERASENVM_END: 'Completed erase NVM - ',
 	/*-------------------------------*/
 	POWER_PLACEHOLDER: 'Select RF power from + 0.0dBm to + 14.0dBm',
 	POWER_NOT_REGULAR: 'Enter a number between 0.0 and 14.0',

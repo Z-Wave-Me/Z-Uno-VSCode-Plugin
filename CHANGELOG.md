@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 
+## Version 0.2.8
+- Release date: 11.01.2022
+
+### Added
+- Added: logging option and eraseNVM command
+
+
+
 ## Version 0.2.7
 - Release date: 15.11.2021
 
