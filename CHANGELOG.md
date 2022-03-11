@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 - Release date: 12.03.2022
 
 ### Added
-- Added: boardInfo, license and PTI command
+- Added: boardInfo, license and PTI command for Zuno Z-Uno2
 - Added: Now the size is taken from them boards.txt
 
 
