@@ -2,7 +2,7 @@
 	"name": "vscode-zuno",
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
-	"version": "0.2.8",
+	"version": "0.2.9",
 	"publisher": "Z-WaveMe",
 	"preview": true,
 	"engines": {
@@ -49,6 +49,21 @@
 				"when": "workspaceFolderCount != 0",
 				"command": "zuno.eraseNVM",
 				"title": "%zuno.command.eraseNVM.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.boardInfo",
+				"title": "%zuno.command.boardInfo.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.license",
+				"title": "%zuno.command.license.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.PTI",
+				"title": "%zuno.command.PTI.title%"
 			},
 			{
 				"when": "workspaceFolderCount != 0",

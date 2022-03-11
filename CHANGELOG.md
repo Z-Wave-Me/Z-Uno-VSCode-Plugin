@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.9
+- Release date: 12.03.2022
+
+### Added
+- Added: boardInfo, license and PTI command
+- Added: Now the size is taken from them boards.txt
+
+
 
 ## Version 0.2.8
 - Release date: 11.01.2022

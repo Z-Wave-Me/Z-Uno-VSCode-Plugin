@@ -39,6 +39,9 @@ _this.CMD =
 	BOOTLOADER: 'zuno.bootloader',
 	RF_LOGGING: 'zuno.rf_logging',
 	ERASENVM: 'zuno.eraseNVM',
+	BOARDINFO: 'zuno.boardInfo',
+	LICENSE: 'zuno.license',
+	PTI: 'zuno.PTI',
 	SECURITY: 'zuno.security',
 	FREQUENCY: 'zuno.frequency',
 	POWER: 'zuno.power',
@@ -93,7 +96,10 @@ _this.BOARD =
 		ram_match: /ram:\s*\d+/,
 		text_match: /rom:\s*\d+/,
 		generation: 0x1,
-		power: false
+		power: false,
+		PTI: false,
+		boardInfo: false,
+		license: false
 	},
 	ZUNO2:
 	{
@@ -123,7 +129,10 @@ _this.BOARD =
 		ram_match: /ram\s*\d+/,
 		text_match: /text\s*\d+/,
 		generation: 0x2,
-		power: true
+		power: true,
+		PTI: true,
+		boardInfo: true,
+		license: true
 	},
 	ZUNO2_BETA:
 	{
@@ -153,7 +162,10 @@ _this.BOARD =
 		ram_match: /ram\s*\d+/,
 		text_match: /text\s*\d+/,
 		generation: 0x2,
-		power: true
+		power: true,
+		PTI: true,
+		boardInfo: true,
+		license: true
 	}
 }
 
@@ -188,6 +200,8 @@ _this.PATH =
 }
 
 _this.SERIALMONITOR_OPTIONS_BAUDRATE_LIST = ['50', '75', '110', '134', '150', '200', '300', '600', '1200', '1800', '2400', '4800', '9600', '19200', '38400', '57600', '115200', '230400', '460800', '500000', '576000', _this.SERIALMONITOR_OPTIONS_BAUDRATE_MANUAL];
+
+_this.UTILITES_PTI_OPTIONS_BAUDRATE_LIST = ['230400', '460800', '500000', '576000', _this.UTILITES_PTI_OPTIONS_BAUDRATE_MANUAL];
 
 _this.WORKBENCH =
 {

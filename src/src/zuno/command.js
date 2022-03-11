@@ -7,7 +7,7 @@ const Path = require("path");
 const Fs = require('fs');
 const Os = require("os");
 
-const String = require("../common/string");
+const string = require("../common/string");
 const File = require("../common/file");
 const Run = require("../common/run");
 
@@ -41,6 +41,9 @@ const _this = {
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SECURITY, _this.security));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.RF_LOGGING, _this.rf_logging));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.ERASENVM, _this.eraseNVM));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOARDINFO, _this.boardInfo));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.LICENSE, _this.license));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PTI, _this.PTI));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PORT, _this.port));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOARD, _this.board));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MONITOR, _this.monitor));
@@ -101,6 +104,8 @@ const _this = {
 	},
 	power: async function()
 	{
+		if (ZunoConstant.BOARD_CURRENT.power == false)
+			return (0x0);
 		let pow = StatusBar.power.get();
 		const select = await VsCode.window.showInputBox({
 			placeHolder: Math.trunc(pow / ZunoConstant.POWER.POWER_MULTI) + '.' + (pow % ZunoConstant.POWER.POWER_MULTI),
@@ -126,10 +131,16 @@ const _this = {
 	},
 	utilities: async function()
 	{
-		let options =
+		const options =
 		[
 			['eraseNVM', ZunoConstant.UTILITES_ERASENVM_PLACEHOLDER]
 		];
+		if (ZunoConstant.BOARD_CURRENT.PTI == true)
+			options.push(['PTI', ZunoConstant.UTILITES_PTI_PLACEHOLDER]);
+		if (ZunoConstant.BOARD_CURRENT.boardInfo == true)
+			options.push(['boardInfo', ZunoConstant.UTILITES_BOARDINFO_PLACEHOLDER]);
+		if (ZunoConstant.BOARD_CURRENT.license == true)
+			options.push(['license', ZunoConstant.UTILITES_LICENSE_PLACEHOLDER]);
 		const select = await VsCode.window.showQuickPick(options.map((element) => {
 			return {description: element[1], label: element[0]};
 		}), {placeHolder: ZunoConstant.UTILITES_PLACEHOLDER});
@@ -139,6 +150,15 @@ const _this = {
 		{
 			case 'eraseNVM':
 				await _this.eraseNVM();
+				break ;
+			case 'PTI':
+				await _this.PTI();
+				break ;
+			case 'boardInfo':
+				await _this.boardInfo();
+				break ;
+			case 'license':
+				await _this.license();
 				break ;
 		}
 	},
@@ -207,6 +227,267 @@ const _this = {
 						break ;
 					element[1] = '+' + Math.trunc(power / ZunoConstant.POWER.POWER_MULTI) + '.' + (power % ZunoConstant.POWER.POWER_MULTI) + 'dBm';
 					break;
+			}
+		}
+	},
+	license: async function()
+	{
+		if (ZunoConstant.BOARD_CURRENT.license == false)
+			return ;
+		if (CommandGeneral.installProloge(_this, _this.path_install, _this.array_host) == false)
+			return ;
+		const number_license = await VsCode.window.showInputBox({
+			placeHolder: ZunoConstant.UTILITES_LICENSE_MANUAL_PLACEHOLDER,
+			validateInput: async (value) => {
+				if (value.length != 48)
+					return (ZunoConstant.UTILITES_LICENSE_MANUAL_LENGTH_PLACEHOLDER);
+				if (/^[A-F\d]+$/.test(value) == false)
+					return (ZunoConstant.UTILITES_LICENSE_MANUAL_SYMBOL_PLACEHOLDER);
+				return (null);
+			}
+		});
+		if (number_license == undefined)
+			return (CommandGeneral.installEpilogue(_this));
+		const zmake = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.BOARD_CURRENT.ZMAKE.EXE);
+		if (Fs.existsSync(zmake) == false)
+		{
+			await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
+			await File.unlink(Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING));
+			VsCode.window.showErrorMessage(ZunoConstant.INSTALL_INVALID_CORE);
+			CommandGeneral.installEpilogue(_this);
+			return (_this.install());
+		}
+		let port = StatusBar.port.get();
+		if (port == false)
+		{
+			const ans = await VsCode.window.showInformationMessage(ZunoConstant.UTILITES_LICENSE_NOT_PORT, Constant.DIALOG_YES, Constant.DIALOG_NOT);
+			if (ans != Constant.DIALOG_YES)
+				return (CommandGeneral.installEpilogue(_this));
+			port = await SerialMonitor.getPort(false);
+			if (port == false)
+				return (CommandGeneral.installEpilogue(_this));
+		}
+		SerialMonitor.startUpload(port);
+		await VsCode.window.withProgress({
+			location: VsCode.ProgressLocation.Notification,
+			title: ZunoConstant.UTILITES_LICENSE_TITLE,
+		}, async () => {
+			const arg_license =
+			[
+				'writeNVM',
+				'-a', '0xFFACE0',
+				'-b', number_license,
+				'-d', port
+			];
+			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
+			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
+			{
+				await Task.execute(zmake, arg_license, 'license');
+				SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
+				return (CommandGeneral.installEpilogue(_this));
+			}
+			Output.show();//Покажим кансоль если скрыта
+			Output.start(`${ZunoConstant.UTILITES_LICENSE_START}`);
+			let code = await Run.spawn(zmake, Output.data, Output.data, arg_license);
+			SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
+			if (code === false)
+				return (_update_critical());
+			else if (code != 0)
+				Output.error(`${ZunoConstant.SYSTEM_EXIT_CODE}: ${code}`);
+			else
+				Output.end(`${ZunoConstant.UTILITES_LICENSE_END}`);
+			Output.show();//Выведем все что записали в кансоль или ждать придеться долго
+			return (CommandGeneral.installEpilogue(_this));
+		});
+	},
+	boardInfo: async function()
+	{
+		if (ZunoConstant.BOARD_CURRENT.boardInfo == false)
+			return ;
+		const offset_port = 0x1;
+		let port = Config.getBoardInfo_port();
+		if (port == false)
+			port = StatusBar.port.get();
+		const array = 
+		[
+			['open', ZunoConstant.UTILITES_BOARDINFO_OPTIONS_TEXT, ZunoConstant.UTILITES_BOARDINFO_OPTIONS_DECRIPTION],
+			['port', (port == false) ? ZunoConstant.PORT_BAR_TEXT : port, ZunoConstant.PORT_PLACEHOLDER]
+		];
+		const array_old =
+		[
+			['open', ZunoConstant.UTILITES_BOARDINFO_OPTIONS_TEXT, ZunoConstant.UTILITES_BOARDINFO_OPTIONS_DECRIPTION],
+			['port', (port == false) ? ZunoConstant.PORT_BAR_TEXT : port, ZunoConstant.PORT_PLACEHOLDER]
+		];
+		while (0xFF)
+		{
+			let index = 0;
+			const select = await VsCode.window.showQuickPick(array.map((element) => {
+				return {description: element[2], label: element[1], index: index++};
+			}), {placeHolder: ZunoConstant.UTILITES_BOARDINFO_OPTIONS_PLACEHOLDER});
+			if (select == undefined)
+				return (_openOptionsConversionBoardInfo(array, array_old));
+			const element = array[select.index];
+			switch (element[0])
+			{
+				case 'open':
+					if (array[offset_port][0x1] == ZunoConstant.PORT_BAR_TEXT)
+					{
+						const ans = await VsCode.window.showInformationMessage(ZunoConstant.UTILITES_BOARDINFO_NOT_PORT, Constant.DIALOG_YES, Constant.DIALOG_NOT);
+						if (ans != Constant.DIALOG_YES)
+							return (_openOptionsConversionBoardInfo(array, array_old));
+						port = await SerialMonitor.getPort(false);
+						if (port == false)
+							break ;
+						array[offset_port][0x1] = port;
+						break ;
+					}
+					_openOptionsConversionBoardInfo(array, array_old)
+					if (CommandGeneral.installProloge(_this, _this.path_install, _this.array_host) == false)
+						return ;
+					const zmake = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS, ZunoConstant.BOARD_CURRENT.ZMAKE.EXE);
+					if (Fs.existsSync(zmake) == false)
+					{
+						await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
+						await File.unlink(Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING));
+						VsCode.window.showErrorMessage(ZunoConstant.INSTALL_INVALID_CORE);
+						CommandGeneral.installEpilogue(_this);
+						return (_this.install());
+					}
+					port = array[offset_port][0x1];
+					SerialMonitor.startUpload(port);
+					await VsCode.window.withProgress({
+						location: VsCode.ProgressLocation.Notification,
+						title: ZunoConstant.UTILITES_BOARDINFO_TITLE,
+					}, async () => {
+						const arg_boardInfo =
+						[
+							'boardInfo',
+							'-d', port
+						];
+						SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
+						if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
+						{
+							await Task.execute(zmake, arg_boardInfo, 'path_bootloader');
+							SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
+							return (CommandGeneral.installEpilogue(_this));
+						}
+						Output.show();//Покажим кансоль если скрыта
+						Output.start(`${ZunoConstant.UTILITES_BOARDINFO_START}`);
+						let code = await Run.spawn(zmake, Output.data, Output.data, arg_boardInfo);
+						SerialMonitor.resumeMonitor();//Если был монтитор закрыт навремя прошивки открываем заново
+						if (code === false)
+							return (_update_critical());
+						else if (code != 0)
+							Output.error(`${ZunoConstant.SYSTEM_EXIT_CODE}: ${code}`);
+						else
+							Output.end(`${ZunoConstant.UTILITES_BOARDINFO_END}`);
+						Output.show();//Выведем все что записали в кансоль или ждать придеться долго
+						return (CommandGeneral.installEpilogue(_this));
+					});
+					return ;
+				case 'port':
+					port = await SerialMonitor.getPort((element[1] == ZunoConstant.PORT_BAR_TEXT) ? false : element[1]);
+					element[1] = (port == false) ? ZunoConstant.PORT_BAR_TEXT : port, ZunoConstant.PORT_PLACEHOLDER;
+					break;
+			}
+		}
+	},
+	PTI: async function()
+	{
+		if (ZunoConstant.BOARD_CURRENT.PTI == false)
+			return ;
+		const offset_port = 0x1;
+		const offset_baudRate = 0x2;
+		const offset_valid_only = 0x3;
+		const offset_input = 0x4;
+		const offset_output = 0x5;
+		let port = Config.getPTI_port();
+		if (port == false)
+			port = StatusBar.port.get();
+		const baudRate = String(Config.getPTI_baudRate());
+		const input = Config.getPTI_input();
+		const output = Config.getPTI_output();
+		const valid_only = (Config.getPTI_valid_only() == false) ? Constant.DIALOG_DISABLED : Constant.DIALOG_ENABLED;
+		const array = 
+		[
+			['open', ZunoConstant.UTILITES_PTI_OPTIONS_TEXT, ZunoConstant.UTILITES_PTI_OPTIONS_DECRIPTION],
+			['port', (port == false) ? ZunoConstant.PORT_BAR_TEXT : port, ZunoConstant.PORT_PLACEHOLDER],
+			['baudRate', baudRate, ZunoConstant.UTILITES_PTI_OPTIONS_BAUDRATE_DECRIPTION],
+			['valid_only', valid_only, ZunoConstant.UTILITES_PTI_OPTIONS_VALID_ONLY_DECRIPTION],
+			['input', (input == false) ? Constant.DIALOG_NOT_USED : input, ZunoConstant.UTILITES_PTI_OPTIONS_INPUT_DECRIPTION],
+			['output', (output == false) ? Constant.DIALOG_NOT_USED : output, ZunoConstant.UTILITES_PTI_OPTIONS_OUTPUT_DECRIPTION]
+		];
+		const array_old =
+		[
+			['open', ZunoConstant.UTILITES_PTI_OPTIONS_TEXT, ZunoConstant.UTILITES_PTI_OPTIONS_DECRIPTION],
+			['port', (port == false) ? ZunoConstant.PORT_BAR_TEXT : port, ZunoConstant.PORT_PLACEHOLDER],
+			['baudRate', baudRate, ZunoConstant.UTILITES_PTI_OPTIONS_BAUDRATE_DECRIPTION],
+			['valid_only', valid_only, ZunoConstant.UTILITES_PTI_OPTIONS_VALID_ONLY_DECRIPTION],
+			['input', (input == false) ? Constant.DIALOG_NOT_USED : input, ZunoConstant.UTILITES_PTI_OPTIONS_INPUT_DECRIPTION],
+			['output', (output == false) ? Constant.DIALOG_NOT_USED : output, ZunoConstant.UTILITES_PTI_OPTIONS_OUTPUT_DECRIPTION]
+		];
+		while (0xFF)
+		{
+			let index = 0;
+			const select = await VsCode.window.showQuickPick(array.map((element) => {
+				return {description: element[2], label: element[1], index: index++};
+			}), {placeHolder: ZunoConstant.UTILITES_PTI_OPTIONS_PLACEHOLDER});
+			if (select == undefined)
+				return (_openOptionsConversionPti(array, array_old));
+			const element = array[select.index];
+			switch (element[0])
+			{
+				case 'open':
+					if (array[offset_port][0x1] == ZunoConstant.PORT_BAR_TEXT)
+					{
+						const ans = await VsCode.window.showInformationMessage(ZunoConstant.UTILITES_PTI_OPTIONS_NOT_PORT, Constant.DIALOG_YES, Constant.DIALOG_NOT);
+						if (ans != Constant.DIALOG_YES)
+							return (_openOptionsConversionPti(array, array_old));
+						const port = await SerialMonitor.getPort(false);
+						if (port == false)
+							break ;
+						array[1][1] = port;
+						break ;
+					}
+					_openOptionsConversionPti(array, array_old)
+					const options =
+					[
+						'tracer',
+						'-d', array[offset_port][0x1],
+						'-b', array[offset_baudRate][0x1],
+						'-vo', (array[offset_valid_only][0x1] == Constant.DIALOG_DISABLED) ? 'False': 'True'
+					];
+					if (array[offset_input][0x1] != Constant.DIALOG_NOT_USED)
+						options.push('-i', array[offset_input][0x1]);
+					if (array[offset_output][0x1] != Constant.DIALOG_NOT_USED)
+						options.push('-o', array[offset_output][0x1]);
+					const tools = Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.DIR.TOOLS);
+					const zmake = Path.join(tools, ZunoConstant.BOARD_CURRENT.ZMAKE.EXE);
+					if (Fs.existsSync(zmake) == false)
+					{
+						await File.delete(Path.join(_this.path_install, ZunoConstant.BOARD_CURRENT.core));
+						await File.unlink(Path.join(_this.path_install, ZunoConstant.FILE.JSON_SETTING));
+						VsCode.window.showErrorMessage(ZunoConstant.INSTALL_INVALID_CORE);
+						return (_this.install());
+					}
+					Task.execute(zmake, options, "PTI")
+					return ;
+				case 'port':
+					const port = await SerialMonitor.getPort((element[1] == ZunoConstant.PORT_BAR_TEXT) ? false : element[1]);
+					element[1] = (port == false) ? ZunoConstant.PORT_BAR_TEXT : port, ZunoConstant.PORT_PLACEHOLDER;
+					break;
+				case 'baudRate':
+					element[1] = await _getBaudRatePti(element[1]);
+					break;
+				case 'input':
+					element[1] = await _ptiGetPathFile(element[1]);
+					break ;
+				case 'output':
+					element[1] = await _ptiGetPathFile(element[1]);
+					break ;
+				case 'valid_only':
+					element[1] = await _ptiValidOnly(element[1]);
+					break ;
 			}
 		}
 	},
@@ -540,7 +821,7 @@ const _this = {
 		const select = await VsCode.window.showQuickPick(array_platforms.map((element) => {
 			const description = (element.version == old_version) ? ZunoConstant.STATUS_INSTALL: ZunoConstant.STATUS_NOT_INSTALL;
 			return {description: description, label: `${ZunoConstant.BOARD_CURRENT.core} ${element.version}:`};
-		}).sort((a, b) => {return (String.cmpDown(a.label, b.label));}), {placeHolder: ZunoConstant.INSTALL_PLACEHOLDER});
+		}).sort((a, b) => {return (string.cmpDown(a.label, b.label));}), {placeHolder: ZunoConstant.INSTALL_PLACEHOLDER});
 		if (select == undefined)
 			return (CommandGeneral.installEpilogue(_this));
 		const new_version = select.label.replace(`${ZunoConstant.BOARD_CURRENT.core} `, '').replace(':', '');
@@ -606,6 +887,17 @@ const _this = {
 			{
 				await File.unlink(file_setting);
 				return (CommandGeneral.installEpilogue(_this));
+			}
+			const data_size = await _getDataSize(_this.path_install);
+			if (data_size != false)
+			{
+				if (Number.isInteger(data_size.maximum_size) == true && Number.isInteger(data_size.maximum_data_size) == true)
+				{
+					ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = data_size.maximum_size;
+					ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = data_size.maximum_data_size;
+					array_setting_new.maximum_size = data_size.maximum_size;
+					array_setting_new.maximum_data_size = data_size.maximum_data_size;
+				}
 			}
 			Config.setSettting(file_setting, array_setting_new);
 			VsCode.window.showInformationMessage(ZunoConstant.INSTALL_SUCCESS);
@@ -677,6 +969,26 @@ async function _checkFile(path_install, array_host, context)
 	const file_settings = Path.join(path_install, ZunoConstant.FILE.JSON_SETTING);
 	const array_setting = Config.getSettting(file_settings);//Получим наши настройки
 	const version = array_setting.version;
+	if (Number.isInteger(array_setting.maximum_size) == true && Number.isInteger(array_setting.maximum_data_size) == true)
+	{
+		ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = array_setting.maximum_size;
+		ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = array_setting.maximum_data_size;
+	}
+	else
+	{
+		const data_size = await _getDataSize(path_install);
+		if (data_size != false)
+		{
+			if (Number.isInteger(data_size.maximum_size) == true && Number.isInteger(data_size.maximum_data_size) == true)
+			{
+				ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = data_size.maximum_size;
+				ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = data_size.maximum_data_size;
+				array_setting.maximum_size = data_size.maximum_size;
+				array_setting.maximum_data_size = data_size.maximum_data_size;
+				Config.setSettting(file_settings, array_setting);
+			}
+		}
+	}
 	if (version == undefined)//Если настроек нет или они не валидны предлагаем установить необходимые компоненты
 	{
 		const ans = await VsCode.window.showWarningMessage(ZunoConstant.INSTALL_CONTINUE, Constant.DIALOG_YES, Constant.DIALOG_NOT);
@@ -700,7 +1012,7 @@ async function _checkFile(path_install, array_host, context)
 	let len = platforms.length;
 	for (let index = 0; index < len; index++)
 		array_cmp.push(platforms[index].version);
-	array_cmp.sort(String.cmpDown);
+	array_cmp.sort(string.cmpDown);
 	const update_version_last = array_cmp[0];
 	array_setting.time = time;
 	if (update_version_last != update_version || update_version_last != version)
@@ -715,4 +1027,174 @@ async function _checkFile(path_install, array_host, context)
 		}
 	}
 	Config.setSettting(file_settings, array_setting);
+}
+
+async function _getDataSize(path_install)
+{
+	let obj = {};
+	let content, x, y;
+	try {
+		content = Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'boards.txt'), 'utf8');
+		x = content.search('maximum_size=');
+		if (x != -1)
+		{
+			x = x + 13;
+			y = x;
+			while (content[y] >= '0' && content[y] <= '9')
+				y++;
+			obj.maximum_size = Number(content.substring(x, y));
+		}
+		x = content.search('maximum_data_size=');
+		if (x != -1)
+		{
+			x = x + 18;
+			y = x;
+			while (content[y] >= '0' && content[y] <= '9')
+				y++;
+			obj.maximum_data_size = Number(content.substring(x, y));
+		}
+	} catch (error) {
+		return (false);
+	}
+	return (obj);
+}
+
+async function _ptiValidOnly(oldvalue)
+{
+	const list = [Constant.DIALOG_ENABLED, Constant.DIALOG_DISABLED];
+	while (0xFF)
+	{
+		const select = await VsCode.window.showQuickPick(list.map((element) => {
+			return {label: element};
+		}), {placeHolder: oldvalue});
+		if (select == undefined)
+			return (oldvalue);
+		return (select.label);
+	}
+}
+
+async function _ptiGetPathFile(oldvalue)
+{
+	const list = [Constant.DIALOG_NOT_USED, Constant.DIALOG_SELECT_FILE];
+	while (0xFF)
+	{
+		const select = await VsCode.window.showQuickPick(list.map((element) => {
+			return {label: element};
+		}), {placeHolder: oldvalue});
+		if (select == undefined)
+			return (oldvalue);
+		if (select.label == Constant.DIALOG_SELECT_FILE)
+		{
+			let uris;
+			if (oldvalue == Constant.DIALOG_NOT_USED)
+				uris = await VsCode.window.showOpenDialog({canSelectFolders: false, canSelectFiles: true, canSelectMany: false, openLabel: Constant.DIALOG_SELECT_FILE, filters: ZunoConstant.UTILITES_PTI_OPTIONS_JSON_FILTR});
+			else
+				uris = await VsCode.window.showOpenDialog({canSelectFolders: false, canSelectFiles: true, canSelectMany: false, openLabel: Constant.DIALOG_SELECT_FILE, filters: ZunoConstant.UTILITES_PTI_OPTIONS_JSON_FILTR, defaultUri: VsCode.Uri.parse('file:' + Path.dirname(oldvalue))});
+			if (uris == undefined)
+				break ;
+			return (uris[0x0].fsPath);
+		}
+		return (select.label);
+	}
+}
+
+async function _getBaudRatePti(oldvalue)
+{
+	while (0xFF)
+	{
+		const select = await VsCode.window.showQuickPick(ZunoConstant.UTILITES_PTI_OPTIONS_BAUDRATE_LIST.map((element) => {
+			return {label: element};
+		}), {placeHolder: oldvalue});
+		if (select == undefined)
+			return (oldvalue);
+		if (select.label == ZunoConstant.UTILITES_PTI_OPTIONS_BAUDRATE_MANUAL)
+		{
+			const select = await VsCode.window.showInputBox({
+				placeHolder: ZunoConstant.UTILITES_PTI_OPTIONS_BAUDRATE_MANUAL_PLACEHOLDER,
+				validateInput: async (value) => {
+					if (value == parseInt(value))
+					{
+						if (value < 230400)
+							return (ZunoConstant.UTILITES_PTI_OPTIONS_BAUDRATE_MANUAL_NUMBER_LESS);
+						return (null);
+					}
+					else
+						return (ZunoConstant.UTILITES_PTI_OPTIONS_BAUDRATE_MANUAL_NUMBER);
+				}
+			});
+			if (select == undefined)
+				continue ;
+			return (select);
+		}
+		return (select.label);
+	}
+}
+
+function _openOptionsConversionBoardInfo(array, array_old)
+{
+	const len = array.length;
+	let value, value_old;
+	for (let index = 0; index < len; index++)
+	{
+		const element = array[index];
+		value = element[1];
+		value_old = array_old[index][0x1];
+		switch (element[0])
+		{
+			case 'port':
+				if (value != ZunoConstant.PORT_BAR_TEXT && value != value_old)
+					Config.setBoardInfo_port(value);
+				break;
+		}
+	}
+}
+
+function _openOptionsConversionPti(array, array_old)
+{
+	const len = array.length;
+	let value, value_old;
+	for (let index = 0; index < len; index++)
+	{
+		const element = array[index];
+		value = element[1];
+		value_old = array_old[index][0x1];
+		switch (element[0])
+		{
+			case 'port':
+				if (value != ZunoConstant.PORT_BAR_TEXT && value != value_old)
+					Config.setPTI_port(value);
+				break;
+			case 'baudRate':
+				if (value_old != value)
+					Config.setPTI_baudRate(Number(value));
+				break;
+			case 'input':
+				if (value != value_old)
+				{
+					if (value == Constant.DIALOG_NOT_USED)
+						Config.setPTI_input(false);
+					else
+						Config.setPTI_input(value);
+				}
+				break;
+			case 'output':
+				if (value != value_old)
+				{
+					if (value == Constant.DIALOG_NOT_USED)
+						Config.setPTI_output(false);
+					else
+						Config.setPTI_output(value);
+				}
+				break;
+			case 'valid_only':
+				if (value != value_old)
+				{
+					if (value == Constant.DIALOG_ENABLED)
+						Config.setPTI_valid_only(true);
+					else
+						Config.setPTI_valid_only(false);
+				}
+				break;
+		}
+	}
 }

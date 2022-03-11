@@ -84,6 +84,82 @@ const _this = {//У нас активируеться только когда п
 	{
 		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'port', value);
 	},
+	getPTI_output()//Получает из настроект текущего проекта
+	{
+		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_output');
+		if (value == false)
+			return (false);
+		if (typeof value === 'string' || value instanceof String)
+			return (value);
+		return (false);
+	},
+	setPTI_output(value)//Сохраняет в настройках текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_output', value);
+	},
+	getPTI_input()//Получает из настроект текущего проекта
+	{
+		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_input');
+		if (value == false)
+			return (false);
+		if (typeof value === 'string' || value instanceof String)
+			return (value);
+		return (false);
+	},
+	setPTI_input(value)//Сохраняет в настройках текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_input', value);
+	},
+	getPTI_valid_only()//Получает из настроект текущего проекта
+	{
+		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_valid_only');
+		if (value == false)
+			return (false);
+		if (typeof value === 'boolean')
+			return (value);
+		return (false);
+	},
+	setPTI_valid_only(value)//Сохраняет в настройках текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_valid_only', value);
+	},
+	getBoardInfo_port()//Получает из настроект текущего проекта
+	{
+		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'BoardInfo_port');
+		if (value == false)
+			return (false);
+		if (typeof value === 'string' || value instanceof String)
+			return (value);
+		return (false);
+	},
+	setBoardInfo_port(value)//Сохраняет в настройках текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'BoardInfo_port', value);
+	},
+	getPTI_port()//Получает из настроект текущего проекта
+	{
+		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_port');
+		if (value == false)
+			return (false);
+		if (typeof value === 'string' || value instanceof String)
+			return (value);
+		return (false);
+	},
+	setPTI_port(value)//Сохраняет в настройках текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_port', value);
+	},
+	getPTI_baudRate()//Получает из настроект текущего проекта
+	{
+		const baudRate = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_baudRate');
+		if (baudRate == undefined || Number.isInteger(baudRate) == false || baudRate < 230400)
+			return (230400);
+		return (baudRate);
+	},
+	setPTI_baudRate(value)//Сохраняет в настройках текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_baudRate', value);
+	},
 	getBoard()//Получает используемый плату
 	{
 		return (_get(ZunoConstant.PATH.JSON_WORKSPACE, 'board'));

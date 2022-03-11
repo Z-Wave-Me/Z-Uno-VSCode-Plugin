@@ -17,6 +17,10 @@ const _this = {
 	INTERNET_DOWNLOAD_FAILED: 'Не удалось скачать, повторите попытку позже',
 /*-------------------------------*/
 	DIALOG_SELECT_DIR: 'Выбрать папку',
+	DIALOG_SELECT_FILE: 'Выбрать файл',
+	DIALOG_NOT_USED: 'Не используется',
+	DIALOG_ENABLED: 'Включено',
+	DIALOG_DISABLED: 'Отключено',
 	DIALOG_YES: 'Да',
 	DIALOG_NOT: 'Нет',
 	DIALOG_OVERWRITE: 'Перезаписать',

@@ -17,6 +17,10 @@ const _this = {
 	INTERNET_DOWNLOAD_FAILED: 'Failed to download, please try again later: ',
 /*-------------------------------*/
 	DIALOG_SELECT_DIR: 'Select folder',
+	DIALOG_SELECT_FILE: 'Select file',
+	DIALOG_NOT_USED: 'Not used',
+	DIALOG_ENABLED: 'Enabled',
+	DIALOG_DISABLED: 'DIsabled',
 	DIALOG_YES: 'Yes',
 	DIALOG_NOT: 'Not',
 	DIALOG_OVERWRITE: 'Overwrite',
