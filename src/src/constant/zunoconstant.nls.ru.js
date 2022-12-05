@@ -45,6 +45,8 @@ const _this = {
 	BOARD_PLACEHOLDER: 'Выберите тип платы',
 	BOARD_BAR_TEXT: '<Выберите плату>',
 /*-------------------------------*/
+	COMPLIER_OPTIONS_PLACEHOLDER: 'Введите опции компилирования через ";"',
+/*-------------------------------*/
 	BOOTLOADER_TOOLTIP: 'Записать загрузчик',
 	BOOTLOADER_BAR_TEXT: '$(triangle-up)',
 /*-------------------------------*/

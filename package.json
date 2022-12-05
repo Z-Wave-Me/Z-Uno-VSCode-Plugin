@@ -2,7 +2,7 @@
 	"name": "vscode-zuno",
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
-	"version": "0.2.9",
+	"version": "0.2.10",
 	"publisher": "Z-WaveMe",
 	"preview": true,
 	"engines": {
@@ -89,6 +89,11 @@
 				"when": "workspaceFolderCount != 0",
 				"command": "zuno.port",
 				"title": "%zuno.command.port.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
+				"command": "zuno.complier_options",
+				"title": "%zuno.command.complier_options.title%"
 			},
 			{
 				"when": "workspaceFolderCount != 0",

@@ -11,6 +11,7 @@
 	"zuno.command.power.title": "Z-Uno: Выбрать мощность радиосигнала",
 	"zuno.command.install.title": "Z-Uno: Установить необходимые компоненты",
 	"zuno.command.port.title": "Z-Uno: Выбрать последовательный порт",
+	"zuno.command.complier_options.title": "Z-Uno: Введите опции компилирования через \";\"",
 	"zuno.command.monitor.title": "Z-Uno: Открыть последовательный порт",
 	"zuno.command.board.title": "Z-Uno: Выберите тип платы",
 	"zuno.command.verify.title": "Z-Uno: Проверить",

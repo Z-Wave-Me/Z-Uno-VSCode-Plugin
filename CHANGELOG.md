@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.10
+- Release date: 05.12.2022
+
+### Added
+- Added: Compiler Options for Z-Uno-2G
+
+
+
 ## Version 0.2.9
 - Release date: 12.03.2022
 

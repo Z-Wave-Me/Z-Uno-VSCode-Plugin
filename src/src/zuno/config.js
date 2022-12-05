@@ -58,6 +58,18 @@ const _this = {//У нас активируеться только когда п
 	{
 		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'power', value);
 	},
+	getComplierOptions()//Получает используемую при загрузки скетча мощность передаваемого радио сигнала из настроект текущего проекта
+	{
+		let value;
+		value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'complier_options');
+		if (typeof value != "string")
+			value = "";
+		return (value);
+	},
+	setComplierOptions(value)//Сохраняет используемый скетч из настроект текущего проекта
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'complier_options', value);
+	},
 	getFrequency()//Получает используемую при загрузки скетча частоту из настроект текущего проекта
 	{
 		return (_arrayFind(ZunoConstant.FREQUENCY, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'frequency'), ZunoConstant.FREQUENCY_DEFAULT));

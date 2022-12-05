@@ -47,6 +47,7 @@ _this.CMD =
 	POWER: 'zuno.power',
 	SKETCH: 'zuno.sketch',
 	PORT: 'zuno.port',
+	COMPLIER_OPTIONS: 'zuno.complier_options',
 	MONITOR: 'zuno.monitor',
 	BOARD: 'zuno.board',
 	SERIALMONITOR_CURRENT_OPTIONS: 'zuno.serialmonitor.currentoptions',

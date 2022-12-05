@@ -45,6 +45,7 @@ const _this = {
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.LICENSE, _this.license));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PTI, _this.PTI));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.PORT, _this.port));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.COMPLIER_OPTIONS, _this.complier_options));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOARD, _this.board));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MONITOR, _this.monitor));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SETTING, _this.settings));
@@ -129,6 +130,19 @@ const _this = {
 		return (pow);
 
 	},
+	complier_options: async function()
+	{
+		if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
+			return ("");
+		const complier_options = await VsCode.window.showInputBox({
+			placeHolder: ZunoConstant.COMPLIER_OPTIONS_PLACEHOLDER,
+		});
+		if (complier_options == undefined)
+			return (false);
+		Config.setComplierOptions(complier_options);
+		StatusBar.complier_options.set(complier_options);
+		return (complier_options);
+	},
 	utilities: async function()
 	{
 		const options =
@@ -188,6 +202,11 @@ const _this = {
 			let value = StatusBar.power.get();
 			options.push(['power', '+' + Math.trunc(value / ZunoConstant.POWER.POWER_MULTI) + '.' + (value % ZunoConstant.POWER.POWER_MULTI) + 'dBm', ZunoConstant.POWER_PLACEHOLDER]);
 		}
+		if (ZunoConstant.BOARD_CURRENT.generation != 0x1)
+		{
+			let value = StatusBar.complier_options.get();
+			options.push(['complier_options', '"' + value + '"', ZunoConstant.COMPLIER_OPTIONS_PLACEHOLDER]);
+		}
 		options.push(['utilities', ZunoConstant.UTILITES_DEFAULT, ZunoConstant.UTILITES_PLACEHOLDER]);
 		while (0xFF)
 		{
@@ -226,6 +245,12 @@ const _this = {
 					if (power == false)
 						break ;
 					element[1] = '+' + Math.trunc(power / ZunoConstant.POWER.POWER_MULTI) + '.' + (power % ZunoConstant.POWER.POWER_MULTI) + 'dBm';
+					break;
+				case 'complier_options':
+					const complier_options = await _this.complier_options();
+					if (complier_options == false)
+						break ;
+					element[1] = '"' + complier_options + '"';
 					break;
 			}
 		}
@@ -690,6 +715,7 @@ const _this = {
 			}
 			else
 			{
+				const complier_options = Config.getComplierOptions().split(';');
 				args_build = [
 					'build', path_sketch,
 					'-S', Path.join(hardware, ZunoConstant.BOARD_CURRENT.ZMAKE.CORE),
@@ -705,6 +731,14 @@ const _this = {
 					'-O', 'BO:-lm',
 					'-O', 'LO:-lm'
 				];
+				let index, len;
+				for (index = 0, len = complier_options.length; index < len; ++index) {
+					let value = complier_options[index].trim();
+					if (value != "") {
+						args_build.push('-O');
+						args_build.push('BO:' + value);
+					}
+				}
 				args_size = [
 					'arduino_size', path_sketch,
 					'-B', Path.join(tmp, Path.basename(sketch).replace(Path.extname(sketch), ''))

@@ -45,6 +45,8 @@ const _this = {
 	BOARD_PLACEHOLDER: 'Select board type',
 	BOARD_BAR_TEXT: '<Select board>',
 /*-------------------------------*/
+	COMPLIER_OPTIONS_PLACEHOLDER: 'Enter compilation options through ";"',
+/*-------------------------------*/
 	BOOTLOADER_TOOLTIP: 'Burn bootloader',
 	BOOTLOADER_BAR_TEXT: '$(triangle-up)',
 /*-------------------------------*/

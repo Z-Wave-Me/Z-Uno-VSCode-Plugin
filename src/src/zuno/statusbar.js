@@ -183,6 +183,18 @@ const _this = {
 			return (_this.frequency.value);
 		}
 	},
+	complier_options:
+	{
+		value: Config.getComplierOptions(),
+		set(complier_options)
+		{
+			_this.complier_options.value = complier_options;
+		},
+		get()
+		{
+			return (_this.complier_options.value);
+		}
+	},
 	rf_logging:
 	{
 		value: Config.getRfLogging(),

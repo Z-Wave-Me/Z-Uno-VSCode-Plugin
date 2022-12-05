@@ -11,6 +11,7 @@
 	"zuno.command.power.title": "Z-Uno: Select radio signal strength",
 	"zuno.command.install.title": "Z-Uno: Install the necessary components",
 	"zuno.command.port.title": "Z-Uno: Select serial port",
+	"zuno.command.complier_options.title": "Z-Uno: Enter compilation options through \";\"",
 	"zuno.command.monitor.title": "Z-Uno: Open serial monitor",
 	"zuno.command.board.title": "Z-Uno: Select board type",
 	"zuno.command.verify.title": "Z-Uno: Verify",
