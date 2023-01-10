@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Version 0.2.11
 - *Release date:* 10.01.2023
-- *Commit:* 
+- *Commit:* d620a2d16f1d90df21a08c7e3721afe4c07c703d
 ### Change
 
 #### Fix
