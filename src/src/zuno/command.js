@@ -53,12 +53,12 @@ const _this = {
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.UPLOAD, _this.verify, _this));//_this - дает понять что раз контекст есть значит upload а не verify
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.INSTALL, _this.install));
 		StatusBar.board.init();
+		ZunoConstant.BOARD_CURRENT = StatusBar.board.getArray();
 		StatusBar.sketch.init(context);
 		StatusBar.monitor.init();
 		StatusBar.settings.init();
 		StatusBar.port.init();
 		SerialMonitor.init(context);
-		ZunoConstant.BOARD_CURRENT = StatusBar.board.getArray();
 		_checkFile(path_install, array_host, context);
 	},
 	board: async function()

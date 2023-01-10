@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+## Version 0.2.11
+- *Release date:* 10.01.2023
+- *Commit:* 
+### Change
+
+#### Fix
+1. Fixed a problem that occurred when selecting a sketch using "select sketch"
+
+
+
 ## Version 0.2.10
 - Release date: 05.12.2022
 
