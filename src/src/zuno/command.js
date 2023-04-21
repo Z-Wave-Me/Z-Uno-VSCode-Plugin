@@ -723,13 +723,7 @@ const _this = {
 					'-S', Path.join(tools, ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB),
 					'-B', tmp,
 					'-T', Path.join(tools, ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_BIN),
-					'-lcl',Path.join(tools, ZunoConstant.ZMAKE.LIB_CLANG),
-					'-O', 'BO:-mfloat-abi=softfp',
-					'-O', 'BO:-mfpu=fpv4-sp-d16',
-					'-O', 'LO:-mfloat-abi=softfp',
-					'-O', 'LO:-mfpu=fpv4-sp-d16',
-					'-O', 'BO:-lm',
-					'-O', 'LO:-lm'
+					'-lcl',Path.join(tools, ZunoConstant.ZMAKE.LIB_CLANG)
 				];
 				let index, len;
 				for (index = 0, len = complier_options.length; index < len; ++index) {
@@ -999,10 +993,23 @@ async function _checkFile(path_install, array_host, context)
 	if (CommandGeneral.installProloge(_this, path_install, array_host) == false)//Проверим все ли есть необходимое
 		return ;
 	new Examples.Examples(context, path_install);
-	await CppTools.cppTools(path_install);
 	const file_settings = Path.join(path_install, ZunoConstant.FILE.JSON_SETTING);
 	const array_setting = Config.getSettting(file_settings);//Получим наши настройки
 	const version = array_setting.version;
+	if(typeof array_setting.gcc_lib !== 'undefined' && typeof array_setting.gcc_lib === 'string')
+	{
+		ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB = array_setting.gcc_lib;
+	}
+	else
+	{
+		const gcc_lib = await _getGccLibPatch(path_install);
+		if (gcc_lib != false)
+		{
+			array_setting.gcc_lib = gcc_lib;
+			ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB = array_setting.gcc_lib;
+			Config.setSettting(file_settings, array_setting);
+		}
+	}
 	if (Number.isInteger(array_setting.maximum_size) == true && Number.isInteger(array_setting.maximum_data_size) == true)
 	{
 		ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = array_setting.maximum_size;
@@ -1032,6 +1039,7 @@ async function _checkFile(path_install, array_host, context)
 		return (_this.install());
 	}
 	CommandGeneral.installEpilogue(_this);
+	await CppTools.cppTools(path_install);
 	if (VsConfig.getAutoUpdate() == false)//Если автообновнление отключенно нечего не делаем
 		return ;
 	const time = new Date().getTime();
@@ -1061,6 +1069,27 @@ async function _checkFile(path_install, array_host, context)
 		}
 	}
 	Config.setSettting(file_settings, array_setting);
+}
+
+async function _getGccLibPatch(path_install)
+{
+	let gcc_lib = {};
+	let content, x, y;
+	try {
+		content = Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'platform.txt'), 'utf8');
+		x = content.search('tools.zprog.cmd.include={runtime.tools.arm-none-eabi-gcc.path}');
+		if (x == -1)
+			return (false);
+		x = x + 62;
+		y = content.indexOf("\n", x);
+		if (y == -1)
+			return (false);
+		y = y - 1;
+		gcc_lib = Path.join('gcc', content.substring(x, y));
+	} catch (error) {
+		return (false);
+	}
+	return (gcc_lib);
 }
 
 async function _getDataSize(path_install)

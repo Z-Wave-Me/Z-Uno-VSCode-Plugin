@@ -2,7 +2,7 @@
 	"name": "vscode-zuno",
 	"displayName": "Z-Uno",
 	"description": "Z-Uno for Visual Studio Code.",
-	"version": "0.2.11",
+	"version": "0.2.12",
 	"publisher": "Z-WaveMe",
 	"preview": true,
 	"engines": {
