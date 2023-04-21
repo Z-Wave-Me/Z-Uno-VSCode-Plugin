@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Version 0.2.12
 - *Release date:* 22.04.2023
-- *Commit:* 
+- *Commit:* 82497c36dbaf415409275c720e296c4d5dfec990
 
 ### Added
 - Added: Now we get the path to the compiler libraries from platform.txt
