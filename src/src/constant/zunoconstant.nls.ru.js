@@ -9,7 +9,6 @@ const _this = {
 	Z_UNO_DESCRIPTION: ' - первое поколение платы Z-Uno.',
 	Z_UNO2_DESCRIPTION: ' - второе поколение платы Z-Uno2.',
 	Z_UNO2_BETA_DESCRIPTION: ' - второе поколение платы Z-Uno2 бета.',
-	Z_UNO_INFO_RESTART: 'Чтобы изменения вступили в силу - перезагрузите проект.',
 
 /*-------------------------------*/
 	OUTPUT_START: '[Начало]',

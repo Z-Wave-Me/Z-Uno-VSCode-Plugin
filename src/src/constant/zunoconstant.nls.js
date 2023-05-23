@@ -9,7 +9,6 @@ const _this = {
 	Z_UNO_DESCRIPTION: ' - first generation of Z-Uno board.',
 	Z_UNO2_DESCRIPTION: ' - the second generation of the Z-Uno2 board.',
 	Z_UNO2_BETA_DESCRIPTION: ' - the second generation of the Z-Uno2 board beta.',
-	Z_UNO_INFO_RESTART: 'For the changes to take effect, reload the project.',
 
 /*-------------------------------*/
 	OUTPUT_START: '[Starting]',

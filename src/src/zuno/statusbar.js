@@ -26,7 +26,7 @@ const _this = {
 			obj.tooltip = ZunoConstant.SKETCH_PLACEHOLDER;
 			if (sketch != false)
 			{
-				_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, Crc.hash(sketch, 'md5'));
+				_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.BOARD_CURRENT.chip_name, Crc.hash(sketch, 'md5'));
 				obj.text = Path.basename(sketch)
 			}
 			else
@@ -36,7 +36,7 @@ const _this = {
 		set: function(sketch, path_sketch)
 		{
 			_this.sketch.value = sketch;
-			_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, Crc.hash(path_sketch, 'md5'));
+			_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.BOARD_CURRENT.chip_name, Crc.hash(path_sketch, 'md5'));
 			_this.sketch.obj.text = Path.basename(sketch);
 		},
 		getActiveSketch()
@@ -49,7 +49,7 @@ const _this = {
 		getTmp(path_sketch)
 		{
 			if (_this.sketch.path_tmp == undefined )
-				return (Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, Crc.hash(path_sketch, 'md5')));
+				return (Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.BOARD_CURRENT.chip_name, Crc.hash(path_sketch, 'md5')));
 			return (_this.sketch.path_tmp);
 		},
 		get()

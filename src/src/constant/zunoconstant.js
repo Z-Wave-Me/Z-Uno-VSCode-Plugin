@@ -89,6 +89,7 @@ _this.BOARD =
 		JSON_LOAD: 'package_z-wave.me_index.json',
 		JSON_URL: 'https://z-uno.z-wave.me/files/z-uno/package_z-wave.me_index.json',
 		EXAMPLES: Path.join('libraries', 'Z-Uno', 'examples'),
+		chip_name: 'STM',
 		core: 'Z-Uno',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
 		description: _this.Z_UNO_DESCRIPTION,
 		security: _this.SECURITY,
@@ -122,6 +123,7 @@ _this.BOARD =
 		JSON_LOAD: 'package_z-wave2.me_index.json',
 		JSON_URL: 'http://z-uno.z-wave.me/files/z-uno2/package_z-wave2.me_index.json',
 		EXAMPLES: Path.join('libraries', 'Z-Uno-2G', 'examples'),
+		chip_name: 'ZGM130S037HGN1',
 		core: 'Z-Uno2',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
 		description: _this.Z_UNO2_DESCRIPTION,
 		security: _this.SECURITY2,
@@ -155,6 +157,7 @@ _this.BOARD =
 		JSON_LOAD: 'package_z-wave2.me_beta_index.json',
 		JSON_URL: 'https://z-uno.z-wave.me/files/z-uno2/package_z-wave2.me_beta_index.json',
 		EXAMPLES: Path.join('libraries', 'Z-Uno-2G', 'examples'),
+		chip_name: 'ZGM130S037HGN1',
 		core: 'Z-Uno2 (Beta)',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
 		description: _this.Z_UNO2_BETA_DESCRIPTION,
 		security: _this.SECURITY2,
@@ -194,7 +197,7 @@ const _workspaceFolders = VsCode.workspace.workspaceFolders[0].uri.fsPath;//У �
 _this.PATH =
 {
 	WORKSPACE: _workspaceFolders,
-	TMP_BUILD: Path.join(Os.tmpdir(), `ZUNO_${new Date().getTime()}`),
+	TMP_BUILD: Path.join(Os.tmpdir(), 'z-waveme.vscode-zuno'),
 	JSON_WORKSPACE: Path.join(_workspaceFolders, '.vscode', 'zuno.json'),
 	JSON_DIR: Path.join(_workspaceFolders, '.vscode'),
 	JSON_CPPTOOLS: Path.join(_workspaceFolders, '.vscode', 'c_cpp_properties.json')
@@ -206,7 +209,8 @@ _this.UTILITES_PTI_OPTIONS_BAUDRATE_LIST = ['230400', '460800', '500000', '57600
 
 _this.WORKBENCH =
 {
-	OPEN_GLOBAL_KEYBINDINGS: 'workbench.action.openGlobalKeybindings'
+	OPEN_GLOBAL_KEYBINDINGS: 'workbench.action.openGlobalKeybindings',
+	RELOAD_WINDOW: 'workbench.action.reloadWindow'
 }
 
 _this.CPP =

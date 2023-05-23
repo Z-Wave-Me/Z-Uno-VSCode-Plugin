@@ -24,8 +24,7 @@ exports.activate = activate;
 
 //вызывается в том случае, если плагин был деактивирован
 function deactivate()
-{//FIXME добавить удаление папок всех в кеше на случай резкого завершения программы
-	File.delete(ZunoConstant.PATH.TMP_BUILD);//Удалим свои все временные файлы
+{
 }
 exports.deactivate = deactivate;
 

@@ -68,10 +68,9 @@ const _this = {
 			return ;
 		if (select.label == ZunoConstant.BOARD_CURRENT.core)
 			return ;
-		VsCode.window.showInformationMessage(ZunoConstant.Z_UNO_INFO_RESTART);
-		// VsCode.commands.executeCommand('workbench.action.reloadWindow');//Перезагрузим окно
 		Config.setBoard(select.label);
 		StatusBar.board.set(select.label);
+		await VsCode.commands.executeCommand(ZunoConstant.WORKBENCH.RELOAD_WINDOW);
 	},
 	monitor: async function()
 	{
