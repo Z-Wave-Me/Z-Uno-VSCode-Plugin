@@ -52,8 +52,8 @@ const _this = {
 	SETTINGS_TOOLTIP: 'Дополнительные настройки и функции',
 	SETTING_BAR_TEXT: '$(settings-gear)',
 /*-------------------------------*/
-	CPP_TOOLS_ADD_CONFIG: 'Чтобы Z-Uno могла работать с IntelliSense была добавленная конфигурация ${name}, теперь нужно выбрать эту конфигурацию',
-	CPP_TOOLS_INCOMPLETE_CONFIG: 'Настройки Z-Uno для работы с IntelliSense есть, но они не полные. Что будем делать?',
+	CPP_TOOLS_ADD_CONFIG: 'Чтобы Z-Uno могла работать с IntelliSense была добавленная конфигурация "${name}", теперь нужно выбрать эту конфигурацию',
+	CPP_TOOLS_INCOMPLETE_CONFIG: 'Настройки "${name}" для работы IntelliSense не полные. Что будем делать?',
 /*-------------------------------*/
 	SERIALMONITOR_LIMITS_OPEN: 'Превышен лимит на одновременное открытое количество мониторов.',
 	SERIALMONITOR_NOT_OPEN: 'Не удалось открыть порт',

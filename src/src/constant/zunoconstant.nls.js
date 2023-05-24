@@ -52,8 +52,8 @@ const _this = {
 	SETTINGS_TOOLTIP: 'Additional settings and features',
 	SETTING_BAR_TEXT: '$(settings-gear)',
 /*-------------------------------*/
-	CPP_TOOLS_ADD_CONFIG: 'There was an added configuration ${name} to allow Z-Uno to work with IntelliSense, now you need to select this config',
-	CPP_TOOLS_INCOMPLETE_CONFIG: 'There are Z-Uno settings for working with IntelliSense, but they are not complete. What do we do?',
+	CPP_TOOLS_ADD_CONFIG: 'There was an added configuration "${name}" to allow Z-Uno to work with IntelliSense, now you need to select this config',
+	CPP_TOOLS_INCOMPLETE_CONFIG: 'The "${name}" settings for IntelliSense to work are incomplete. What do we do?',
 /*-------------------------------*/
 	SERIALMONITOR_LIMITS_OPEN: 'Exceeded the limit on the simultaneous open number of monitors.',
 	SERIALMONITOR_NOT_OPEN: 'Could not open port',

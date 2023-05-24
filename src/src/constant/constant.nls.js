@@ -25,6 +25,7 @@ const _this = {
 	DIALOG_NOT: 'Not',
 	DIALOG_OVERWRITE: 'Overwrite',
 	DIALOG_SUPPLEMENT: 'Supplement',
+	DIALOG_SKIP: 'Skip',
 	DIALOG_IGNORED: 'Ignored'
 }
 
