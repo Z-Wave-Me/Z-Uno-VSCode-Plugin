@@ -915,17 +915,7 @@ const _this = {
 				await File.unlink(file_setting);
 				return (CommandGeneral.installEpilogue(_this));
 			}
-			const data_size = await _getDataSize(_this.path_install);
-			if (data_size != false)
-			{
-				if (Number.isInteger(data_size.maximum_size) == true && Number.isInteger(data_size.maximum_data_size) == true)
-				{
-					ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = data_size.maximum_size;
-					ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = data_size.maximum_data_size;
-					array_setting_new.maximum_size = data_size.maximum_size;
-					array_setting_new.maximum_data_size = data_size.maximum_data_size;
-				}
-			}
+			await _process_file(_this.path_install);//обновим переменные нужные
 			Config.setSettting(file_setting, array_setting_new);
 			VsCode.window.showInformationMessage(ZunoConstant.INSTALL_SUCCESS);
 			const path_stub = Path.join(path_core, ZunoConstant.DIR.TOOLS, ZunoConstant.ZMAKE.LIB_FAKE);
@@ -994,41 +984,8 @@ async function _checkFile(path_install, array_host, context)
 	new Examples.Examples(context, path_install);
 	const file_settings = Path.join(path_install, ZunoConstant.FILE.JSON_SETTING);
 	const array_setting = Config.getSettting(file_settings);//Получим наши настройки
+	await _process_file(path_install);
 	const version = array_setting.version;
-	if(typeof array_setting.gcc_lib !== 'undefined' && typeof array_setting.gcc_lib === 'string')
-	{
-		ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB = array_setting.gcc_lib;
-	}
-	else
-	{
-		const gcc_lib = await _getGccLibPatch(path_install);
-		if (gcc_lib != false)
-		{
-			array_setting.gcc_lib = gcc_lib;
-			ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB = array_setting.gcc_lib;
-			Config.setSettting(file_settings, array_setting);
-		}
-	}
-	if (Number.isInteger(array_setting.maximum_size) == true && Number.isInteger(array_setting.maximum_data_size) == true)
-	{
-		ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = array_setting.maximum_size;
-		ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = array_setting.maximum_data_size;
-	}
-	else
-	{
-		const data_size = await _getDataSize(path_install);
-		if (data_size != false)
-		{
-			if (Number.isInteger(data_size.maximum_size) == true && Number.isInteger(data_size.maximum_data_size) == true)
-			{
-				ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = data_size.maximum_size;
-				ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = data_size.maximum_data_size;
-				array_setting.maximum_size = data_size.maximum_size;
-				array_setting.maximum_data_size = data_size.maximum_data_size;
-				Config.setSettting(file_settings, array_setting);
-			}
-		}
-	}
 	if (version == undefined)//Если настроек нет или они не валидны предлагаем установить необходимые компоненты
 	{
 		const ans = await VsCode.window.showWarningMessage(ZunoConstant.INSTALL_CONTINUE, Constant.DIALOG_YES, Constant.DIALOG_NOT);
@@ -1070,31 +1027,57 @@ async function _checkFile(path_install, array_host, context)
 	Config.setSettting(file_settings, array_setting);
 }
 
-async function _getGccLibPatch(path_install)
+async function _process_file(path_install)
 {
-	let gcc_lib = {};
+	await _process_core_metadata_json(path_install);
+	await _process_platform_txt(path_install);
+	await _process_boards_txt(path_install);
+}
+
+async function _process_core_metadata_json(path_install)
+{
+	let array_chip_name = [];
+
+	ZunoConstant.BOARD_LIST_CHIP_SUPPORT = ZunoConstant.BOARD_LIST_CHIP_SUPPORT_DEFAULT;
+	try {
+		const chip_depending = JSON.parse(Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'cores','core_metadata.json'),"utf8")).chip_depending;
+		for (let key in chip_depending) {
+			array_chip_name.push(key);
+		}
+		if (array_chip_name.length > 0x0) {
+			ZunoConstant.BOARD_LIST_CHIP_SUPPORT = array_chip_name;
+		}
+	} catch (error) {  }
+}
+
+async function _process_platform_txt(path_install)
+{
 	let content, x, y;
+
+	ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB = ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB_DEFAULT;
 	try {
 		content = Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'platform.txt'), 'utf8');
 		x = content.search('tools.zprog.cmd.include={runtime.tools.arm-none-eabi-gcc.path}');
 		if (x == -1)
-			return (false);
+			return ;
 		x = x + 62;
 		y = content.indexOf("\n", x);
 		if (y == -1)
-			return (false);
+			return ;
 		y = y - 1;
-		gcc_lib = Path.join('gcc', content.substring(x, y));
+		ZunoConstant.BOARD_CURRENT.ZMAKE.GCC_LIB = Path.join('gcc', content.substring(x, y));
 	} catch (error) {
-		return (false);
+		return ;
 	}
-	return (gcc_lib);
 }
 
-async function _getDataSize(path_install)
+async function _process_boards_txt(path_install)
 {
-	let obj = {};
+	let maximum_size, maximum_data_size;
 	let content, x, y;
+
+	ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE_DEFAULT;
+	ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC_DEFAULT;
 	try {
 		content = Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'boards.txt'), 'utf8');
 		x = content.search('maximum_size=');
@@ -1104,7 +1087,7 @@ async function _getDataSize(path_install)
 			y = x;
 			while (content[y] >= '0' && content[y] <= '9')
 				y++;
-			obj.maximum_size = Number(content.substring(x, y));
+			maximum_size = Number(content.substring(x, y));
 		}
 		x = content.search('maximum_data_size=');
 		if (x != -1)
@@ -1113,12 +1096,13 @@ async function _getDataSize(path_install)
 			y = x;
 			while (content[y] >= '0' && content[y] <= '9')
 				y++;
-			obj.maximum_data_size = Number(content.substring(x, y));
+			maximum_data_size = Number(content.substring(x, y));
 		}
 	} catch (error) {
-		return (false);
+		return ;
 	}
-	return (obj);
+	ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = maximum_size;
+	ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = maximum_data_size;
 }
 
 async function _ptiValidOnly(oldvalue)

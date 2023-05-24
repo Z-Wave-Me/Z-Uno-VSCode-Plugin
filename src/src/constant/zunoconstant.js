@@ -67,6 +67,8 @@ _this.DIR =
 
 /*-------------------------------*/
 _this.BOARD_CURRENT = undefined;
+_this.BOARD_LIST_CHIP_SUPPORT_DEFAULT = undefined;
+_this.BOARD_LIST_CHIP_SUPPORT = _this.BOARD_LIST_CHIP_SUPPORT_DEFAULT;
 _this.BOARD =
 {
 	ZUNO:
@@ -77,12 +79,15 @@ _this.BOARD =
 			EXE: Path.join('zuno_toolchain', Os.platform() == 'win32' ? 'compiler.exe' : 'compiler'),
 			CORE: Path.join('cores', 'zuno'),
 			GCC_EXE: "",
-			GCC_LIB: Path.join('zuno_toolchain', 'sdcc', 'share', 'sdcc', 'include'),
+			GCC_LIB_DEFAULT: Path.join('zuno_toolchain', 'sdcc', 'share', 'sdcc', 'include'),
+			GCC_LIB: undefined,
 			FORCE: [Path.join('cores', 'zuno', 'Arduino.h'), Path.join('cores', 'zuno', 'ZUNO_legacy_channels.h')]
 		},
 		LIB_FAKE: ['Custom_pins.h', 'Custom_defs.h'],
 		MEMORY:
 		{
+			STORAGE_DEFAULT: 32256,
+			DYNAMIC_DEFAULT: 0,
 			STORAGE: 32256,
 			DYNAMIC: 0,
 		},
@@ -111,12 +116,15 @@ _this.BOARD =
 			EXE: Path.join('zme_make', Os.platform() == 'win32' ? 'zme_make.exe' : 'zme_make'),
 			CORE: 'cores',
 			GCC_EXE: Path.join('gcc', 'bin', Os.platform() == 'win32' ? 'arm-none-eabi-gcc.exe' : 'arm-none-eabi-gcc'),
-			GCC_LIB: Path.join('gcc', 'lib', 'gcc', 'arm-none-eabi', '7.2.1', 'include'),
+			GCC_LIB_DEFAULT: Path.join('gcc', 'lib', 'gcc', 'arm-none-eabi', '7.2.1', 'include'),
+			GCC_LIB: undefined,
 			FORCE: [Path.join('cores', 'includes','Arduino.h')]
 		},
 		LIB_FAKE: ['Custom_decl.h', 'Custom_defs.h', 'ZUNO_AutoChannels.h', 'ZUNO_AutoDef.h'],
 		MEMORY:
 		{
+			STORAGE_DEFAULT: 40704,
+			DYNAMIC_DEFAULT: 8192,
 			STORAGE: 40704,
 			DYNAMIC: 8192,
 		},
@@ -145,12 +153,15 @@ _this.BOARD =
 			EXE: Path.join('zme_make', Os.platform() == 'win32' ? 'zme_make.exe' : 'zme_make'),
 			CORE: 'cores',
 			GCC_EXE: Path.join('gcc', 'bin', Os.platform() == 'win32' ? 'arm-none-eabi-gcc.exe' : 'arm-none-eabi-gcc'),
-			GCC_LIB: Path.join('gcc', 'lib', 'gcc', 'arm-none-eabi', '7.2.1', 'include'),
+			GCC_LIB_DEFAULT: Path.join('gcc', 'lib', 'gcc', 'arm-none-eabi', '7.2.1', 'include'),
+			GCC_LIB: undefined,
 			FORCE: [Path.join('cores', 'includes','Arduino.h')]
 		},
 		LIB_FAKE: ['Custom_decl.h', 'Custom_defs.h', 'ZUNO_AutoChannels.h', 'ZUNO_AutoDef.h'],
 		MEMORY:
 		{
+			STORAGE_DEFAULT: 40704,
+			DYNAMIC_DEFAULT: 8192,
 			STORAGE: 40704,
 			DYNAMIC: 8192,
 		},
