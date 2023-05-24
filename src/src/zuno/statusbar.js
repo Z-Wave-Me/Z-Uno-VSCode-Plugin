@@ -26,7 +26,7 @@ const _this = {
 			obj.tooltip = ZunoConstant.SKETCH_PLACEHOLDER;
 			if (sketch != false)
 			{
-				_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.BOARD_CURRENT.chip_name, Crc.hash(sketch, 'md5'));
+				_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, _this.multi_chip.get(), Crc.hash(sketch, 'md5'));
 				obj.text = Path.basename(sketch)
 			}
 			else
@@ -36,7 +36,7 @@ const _this = {
 		set: function(sketch, path_sketch)
 		{
 			_this.sketch.value = sketch;
-			_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.BOARD_CURRENT.chip_name, Crc.hash(path_sketch, 'md5'));
+			_this.sketch.path_tmp = Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, _this.multi_chip.get(), Crc.hash(path_sketch, 'md5'));
 			_this.sketch.obj.text = Path.basename(sketch);
 		},
 		getActiveSketch()
@@ -49,7 +49,7 @@ const _this = {
 		getTmp(path_sketch)
 		{
 			if (_this.sketch.path_tmp == undefined )
-				return (Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, ZunoConstant.BOARD_CURRENT.chip_name, Crc.hash(path_sketch, 'md5')));
+				return (Path.join(ZunoConstant.PATH.TMP_BUILD, ZunoConstant.BOARD_CURRENT.core, _this.multi_chip.get(), Crc.hash(path_sketch, 'md5')));
 			return (_this.sketch.path_tmp);
 		},
 		get()
@@ -161,61 +161,85 @@ const _this = {
 	},
 	power:
 	{
-		value: Config.getPower(),
 		set(power)
 		{
 			_this.power.value = power;
 		},
 		get()
 		{
+			if (_this.power.value == undefined) {
+				_this.power.value = Config.getPower();
+			}
 			return (_this.power.value);
+		}
+	},
+	multi_chip:
+	{
+		set(multi_chip)
+		{
+			_this.multi_chip.value = multi_chip;
+		},
+		get()
+		{
+			if (_this.multi_chip.value == undefined) {
+				_this.multi_chip.value = Config.getMultiChip();
+			}
+			return (_this.multi_chip.value);
 		}
 	},
 	frequency:
 	{
-		value: Config.getFrequency(),
 		set(frequency)
 		{
 			_this.frequency.value = frequency;
 		},
 		get()
 		{
+			if (_this.frequency.value == undefined) {
+				_this.frequency.value = Config.getFrequency();
+			}
 			return (_this.frequency.value);
 		}
 	},
 	complier_options:
 	{
-		value: Config.getComplierOptions(),
 		set(complier_options)
 		{
 			_this.complier_options.value = complier_options;
 		},
 		get()
 		{
+			if (_this.complier_options.value == undefined) {
+				_this.complier_options.value = Config.getComplierOptions();
+			}
 			return (_this.complier_options.value);
 		}
 	},
 	rf_logging:
 	{
-		value: Config.getRfLogging(),
 		set(rf_logging)
 		{
 			_this.rf_logging.value = rf_logging;
 		},
 		get()
 		{
+			if (_this.rf_logging.value == undefined) {
+				_this.rf_logging.value = Config.getRfLogging();
+			}
 			return (_this.rf_logging.value);
 		}
 	},
 	security:
 	{
-		value: Config.getSecurity(),
 		set(security)
 		{
 			_this.security.value = security;
 		},
 		get()
 		{
+			if (_this.security.value == undefined) {
+				_this.security.value = Config.getSecurity();
+			}
 			return (_this.security.value);
 		}
 	}

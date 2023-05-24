@@ -173,6 +173,8 @@ const _this = {
 	UTILITES_LICENSE_END: 'Completed License - ',
 	UTILITES_LICENSE_NOT_PORT: 'To install a license, you need to select a port. Do you want to choose?',
 	/*-------------------------------*/
+	MULTI_CHIP_PLACEHOLDER: 'Choose the chip you want to work with',
+	/*-------------------------------*/
 	POWER_PLACEHOLDER: 'Select RF power from + 0.0dBm to + 14.0dBm',
 	POWER_NOT_REGULAR: 'Enter a number between 0.0 and 14.0',
 /*-------------------------------*/

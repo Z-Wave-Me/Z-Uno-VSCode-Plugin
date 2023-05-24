@@ -82,6 +82,11 @@
 			},
 			{
 				"when": "workspaceFolderCount != 0",
+				"command": "zuno.multi_chip",
+				"title": "%zuno.command.multi_chip.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
 				"command": "zuno.install",
 				"title": "%zuno.command.install.title%"
 			},

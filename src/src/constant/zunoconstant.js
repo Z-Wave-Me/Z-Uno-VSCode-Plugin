@@ -45,6 +45,7 @@ _this.CMD =
 	SECURITY: 'zuno.security',
 	FREQUENCY: 'zuno.frequency',
 	POWER: 'zuno.power',
+	MULTI_CHIP: 'zuno.multi_chip',
 	SKETCH: 'zuno.sketch',
 	PORT: 'zuno.port',
 	COMPLIER_OPTIONS: 'zuno.complier_options',
@@ -66,7 +67,9 @@ _this.DIR =
 }
 
 /*-------------------------------*/
-_this.BOARD_CURRENT = undefined;
+_this.CHIP_NAME_DEFAULT = undefined;
+_this.BOARD_CURRENT_DEFAULT = undefined;
+_this.BOARD_CURRENT = _this.BOARD_CURRENT_DEFAULT;
 _this.BOARD_LIST_CHIP_SUPPORT_DEFAULT = undefined;
 _this.BOARD_LIST_CHIP_SUPPORT = _this.BOARD_LIST_CHIP_SUPPORT_DEFAULT;
 _this.BOARD =

@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file.
 1. Now temporary files created during the build are stored not in the folder created each time, but in 'z-waveme.vscode-zuno'. Also, for each chip, a folder is created in which the sketches are collected.
 2. Now, when changing the board, it does not display a message with a suggestion to restart the project, but does it automatically.
 
+### Add
+1. Added support for multiple chips.
+
 
 
 ## Version 0.2.12

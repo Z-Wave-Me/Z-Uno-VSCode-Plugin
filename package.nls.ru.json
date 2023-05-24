@@ -9,6 +9,7 @@
 	"zuno.command.security.title": "Z-Uno: Выбрать режим шифрования",
 	"zuno.command.frequency.title": "Z-Uno: Выбрать частоту",
 	"zuno.command.power.title": "Z-Uno: Выбрать мощность радиосигнала",
+	"zuno.command.multi_chip.title": "Z-Uno: Выбрать чип с которым будете работать",
 	"zuno.command.install.title": "Z-Uno: Установить необходимые компоненты",
 	"zuno.command.port.title": "Z-Uno: Выбрать последовательный порт",
 	"zuno.command.complier_options.title": "Z-Uno: Введите опции компилирования через \";\"",

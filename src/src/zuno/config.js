@@ -31,10 +31,7 @@ const _this = {//У нас активируеться только когда п
 	getSecurity()//Получает используемую при загрузки скетча security из настроект текущего проекта
 	{
 		let array;
-		if (ZunoConstant.BOARD_CURRENT == undefined)
-			array = ZunoConstant.SECURITY;
-		else
-			array = ZunoConstant.BOARD_CURRENT.security;//Это при загрузки файла не выставленно поэтому ругаеться - поэтому провераем
+		array = ZunoConstant.BOARD_CURRENT.security;//Это при загрузки файла не выставленно поэтому ругаеться - поэтому провераем
 		return (_arrayFind(ZunoConstant.SECURITY, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'security'), ZunoConstant.SECURITY_DEFAULT));
 	},
 	setSecurity(value)//Сохраняет используемый скетч из настроект текущего проекта
@@ -57,6 +54,24 @@ const _this = {//У нас активируеться только когда п
 	setPower(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
 		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'power', value);
+	},
+	getMultiChip()
+	{
+		let value;
+		if (ZunoConstant.BOARD_LIST_CHIP_SUPPORT == ZunoConstant.BOARD_LIST_CHIP_SUPPORT_DEFAULT)
+			return (ZunoConstant.BOARD_CURRENT.chip_name);
+		value = _get(ZunoConstant.PATH.JSON_WORKSPACE, ZunoConstant.BOARD_CURRENT.core + 'multi_chip');
+		if (typeof value != "string")
+			return (ZunoConstant.BOARD_CURRENT.chip_name);
+		for (let i = 0; i < ZunoConstant.BOARD_LIST_CHIP_SUPPORT.length; i++) {
+			if (ZunoConstant.BOARD_LIST_CHIP_SUPPORT[i] == value)
+				return (value);
+		}
+		return (ZunoConstant.BOARD_CURRENT.chip_name);
+	},
+	setMultiChip(value)//
+	{
+		_set(ZunoConstant.PATH.JSON_WORKSPACE, ZunoConstant.BOARD_CURRENT.core + 'multi_chip', value);
 	},
 	getComplierOptions()//Получает используемую при загрузки скетча мощность передаваемого радио сигнала из настроект текущего проекта
 	{

@@ -37,6 +37,7 @@ const _this = {
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SKETCH, _this.sketch));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.FREQUENCY, _this.frequency));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.POWER, _this.power));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MULTI_CHIP, _this.multi_chip));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOOTLOADER, _this.bootloader));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SECURITY, _this.security));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.RF_LOGGING, _this.rf_logging));
@@ -102,10 +103,23 @@ const _this = {
 		StatusBar.security.set([out, select.description, select._zuno_tmp]);
 		return (out);
 	},
+	multi_chip: async function()
+	{
+		if (ZunoConstant.BOARD_LIST_CHIP_SUPPORT == ZunoConstant.BOARD_LIST_CHIP_SUPPORT_DEFAULT)
+			return (false);
+		const multi_chip = StatusBar.multi_chip.get();
+		const select = await VsCode.window.showQuickPick(ZunoConstant.BOARD_LIST_CHIP_SUPPORT.map((element) => {
+			return {label: element};
+		}), {placeHolder: `${multi_chip}`});
+		if (select == undefined)
+			return (false);
+		StatusBar.multi_chip.set(select.label);
+		return (select.label);
+	},
 	power: async function()
 	{
 		if (ZunoConstant.BOARD_CURRENT.power == false)
-			return (0x0);
+			return (false);
 		let pow = StatusBar.power.get();
 		const select = await VsCode.window.showInputBox({
 			placeHolder: Math.trunc(pow / ZunoConstant.POWER.POWER_MULTI) + '.' + (pow % ZunoConstant.POWER.POWER_MULTI),
@@ -206,6 +220,11 @@ const _this = {
 			let value = StatusBar.complier_options.get();
 			options.push(['complier_options', '"' + value + '"', ZunoConstant.COMPLIER_OPTIONS_PLACEHOLDER]);
 		}
+		if (ZunoConstant.BOARD_LIST_CHIP_SUPPORT != ZunoConstant.BOARD_LIST_CHIP_SUPPORT_DEFAULT)
+		{
+			let value = StatusBar.multi_chip.get();
+			options.push(['multi_chip', value, ZunoConstant.MULTI_CHIP_PLACEHOLDER]);
+		}
 		options.push(['utilities', ZunoConstant.UTILITES_DEFAULT, ZunoConstant.UTILITES_PLACEHOLDER]);
 		while (0xFF)
 		{
@@ -238,6 +257,12 @@ const _this = {
 					if (frequency == false)
 						break ;
 					element[1] = frequency;
+					break;
+				case 'multi_chip':
+					const multi_chip = await _this.multi_chip();
+					if (multi_chip == false)
+						break ;
+					element[1] = multi_chip;
 					break;
 				case 'power':
 					const power = await _this.power();
@@ -731,6 +756,10 @@ const _this = {
 						args_build.push('-O');
 						args_build.push('BO:' + value);
 					}
+				}
+				if (ZunoConstant.BOARD_LIST_CHIP_SUPPORT != ZunoConstant.BOARD_LIST_CHIP_SUPPORT_DEFAULT) {
+					args_build.push('-C');
+					args_build.push(StatusBar.multi_chip.get());
 				}
 				args_size = [
 					'arduino_size', path_sketch,
