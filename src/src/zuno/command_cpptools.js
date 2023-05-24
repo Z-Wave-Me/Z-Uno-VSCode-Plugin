@@ -52,7 +52,7 @@ const _this = {
 			await _save_cpp_json({ configurations: [configurations_new], version: VERSION});
 			VsCode.window.showInformationMessage(ZunoConstant.CPP_TOOLS_ADD_CONFIG.replace('${name}', name));
 			await VsCode.commands.executeCommand(ZunoConstant.CPP.CONFIGURATION_SELECT);
-			return ;
+			return (false);//не нужно доп выбирать
 		}
 		let index;
 		for (index = 0; index < array.configurations.length; index++)
@@ -66,22 +66,23 @@ const _this = {
 			await _save_cpp_json(array);
 			VsCode.window.showInformationMessage(ZunoConstant.CPP_TOOLS_ADD_CONFIG.replace('${name}', name));
 			await VsCode.commands.executeCommand(ZunoConstant.CPP.CONFIGURATION_SELECT);
-			return ;
+			return (false);//не нужно доп выбирать
 		}
 		if (Config.getCppIgnored() == true)
-			return ;
+			return (true);//нужно выбрать если меняли чип
 		if (JSON.stringify(configurations_new) === JSON.stringify(array.configurations[index]))
-			return ;
+			return (true);//нужно выбрать если меняли чип
 		array.configurations[index] = configurations_new;
 		const ans = await VsCode.window.showWarningMessage(ZunoConstant.CPP_TOOLS_INCOMPLETE_CONFIG.replace('${name}', name), Constant.DIALOG_OVERWRITE, Constant.DIALOG_SKIP, Constant.DIALOG_IGNORED);
 		if (ans == undefined)
-			return ;
+			return (true);//нужно выбрать если меняли чип
 		if (ans == Constant.DIALOG_IGNORED)
 			return (Config.setCppIgnored(true));
 		if (ans == Constant.DIALOG_SKIP)
-			return ;
+			return (true);//нужно выбрать если меняли чип
 		await _save_cpp_json(array);
 		await VsCode.commands.executeCommand(ZunoConstant.CPP.RESCAN_WORKSPACE);
+		return (true);//нужно выбрать если меняли чип
 	}
 }
 

@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Add
 1. Added support for multiple chips.
-
+2. Now when changing the board, installing a new version of the files and changing the chip - reloads the window.
 
 
 ## Version 0.2.12

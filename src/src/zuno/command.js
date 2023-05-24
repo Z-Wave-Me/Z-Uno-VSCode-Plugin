@@ -114,6 +114,8 @@ const _this = {
 		if (select == undefined)
 			return (false);
 		StatusBar.multi_chip.set(select.label);
+		Config.setMultiChip(select.label);
+		await VsCode.commands.executeCommand(ZunoConstant.WORKBENCH.RELOAD_WINDOW);
 		return (select.label);
 	},
 	power: async function()
@@ -953,6 +955,7 @@ const _this = {
 				for (let index = 0; index < ZunoConstant.BOARD_CURRENT.LIB_FAKE.length; index++)
 					Fs.writeFileSync(Path.join(path_stub, ZunoConstant.BOARD_CURRENT.LIB_FAKE[index]), ' ');
 			} catch (error) {};
+			await VsCode.commands.executeCommand(ZunoConstant.WORKBENCH.RELOAD_WINDOW);
 			return (CommandGeneral.installEpilogue(_this));
 		});
 	},
