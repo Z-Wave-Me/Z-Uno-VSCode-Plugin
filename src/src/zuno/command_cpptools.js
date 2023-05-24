@@ -22,6 +22,8 @@ const _this = {
 		const forcedInclude = [];
 		for (let index = 0; index < ZunoConstant.BOARD_CURRENT.ZMAKE.FORCE.length; index++)
 			forcedInclude.push(Path.join(hardware, ZunoConstant.BOARD_CURRENT.ZMAKE.FORCE[index]));
+		const defines = [
+		];
 		const includePath = [
 			Path.join(hardware, ZunoConstant.BOARD_CURRENT.ZMAKE.CORE, '**'),
 			Path.join(hardware, ZunoConstant.ZMAKE.LIB, '**'),
@@ -36,12 +38,22 @@ const _this = {
 			name = ZunoConstant.BOARD_CURRENT.core;
 		}
 		else {
-			name = ZunoConstant.BOARD_CURRENT.core + ' : ' + StatusBar.multi_chip.get();
+			const chip_name = StatusBar.multi_chip.get();
+			for (let i = 0; i < ZunoConstant.BOARD_LIST_CHIP_SUPPORT.length; i++) {
+				if (ZunoConstant.BOARD_LIST_CHIP_SUPPORT[i][0] == chip_name) {
+					includePath.push(Path.join(hardware, 'device', ZunoConstant.BOARD_LIST_CHIP_SUPPORT[i][1], '**'));
+					forcedInclude.push(Path.join(hardware, 'device', ZunoConstant.BOARD_LIST_CHIP_SUPPORT[i][1], 'em_device.h'));
+					break ;
+				}
+			}
+			defines.push(chip_name + '=1');
+			name = ZunoConstant.BOARD_CURRENT.core + ' : ' + chip_name;
 		}
 		const configurations_new = {
 			name: name,
 			includePath: includePath,
 			forcedInclude: forcedInclude,
+			defines: defines,
 			intelliSenseMode: INTELLISENSEMODE,
 			compilerPath: compiler_path
 		};

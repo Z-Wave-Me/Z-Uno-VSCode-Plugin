@@ -109,7 +109,7 @@ const _this = {
 			return (false);
 		const multi_chip = StatusBar.multi_chip.get();
 		const select = await VsCode.window.showQuickPick(ZunoConstant.BOARD_LIST_CHIP_SUPPORT.map((element) => {
-			return {label: element};
+			return {label: element[0]};
 		}), {placeHolder: `${multi_chip}`});
 		if (select == undefined)
 			return (false);
@@ -1074,7 +1074,7 @@ async function _process_core_metadata_json(path_install)
 	try {
 		const chip_depending = JSON.parse(Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'cores','core_metadata.json'),"utf8")).chip_depending;
 		for (let key in chip_depending) {
-			array_chip_name.push(key);
+			array_chip_name.push([key, chip_depending[key].family]);
 		}
 		if (array_chip_name.length > 0x0) {
 			ZunoConstant.BOARD_LIST_CHIP_SUPPORT = array_chip_name;
