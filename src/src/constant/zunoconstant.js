@@ -30,7 +30,7 @@ _this.ZMAKE =
 _this.REGEXP =
 {
 	SKETCH: /\.((ino))$/,
-	POWER: /(\d+)([.,](\d))$/
+	POWER: /^\d+$/
 }
 
 /*-------------------------------*/
@@ -236,10 +236,9 @@ _this.CPP =
 /*-------------------------------*/
 _this.POWER =
 {
-	POWER_DEFAULT: 0,
-	POWER_MAX: 140,
-	POWER_MULTI: 10,
-	POWER_MIN: 0
+	POWER_DEFAULT: 40,
+	POWER_MAX: 220,
+	POWER_MIN: 1
 }
 
 module.exports = _this;

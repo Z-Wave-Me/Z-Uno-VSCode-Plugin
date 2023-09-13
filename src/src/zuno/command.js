@@ -120,26 +120,28 @@ const _this = {
 	},
 	power: async function()
 	{
+		let not_regular = ZunoConstant.POWER_NOT_REGULAR.replace("%min%", ZunoConstant.POWER.POWER_MIN);
+		not_regular = not_regular.replace("%max%", ZunoConstant.POWER.POWER_MAX);
 		if (ZunoConstant.BOARD_CURRENT.power == false)
 			return (false);
 		let pow = StatusBar.power.get();
 		const select = await VsCode.window.showInputBox({
-			placeHolder: Math.trunc(pow / ZunoConstant.POWER.POWER_MULTI) + '.' + (pow % ZunoConstant.POWER.POWER_MULTI),
+			placeHolder: pow,
 			validateInput: async (value) => {
 				if (value && ZunoConstant.REGEXP.POWER.test(value.trim()) == true)
 				{
-					value = value.trim() * 10;
+					value = value.trim();
 					if (value < ZunoConstant.POWER.POWER_MIN || value > ZunoConstant.POWER.POWER_MAX)
-						return (ZunoConstant.POWER_NOT_REGULAR);
+						return (not_regular);
 					return (null);
 				}
 				else
-					return (ZunoConstant.POWER_NOT_REGULAR);
+					return (not_regular);
 			}
 		});
 		if (select == undefined)
 			return (false);
-		pow = select.trim() * ZunoConstant.POWER.POWER_MULTI;
+		pow = select.trim();
 		Config.setPower(pow);
 		StatusBar.power.set(pow);
 		return (pow);
@@ -215,7 +217,9 @@ const _this = {
 		if (ZunoConstant.BOARD_CURRENT.power == true)
 		{
 			let value = StatusBar.power.get();
-			options.push(['power', '+' + Math.trunc(value / ZunoConstant.POWER.POWER_MULTI) + '.' + (value % ZunoConstant.POWER.POWER_MULTI) + 'dBm', ZunoConstant.POWER_PLACEHOLDER]);
+			let placeholder = ZunoConstant.POWER_PLACEHOLDER.replace("%min%", ZunoConstant.POWER.POWER_MIN);
+			placeholder = placeholder.replace("%max%", ZunoConstant.POWER.POWER_MAX);
+			options.push(['power', value + ' raw', placeholder]);
 		}
 		if (ZunoConstant.BOARD_CURRENT.generation != 0x1)
 		{
@@ -270,7 +274,7 @@ const _this = {
 					const power = await _this.power();
 					if (power == false)
 						break ;
-					element[1] = '+' + Math.trunc(power / ZunoConstant.POWER.POWER_MULTI) + '.' + (power % ZunoConstant.POWER.POWER_MULTI) + 'dBm';
+					element[1] = power + ' raw';
 					break;
 				case 'complier_options':
 					const complier_options = await _this.complier_options();

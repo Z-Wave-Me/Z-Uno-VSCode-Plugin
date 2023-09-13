@@ -175,8 +175,8 @@ const _this = {
 	/*-------------------------------*/
 	MULTI_CHIP_PLACEHOLDER: 'Выберите чип с которым хотите работать',
 	/*-------------------------------*/
-	POWER_PLACEHOLDER: 'Выберите мощность радиосигнала от +0.0dBm до +14.0dBm',
-	POWER_NOT_REGULAR: 'Введите число от 0.0 до 14.0',
+	POWER_PLACEHOLDER: 'Выберите мощность радиосигнала от %min% до %max%',
+	POWER_NOT_REGULAR: 'Введите число от %min% до %max%',
 /*-------------------------------*/
 	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
 	FREQUENCY_PLACEHOLDER: 'Выберите частоту',

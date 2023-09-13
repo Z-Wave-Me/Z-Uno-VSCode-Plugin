@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.14
+- *Release date:* 
+- *Commit:* 
+### Change
+1. Now the power is not dB, but in raw - integers.
+### Fix
+1. Now the default power is not zero - which led to the fact that there was no radio signal.
+
 
 ## Version 0.2.13
 - *Release date:* 24.05.2023

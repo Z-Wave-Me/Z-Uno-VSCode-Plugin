@@ -175,8 +175,8 @@ const _this = {
 	/*-------------------------------*/
 	MULTI_CHIP_PLACEHOLDER: 'Choose the chip you want to work with',
 	/*-------------------------------*/
-	POWER_PLACEHOLDER: 'Select RF power from + 0.0dBm to + 14.0dBm',
-	POWER_NOT_REGULAR: 'Enter a number between 0.0 and 14.0',
+	POWER_PLACEHOLDER: 'Select RF power from %min% to %max%',
+	POWER_NOT_REGULAR: 'Enter a number between %min% and %max%',
 /*-------------------------------*/
 	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
 	FREQUENCY_PLACEHOLDER: 'Select a frequency',

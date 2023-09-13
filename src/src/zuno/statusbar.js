@@ -89,17 +89,6 @@ const _this = {
 		init()
 		{
 			let board = Config.getBoard();
-			let array = false;
-			for (let key in ZunoConstant.BOARD)
-			{
-				if (ZunoConstant.BOARD[key].core == board)
-				{
-					array = true;
-					break ;
-				}
-			}
-			if (array == false)
-				board = ZunoConstant.BOARD.ZUNO2.core;
 			const obj = VsCode.window.createStatusBarItem(VsCode.StatusBarAlignment.Right, ZunoConstant.BARPRIORITY.BOARD);
 			this.obj = obj;
 			obj.command = ZunoConstant.CMD.BOARD;

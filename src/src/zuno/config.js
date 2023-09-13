@@ -8,40 +8,42 @@ const Fs = require("fs");
 const File = require("../common/file");
 const ZunoConstant = require("../constant/zunoconstant");
 
+
+
 const _this = {//У нас активируеться только когда папка рабочая есть поэтому не провераем есть ли рабочая папка
 	getSketch()//Получает используемый скетч из настроект текущего проекта
 	{
-		const sketch = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'sketch');//ZunoConstant.REGEXP.SKETCH.test(
+		const sketch = _get('sketch');//ZunoConstant.REGEXP.SKETCH.test(
 		if (sketch == false || ZunoConstant.REGEXP.SKETCH.test(sketch) == false)//Проверим через регулярку что бы ерунду не подсунули
 			return (false);
 		return (sketch);
 	},
 	setSketch(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'sketch', value);
+		_set('sketch', value);
 	},
 	getRfLogging()
 	{
-		return (_arrayFind(ZunoConstant.RF_LOGGING, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'rf_logging'), ZunoConstant.RF_LOGGING_DEFAULT));
+		return (_arrayFind(ZunoConstant.RF_LOGGING, _get('rf_logging'), ZunoConstant.RF_LOGGING_DEFAULT));
 	},
 	setRfLogging(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'rf_logging', value);
+		_set('rf_logging', value);
 	},
 	getSecurity()//Получает используемую при загрузки скетча security из настроект текущего проекта
 	{
 		let array;
 		array = ZunoConstant.BOARD_CURRENT.security;//Это при загрузки файла не выставленно поэтому ругаеться - поэтому провераем
-		return (_arrayFind(ZunoConstant.SECURITY, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'security'), ZunoConstant.SECURITY_DEFAULT));
+		return (_arrayFind(ZunoConstant.SECURITY, _get('security'), ZunoConstant.SECURITY_DEFAULT));
 	},
 	setSecurity(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'security', value);
+		_set('security', value);
 	},
 	getPower()//Получает используемую при загрузки скетча мощность передаваемого радио сигнала из настроект текущего проекта
 	{
 		let value;
-		value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'power');
+		value = _get('power');
 		if (typeof value == "number" && Number.isInteger(value) == true)
 		{
 			if (value < ZunoConstant.POWER.POWER_MIN || value > ZunoConstant.POWER.POWER_MAX)
@@ -53,14 +55,14 @@ const _this = {//У нас активируеться только когда п
 	},
 	setPower(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'power', value);
+		_set('power', value);
 	},
 	getMultiChip()
 	{
 		let value;
 		if (ZunoConstant.BOARD_LIST_CHIP_SUPPORT == ZunoConstant.BOARD_LIST_CHIP_SUPPORT_DEFAULT)
 			return (ZunoConstant.BOARD_CURRENT.chip_name);
-		value = _get(ZunoConstant.PATH.JSON_WORKSPACE, ZunoConstant.BOARD_CURRENT.core + ':multi_chip');
+		value = _get(ZunoConstant.BOARD_CURRENT.core + ':multi_chip');
 		if (typeof value != "string")
 			return (ZunoConstant.BOARD_CURRENT.chip_name);
 		for (let i = 0; i < ZunoConstant.BOARD_LIST_CHIP_SUPPORT.length; i++) {
@@ -71,49 +73,49 @@ const _this = {//У нас активируеться только когда п
 	},
 	setMultiChip(value)//
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, ZunoConstant.BOARD_CURRENT.core + ':multi_chip', value);
+		_set(ZunoConstant.BOARD_CURRENT.core + ':multi_chip', value);
 	},
 	getComplierOptions()//Получает используемую при загрузки скетча мощность передаваемого радио сигнала из настроект текущего проекта
 	{
 		let value;
-		value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'complier_options');
+		value = _get('complier_options');
 		if (typeof value != "string")
 			value = "";
 		return (value);
 	},
 	setComplierOptions(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'complier_options', value);
+		_set('complier_options', value);
 	},
 	getFrequency()//Получает используемую при загрузки скетча частоту из настроект текущего проекта
 	{
-		return (_arrayFind(ZunoConstant.FREQUENCY, _get(ZunoConstant.PATH.JSON_WORKSPACE, 'frequency'), ZunoConstant.FREQUENCY_DEFAULT));
+		return (_arrayFind(ZunoConstant.FREQUENCY, _get('frequency'), ZunoConstant.FREQUENCY_DEFAULT));
 	},
 	setFrequency(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'frequency', value);
+		_set('frequency', value);
 	},
 	getCppIgnored()//Получает Нужно  ли игнорить ошибки в настройках IntelliSense
 	{
-		const value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'cppIgnored');
+		const value = _get('cppIgnored');
 		return ((value == 'Enabled') ? true : false);
 	},
 	setCppIgnored(value)//Сохраняет Нужно  ли игнорить ошибки в настройках IntelliSense
 	{
 		value = (value == true) ? 'Enabled' : 'Disabled';
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'cppIgnored', value);
+		_set('cppIgnored', value);
 	},
 	getPort()//Получает используемый порт из настроект текущего проекта
 	{
-		return (_get(ZunoConstant.PATH.JSON_WORKSPACE, 'port'));
+		return (_get('port'));
 	},
 	setPort(value)//Сохраняет используемый порт из настроект текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'port', value);
+		_set('port', value);
 	},
 	getPTI_output()//Получает из настроект текущего проекта
 	{
-		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_output');
+		let value = _get('PTI_output');
 		if (value == false)
 			return (false);
 		if (typeof value === 'string' || value instanceof String)
@@ -122,11 +124,11 @@ const _this = {//У нас активируеться только когда п
 	},
 	setPTI_output(value)//Сохраняет в настройках текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_output', value);
+		_set('PTI_output', value);
 	},
 	getPTI_input()//Получает из настроект текущего проекта
 	{
-		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_input');
+		let value = _get('PTI_input');
 		if (value == false)
 			return (false);
 		if (typeof value === 'string' || value instanceof String)
@@ -135,11 +137,11 @@ const _this = {//У нас активируеться только когда п
 	},
 	setPTI_input(value)//Сохраняет в настройках текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_input', value);
+		_set('PTI_input', value);
 	},
 	getPTI_valid_only()//Получает из настроект текущего проекта
 	{
-		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_valid_only');
+		let value = _get('PTI_valid_only');
 		if (value == false)
 			return (false);
 		if (typeof value === 'boolean')
@@ -148,11 +150,11 @@ const _this = {//У нас активируеться только когда п
 	},
 	setPTI_valid_only(value)//Сохраняет в настройках текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_valid_only', value);
+		_set('PTI_valid_only', value);
 	},
 	getBoardInfo_port()//Получает из настроект текущего проекта
 	{
-		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'BoardInfo_port');
+		let value = _get('BoardInfo_port');
 		if (value == false)
 			return (false);
 		if (typeof value === 'string' || value instanceof String)
@@ -161,11 +163,11 @@ const _this = {//У нас активируеться только когда п
 	},
 	setBoardInfo_port(value)//Сохраняет в настройках текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'BoardInfo_port', value);
+		_set('BoardInfo_port', value);
 	},
 	getPTI_port()//Получает из настроект текущего проекта
 	{
-		let value = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_port');
+		let value = _get('PTI_port');
 		if (value == false)
 			return (false);
 		if (typeof value === 'string' || value instanceof String)
@@ -174,26 +176,38 @@ const _this = {//У нас активируеться только когда п
 	},
 	setPTI_port(value)//Сохраняет в настройках текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_port', value);
+		_set('PTI_port', value);
 	},
 	getPTI_baudRate()//Получает из настроект текущего проекта
 	{
-		const baudRate = _get(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_baudRate');
+		const baudRate = _get('PTI_baudRate');
 		if (baudRate == undefined || Number.isInteger(baudRate) == false || baudRate < 230400)
 			return (230400);
 		return (baudRate);
 	},
 	setPTI_baudRate(value)//Сохраняет в настройках текущего проекта
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'PTI_baudRate', value);
+		_set('PTI_baudRate', value);
 	},
 	getBoard()//Получает используемый плату
 	{
-		return (_get(ZunoConstant.PATH.JSON_WORKSPACE, 'board'));
+		let board = _get('board');
+		let array = false;
+		for (let key in ZunoConstant.BOARD)
+		{
+			if (ZunoConstant.BOARD[key].core == board)
+			{
+				array = true;
+				break ;
+			}
+		}
+		if (array == false)
+			board = ZunoConstant.BOARD.ZUNO2.core;
+		return (board);
 	},
 	setBoard(value)//Сохраняет используемый плату
 	{
-		_set(ZunoConstant.PATH.JSON_WORKSPACE, 'board', value);
+		_set('board', value);
 	},
 	getSettting(file)//Получает ивалидирует общие настройки находящиеся в папке куда устанавливаеться необходимые капоненты
 	{
@@ -239,8 +253,9 @@ function _arrayFind(array, key, def)
 	return (def);
 }
 
-function _get(file, name)
+function _get(name)
 {//Получает из указанного файла в виде json информацию
+	let file = ZunoConstant.PATH.JSON_WORKSPACE;
 	try {//Если битый то просто false возратим
 		const array = JSON.parse(Fs.readFileSync(file, "utf8"));
 		if (array[name] == undefined)
@@ -249,8 +264,9 @@ function _get(file, name)
 	} catch (error) {return (false); }
 }
 
-async function _set(file, name, value)
+async function _set(name, value)
 {//Сохраняет в указанный файл в виде json информацию
+	let file = ZunoConstant.PATH.JSON_WORKSPACE;
 	let array;
 	if (Fs.existsSync(file) == false)
 	{
