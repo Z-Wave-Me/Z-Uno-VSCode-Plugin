@@ -55,7 +55,7 @@ const _this = {//У нас активируеться только когда п
 	},
 	setPower(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
-		_set('power', value);
+		_set('power', Number(value));
 	},
 	getMultiChip()
 	{

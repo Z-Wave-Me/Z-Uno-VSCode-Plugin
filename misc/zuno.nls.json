@@ -19,8 +19,8 @@
             "minLength": 1
         },
         "power": {
-            "description": "Radio transmission power, by default: +0dBm - normal",
-            "type": "string",
+            "description": "Radio transmission power",
+            "type": "integer",
             "minLength": 1
         },
         "security": {

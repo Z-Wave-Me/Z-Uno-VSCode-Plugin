@@ -19,8 +19,8 @@
             "minLength": 1
         },
         "power": {
-            "description": "Мощность передачи по радио, по умолчанию: +0dBm - нормальная",
-            "type": "string",
+            "description": "Мощность передачи по радио",
+            "type": "integer",
             "minLength": 1
         },
         "security": {
