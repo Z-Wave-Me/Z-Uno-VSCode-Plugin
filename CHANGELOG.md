@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 1. Now the power is not dB, but in raw - integers.
 ### Fix
 1. Now the default power is not zero - which led to the fact that there was no radio signal.
+### Add
+1. Added the ability to change the sketch loading speed
 
 
 ## Version 0.2.13

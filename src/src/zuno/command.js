@@ -36,6 +36,7 @@ const _this = {
 		_this.array_host = array_host;//Хост системы для конфига качаемого
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SKETCH, _this.sketch));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.FREQUENCY, _this.frequency));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.UART_BAUDRATE, _this.uart_baudrate));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.POWER, _this.power));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MULTI_CHIP, _this.multi_chip));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.BOOTLOADER, _this.bootloader));
@@ -193,6 +194,21 @@ const _this = {
 				break ;
 		}
 	},
+	uart_baudrate: async function()
+	{
+		if (ZunoConstant.BOARD_CURRENT.uart_baudrate == false)
+			return (false);
+		const uart_baudrate = StatusBar.uart_baudrate.get();
+		const select = await VsCode.window.showQuickPick(ZunoConstant.UART_BAUDRATE.LIST.map((element) => {
+			return {description: "baud rate", label: "" + element};
+		}), {placeHolder: `${uart_baudrate} - baud rate`});
+		if (select == undefined)
+			return (false);
+		const out = Number(select.label);
+		Config.setUartBaudrate(out);
+		StatusBar.uart_baudrate.set(out);
+		return (out);
+	},
 	frequency: async function()
 	{
 		const freq = StatusBar.frequency.get();
@@ -214,6 +230,19 @@ const _this = {
 			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER],
 			['rf_logging', StatusBar.rf_logging.get()[0], ZunoConstant.RF_LOGGING_PLACEHOLDER]
 		];
+		if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
+		{
+			let value = StatusBar.uart_baudrate.get();
+			let placeholder = ZunoConstant.UART_BAUDRATE_PLACEHOLDER;
+			let placeholder_replace = ""
+			for (let i = 0; i < ZunoConstant.UART_BAUDRATE.LIST.length; i++) {
+				placeholder_replace = placeholder_replace + ZunoConstant.UART_BAUDRATE.LIST[i]
+				if (i < ZunoConstant.UART_BAUDRATE.LIST.length - 0x1)
+					placeholder_replace = placeholder_replace + ", "
+			}
+			placeholder = placeholder.replace("%baudrate%", placeholder_replace);
+			options.push(['uart_baudrate', value + ' baud rate', placeholder]);
+		}
 		if (ZunoConstant.BOARD_CURRENT.power == true)
 		{
 			let value = StatusBar.power.get();
@@ -276,6 +305,12 @@ const _this = {
 						break ;
 					element[1] = power + ' raw';
 					break;
+				case 'uart_baudrate':
+					const uart_baudrate = await _this.uart_baudrate();
+					if (uart_baudrate == false)
+						break ;
+					element[1] = uart_baudrate + ' baud rate';
+					break;
 				case 'complier_options':
 					const complier_options = await _this.complier_options();
 					if (complier_options == false)
@@ -334,6 +369,11 @@ const _this = {
 				'-b', number_license,
 				'-d', port
 			];
+			if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
+			{
+				arg_license.push('-ub');
+				arg_license.push(StatusBar.uart_baudrate.get());
+			}
 			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 			{
@@ -419,6 +459,11 @@ const _this = {
 							'boardInfo',
 							'-d', port
 						];
+						if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
+						{
+							arg_boardInfo.push('-ub');
+							arg_boardInfo.push(StatusBar.uart_baudrate.get());
+						}
 						SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
 						if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 						{
@@ -586,6 +631,11 @@ const _this = {
 					'-d', port
 				];
 			}
+			if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
+			{
+				arg_bootloader.push('-ub');
+				arg_bootloader.push(StatusBar.uart_baudrate.get());
+			}
 			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 			{
@@ -651,6 +701,11 @@ const _this = {
 					'-c', path_bootloader,
 					'-d', port
 				];
+			}
+			if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
+			{
+				arg_bootloader.push('-ub');
+				arg_bootloader.push(StatusBar.uart_baudrate.get());
 			}
 			SerialMonitor.pauseMonitor();//Если есть открытый монитор закрываем его что бы прошить 
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
@@ -794,6 +849,11 @@ const _this = {
 					'-p', `flag_rflog=${StatusBar.rf_logging.get()[2]}`,
 					'-d', port
 				];
+			}
+			if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
+			{
+				args_update.push('-ub');
+				args_update.push(StatusBar.uart_baudrate.get());
 			}
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 			{
@@ -1133,6 +1193,11 @@ async function _process_boards_txt(path_install)
 			while (content[y] >= '0' && content[y] <= '9')
 				y++;
 			maximum_data_size = Number(content.substring(x, y));
+		}
+		x = content.search('menu.UARTBaudrate.ULTRA');
+		if (x != -1)
+		{
+			ZunoConstant.BOARD_CURRENT.uart_baudrate = true
 		}
 	} catch (error) {
 		return ;

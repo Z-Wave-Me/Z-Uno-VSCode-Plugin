@@ -40,6 +40,23 @@ const _this = {//У нас активируеться только когда п
 	{
 		_set('security', value);
 	},
+	getUartBaudrate()//Получает скорость загрузки скетча и по совместительсву для дрцгих аналогичных функций
+	{
+		let value;
+		value = _get('uart_baudrate');
+		if (typeof value == "number" && Number.isInteger(value) == true)
+		{
+			for (let i = 0; i < ZunoConstant.UART_BAUDRATE.LIST.length; i++) {
+				if (ZunoConstant.UART_BAUDRATE.LIST[i] == value)
+					return (value);
+			}
+		}
+		return (ZunoConstant.UART_BAUDRATE.DEFAULT);
+	},
+	setUartBaudrate(value)//Сохраняет используемый скетч из настроект текущего проекта
+	{
+		_set('uart_baudrate', Number(value));
+	},
 	getPower()//Получает используемую при загрузки скетча мощность передаваемого радио сигнала из настроект текущего проекта
 	{
 		let value;

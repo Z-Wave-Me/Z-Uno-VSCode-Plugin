@@ -178,6 +178,8 @@ const _this = {
 	POWER_PLACEHOLDER: 'Select RF power from %min% to %max%',
 	POWER_NOT_REGULAR: 'Enter a number between %min% and %max%',
 /*-------------------------------*/
+	UART_BAUDRATE_PLACEHOLDER: 'Select the desired speed from the supported ones: %baudrate%',
+/*-------------------------------*/
 	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
 	FREQUENCY_PLACEHOLDER: 'Select a frequency',
 	FREQUENCY:

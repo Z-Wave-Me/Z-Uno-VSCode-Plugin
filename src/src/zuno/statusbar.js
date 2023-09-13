@@ -190,6 +190,20 @@ const _this = {
 			return (_this.frequency.value);
 		}
 	},
+	uart_baudrate:
+	{
+		set(uart_baudrate)
+		{
+			_this.uart_baudrate.value = uart_baudrate;
+		},
+		get()
+		{
+			if (_this.uart_baudrate.value == undefined) {
+				_this.uart_baudrate.value = Config.getUartBaudrate();
+			}
+			return (_this.uart_baudrate.value);
+		}
+	},
 	complier_options:
 	{
 		set(complier_options)

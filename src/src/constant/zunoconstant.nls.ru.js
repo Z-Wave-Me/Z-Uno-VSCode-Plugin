@@ -178,6 +178,8 @@ const _this = {
 	POWER_PLACEHOLDER: 'Выберите мощность радиосигнала от %min% до %max%',
 	POWER_NOT_REGULAR: 'Введите число от %min% до %max%',
 /*-------------------------------*/
+	UART_BAUDRATE_PLACEHOLDER: 'Выберите нужную скорость из поддерживаемых: %baudrate%',
+/*-------------------------------*/
 	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
 	FREQUENCY_PLACEHOLDER: 'Выберите частоту',
 	FREQUENCY:

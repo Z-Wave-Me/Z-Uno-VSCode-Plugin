@@ -38,6 +38,7 @@ _this.CMD =
 {
 	BOOTLOADER: 'zuno.bootloader',
 	RF_LOGGING: 'zuno.rf_logging',
+	UART_BAUDRATE: 'zuno.uart_baudrate',
 	ERASENVM: 'zuno.eraseNVM',
 	BOARDINFO: 'zuno.boardInfo',
 	LICENSE: 'zuno.license',
@@ -109,7 +110,8 @@ _this.BOARD =
 		power: false,
 		PTI: false,
 		boardInfo: false,
-		license: false
+		license: false,
+		uart_baudrate: false
 	},
 	ZUNO2:
 	{
@@ -146,7 +148,8 @@ _this.BOARD =
 		power: true,
 		PTI: true,
 		boardInfo: true,
-		license: true
+		license: true,
+		uart_baudrate: false
 	},
 	ZUNO2_BETA:
 	{
@@ -183,7 +186,8 @@ _this.BOARD =
 		power: true,
 		PTI: true,
 		boardInfo: true,
-		license: true
+		license: true,
+		uart_baudrate: false
 	}
 }
 
@@ -240,5 +244,13 @@ _this.POWER =
 	POWER_MAX: 220,
 	POWER_MIN: 1
 }
+
+/*-------------------------------*/
+_this.UART_BAUDRATE =
+{
+	DEFAULT: 230400,
+	LIST: [115200, 230400, 460800, 921600]
+}
+
 
 module.exports = _this;

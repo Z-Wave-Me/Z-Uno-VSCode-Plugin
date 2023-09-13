@@ -2,6 +2,7 @@
 	"zuno.command.sketch.title": "Z-Uno: Select sketch file",
 	"zuno.command.bootloader.title": "Z-Uno: Burn bootloader",
 	"zuno.command.rf_logging.title": "Z-Uno: Enable or disable radio logging",
+	"zuno.command.uart_baudrate.title": "Z-Uno: Allows you to change baudrate to interact with device",
 	"zuno.command.eraseNVM.title": "Z-Uno: Erases device NVM data completely",
 	"zuno.command.boardInfo.title": "Z-Uno: Extracts metadata from connected Z-Uno board",
 	"zuno.command.license.title": "Z-Uno: Set license",

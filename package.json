@@ -42,6 +42,11 @@
 			},
 			{
 				"when": "workspaceFolderCount != 0",
+				"command": "zuno.uart_baudrate",
+				"title": "%zuno.command.uart_baudrate.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
 				"command": "zuno.rf_logging",
 				"title": "%zuno.command.rf_logging.title%"
 			},

@@ -2,6 +2,7 @@
 	"zuno.command.sketch.title": "Z-Uno: Выбрать скетч файл",
 	"zuno.command.bootloader.title": "Z-Uno: Записать загрузчик",
 	"zuno.command.rf_logging.title": "Z-Uno: Включите или отключите логирование по радио",
+	"zuno.command.uart_baudrate.title": "Z-Uno: Позволяет изменять скорость передачи данных для взаимодействия с устройством",
 	"zuno.command.eraseNVM.title": "Z-Uno: Полностью стирает данные NVM устройства",
 	"zuno.command.boardInfo.title": "Z-Uno: Извлекает метаданные из подключенной платы Z-Uno",
 	"zuno.command.license.title": "Z-Uno: Устанавливает лицензию",
