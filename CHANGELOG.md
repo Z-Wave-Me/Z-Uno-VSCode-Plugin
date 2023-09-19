@@ -2,11 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## Version 0.2.15
-- *Release date:* 
-- *Commit:* 
+- *Release date:* Tue Sep 19 18:22:56 2023 +0300
+- *Commit:* 5e19071d6cf972c8a9d383521053ff85b9159a78
 ### Add
 1. Small, temporary and quick addition - US_LR
-
 
 
 ## Version 0.2.14
