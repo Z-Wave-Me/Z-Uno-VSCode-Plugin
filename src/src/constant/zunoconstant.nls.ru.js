@@ -193,7 +193,8 @@ const _this = {
 		['JP', 'Japan', 'JP'],
 		['KR', 'Korea', 'KR'],
 		['RU', 'Russian', 'RU'],
-		['US', 'USA', 'US']
+		['US', 'USA', 'US'],
+		['US_LR', 'USA Long Range', 'US_LR']
 	]
 }
 

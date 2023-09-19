@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.15
+- *Release date:* 
+- *Commit:* 
+### Add
+1. Small, temporary and quick addition - US_LR
+
+
+
 ## Version 0.2.14
 - *Release date:* Wed Sep 13 19:35:59 2023 +0300
 - *Commit:* 69316be109fa38bd8d8f820945659dc0e4948ed0
