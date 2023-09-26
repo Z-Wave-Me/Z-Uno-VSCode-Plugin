@@ -180,22 +180,7 @@ const _this = {
 /*-------------------------------*/
 	UART_BAUDRATE_PLACEHOLDER: 'Select the desired speed from the supported ones: %baudrate%',
 /*-------------------------------*/
-	FREQUENCY_DEFAULT: ['EU', 'Europe', 'EU'],
-	FREQUENCY_PLACEHOLDER: 'Select a frequency',
-	FREQUENCY:
-	[
-		['ANZ', 'Australia & New Zealand, Brazil', 'ANZ'],
-		['CN', 'China', 'CN'],
-		['EU', 'Europe', 'EU'],
-		['HK', 'Hong Kong', 'HK'],
-		['IL', 'Israel', 'IL'],
-		['IN', 'India', 'IN'],
-		['JP', 'Japan', 'JP'],
-		['KR', 'Korea', 'KR'],
-		['RU', 'Russian', 'RU'],
-		['US', 'USA', 'US'],
-		['US_LR', 'USA Long Range', 'US_LR']
-	]
+	FREQUENCY_PLACEHOLDER: 'Select a frequency'
 }
 
 module.exports = _this;

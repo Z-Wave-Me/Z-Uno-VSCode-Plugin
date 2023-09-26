@@ -212,22 +212,22 @@ const _this = {
 	frequency: async function()
 	{
 		const freq = StatusBar.frequency.get();
-		const select = await VsCode.window.showQuickPick(ZunoConstant.FREQUENCY.map((element) => {
-			return {description: element[1], label: element[0], _zuno_tmp: element[2]};
-		}), {placeHolder: `${freq[0]} - ${freq[1]}`});
+		const select = await VsCode.window.showQuickPick(ZunoConstant.FREQUENCY_DICT_ARRAY.map((element) => {
+			return {description: element["description"], label: element["freq"]};
+		}), {placeHolder: `${freq["freq"]} - ${freq["description"]}`});
 		if (select == undefined)
 			return (false);
-		const out = select.label;
-		Config.setFrequency(out);
-		StatusBar.frequency.set([out, select.description, select._zuno_tmp]);
-		return (out);
+		select["freq"] = select["label"];
+		Config.setFrequency(select["freq"]);
+		StatusBar.frequency.set(select);
+		return (select["freq"]);
 	},
 	settings: async function()
 	{
 		let options =
 		[
 			['security', StatusBar.security.get()[0], ZunoConstant.SECURITY_PLACEHOLDER],
-			['frequency', StatusBar.frequency.get()[0], ZunoConstant.FREQUENCY_PLACEHOLDER],
+			['frequency', StatusBar.frequency.get()["freq"], ZunoConstant.FREQUENCY_PLACEHOLDER],
 			['rf_logging', StatusBar.rf_logging.get()[0], ZunoConstant.RF_LOGGING_PLACEHOLDER]
 		];
 		if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
@@ -690,7 +690,7 @@ const _this = {
 					'boot',
 					'-p', path_bootloader,
 					'--param', `sec=${StatusBar.security.get()[2]}`,
-					'-fr', StatusBar.frequency.get()[2],
+					'-fr', StatusBar.frequency.get()["freq"],
 					'-d', port
 				];
 			}
@@ -835,7 +835,7 @@ const _this = {
 					'prog', Path.join(tmp, Path.basename(path_sketch)),
 					'-p', `sec=${StatusBar.security.get()[2]}`,
 					'-p', `logging=${StatusBar.rf_logging.get()[2]}`,
-					'-fr', StatusBar.frequency.get()[2],
+					'-fr', StatusBar.frequency.get()["freq"],
 					'-d', port
 				];
 			}
@@ -845,7 +845,7 @@ const _this = {
 					'upload', path_sketch,
 					'-B', tmp,
 					'-p', `sec=${StatusBar.security.get()[2]}`,
-					'-fr', StatusBar.frequency.get()[2],
+					'-fr', StatusBar.frequency.get()["freq"],
 					'-p', `main_pow=${StatusBar.power.get()}`,
 					'-p', `flag_rflog=${StatusBar.rf_logging.get()[2]}`,
 					'-d', port,
@@ -1171,7 +1171,7 @@ async function _process_platform_txt(path_install)
 
 async function _process_boards_txt(path_install)
 {
-	let content, x, y;
+	let content, x, y, find_array, regexp_freq, value_text, value, arr_freq, dictionary_freq;
 
 	ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE_DEFAULT;
 	ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC_DEFAULT;
@@ -1179,6 +1179,34 @@ async function _process_boards_txt(path_install)
 		content = Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'boards.txt'), 'utf8');
 	} catch (error) {
 		return ;
+	}
+	arr_freq = new Array();
+	regexp_freq = new RegExp(/\.menu\.Frequency\.(\w{1,})\.build\.rf_freq(\s{0,})=(\s{0,})(\w{1,})/, "g");
+	find_array = content.match(regexp_freq);
+	if (find_array) {
+		for (let item of find_array)
+		{
+			value = item.match(new RegExp(regexp_freq.source));
+			value_text = content.match(new RegExp("\\.menu\\.Frequency\\." + value[0x1] +"(\\s{0,})=(\\s{0,})([a-zA-Z 0-9 &,]{1,})"));
+			if (value_text)
+			{
+				dictionary_freq = new Object();
+				dictionary_freq["description"] = value_text[0x3].trim();
+				dictionary_freq["freq"] = value[0x4];
+				arr_freq.push(dictionary_freq);
+			}
+		}
+	}
+	if (arr_freq.length != 0x0) {
+		const freq_default = ZunoConstant.FREQUENCY_DEFAULT_KEY;
+		ZunoConstant.FREQUENCY_DEFAULT_KEY = arr_freq[0x0]["freq"];
+		for (let item of arr_freq) {
+			if (item["freq"] == freq_default) {
+				ZunoConstant.FREQUENCY_DEFAULT_KEY = freq_default;
+				break ;
+			}
+		}
+		ZunoConstant.FREQUENCY_DICT_ARRAY = arr_freq;
 	}
 	x = content.search('maximum_size=');
 	if (x != -1)

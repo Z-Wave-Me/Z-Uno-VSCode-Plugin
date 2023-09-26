@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Add
 1. '-i' - for compatibility Arduino
+2. Now the frequency is taken from board.txt
 
 ## Version 0.2.15
 - *Release date:* Tue Sep 19 18:22:56 2023 +0300

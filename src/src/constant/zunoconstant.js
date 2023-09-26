@@ -252,5 +252,19 @@ _this.UART_BAUDRATE =
 	LIST: [115200, 230400, 460800, 921600]
 }
 
+_this.FREQUENCY_DEFAULT_KEY = 'EU'
+_this.FREQUENCY_DICT_ARRAY =
+[
+	{"freq": 'ANZ', "description": 'Australia & New Zealand, Brazil'},
+	{"freq": 'CN', "description": 'China'},
+	{"freq": 'EU', "description": 'Europe'},
+	{"freq": 'HK', "description": 'Hong Kong'},
+	{"freq": 'IL', "description": 'Israel'},
+	{"freq": 'IN', "description": 'India'},
+	{"freq": 'JP', "description": 'Japan'},
+	{"freq": 'KR', "description": 'Korea'},
+	{"freq": 'RU', "description": 'Russian'},
+	{"freq": 'US', "description": 'USA'}
+]
 
 module.exports = _this;

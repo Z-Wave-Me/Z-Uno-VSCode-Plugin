@@ -106,7 +106,16 @@ const _this = {//У нас активируеться только когда п
 	},
 	getFrequency()//Получает используемую при загрузки скетча частоту из настроект текущего проекта
 	{
-		return (_arrayFind(ZunoConstant.FREQUENCY, _get('frequency'), ZunoConstant.FREQUENCY_DEFAULT));
+		const freq = _get('frequency');
+		for (let item of ZunoConstant.FREQUENCY_DICT_ARRAY) {
+			if (item["freq"] == freq)
+				return (item);
+		}
+		for (let item of ZunoConstant.FREQUENCY_DICT_ARRAY) {
+			if (item["freq"] == ZunoConstant.FREQUENCY_DEFAULT_KEY)
+				return (item);
+		}
+		return (undefined);
 	},
 	setFrequency(value)//Сохраняет используемый скетч из настроект текущего проекта
 	{
