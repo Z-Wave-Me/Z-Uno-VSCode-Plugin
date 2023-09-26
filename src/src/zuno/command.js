@@ -853,7 +853,7 @@ const _this = {
 			if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
 			{
 				args_update.push('-ub');
-				args_update.push(StatusBar.uart_baudrate.get());
+				args_update.push("" + StatusBar.uart_baudrate.get());//VsCode.Task аргументы принимает только строки
 			}
 			if (VsConfig.getOutputTerminal() != false)//Вывод с помощью задачи не в стандартный канал а в типа терминал
 			{
