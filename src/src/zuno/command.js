@@ -1169,41 +1169,38 @@ async function _process_platform_txt(path_install)
 
 async function _process_boards_txt(path_install)
 {
-	let maximum_size, maximum_data_size;
 	let content, x, y;
 
 	ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE_DEFAULT;
 	ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC_DEFAULT;
 	try {
 		content = Fs.readFileSync(Path.join(path_install, ZunoConstant.BOARD_CURRENT.core, 'hardware', 'boards.txt'), 'utf8');
-		x = content.search('maximum_size=');
-		if (x != -1)
-		{
-			x = x + 13;
-			y = x;
-			while (content[y] >= '0' && content[y] <= '9')
-				y++;
-			maximum_size = Number(content.substring(x, y));
-		}
-		x = content.search('maximum_data_size=');
-		if (x != -1)
-		{
-			x = x + 18;
-			y = x;
-			while (content[y] >= '0' && content[y] <= '9')
-				y++;
-			maximum_data_size = Number(content.substring(x, y));
-		}
-		x = content.search('menu.UARTBaudrate.ULTRA');
-		if (x != -1)
-		{
-			ZunoConstant.BOARD_CURRENT.uart_baudrate = true
-		}
 	} catch (error) {
 		return ;
 	}
-	ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = maximum_size;
-	ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = maximum_data_size;
+	x = content.search('maximum_size=');
+	if (x != -1)
+	{
+		x = x + 13;
+		y = x;
+		while (content[y] >= '0' && content[y] <= '9')
+			y++;
+		ZunoConstant.BOARD_CURRENT.MEMORY.STORAGE = Number(content.substring(x, y));
+	}
+	x = content.search('maximum_data_size=');
+	if (x != -1)
+	{
+		x = x + 18;
+		y = x;
+		while (content[y] >= '0' && content[y] <= '9')
+			y++;
+		ZunoConstant.BOARD_CURRENT.MEMORY.DYNAMIC = Number(content.substring(x, y));
+	}
+	x = content.search('menu.UARTBaudrate.ULTRA');
+	if (x != -1)
+	{
+		ZunoConstant.BOARD_CURRENT.uart_baudrate = true
+	}
 }
 
 async function _ptiValidOnly(oldvalue)
