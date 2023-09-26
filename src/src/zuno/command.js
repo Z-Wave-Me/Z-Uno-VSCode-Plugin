@@ -699,7 +699,8 @@ const _this = {
 				arg_bootloader = [
 					'boot',
 					'-c', path_bootloader,
-					'-d', port
+					'-d', port,
+					'-i'
 				];
 			}
 			if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)
@@ -847,7 +848,8 @@ const _this = {
 					'-fr', StatusBar.frequency.get()[2],
 					'-p', `main_pow=${StatusBar.power.get()}`,
 					'-p', `flag_rflog=${StatusBar.rf_logging.get()[2]}`,
-					'-d', port
+					'-d', port,
+					'-i'
 				];
 			}
 			if (ZunoConstant.BOARD_CURRENT.uart_baudrate == true)

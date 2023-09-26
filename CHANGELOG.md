@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Fix
 1. Mode "terminal"
 
+### Add
+1. '-i' - for compatibility Arduino
 
 ## Version 0.2.15
 - *Release date:* Tue Sep 19 18:22:56 2023 +0300
