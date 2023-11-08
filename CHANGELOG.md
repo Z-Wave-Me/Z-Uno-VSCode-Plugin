@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.17
+- *Release date:* 
+- *Commit:* 
+### Fix
+1. Fix create "c_cpp_properties.json"
+
 ## Version 0.2.16
 - *Release date:* Wed Sep 27 01:53:59 2023 +0300
 - *Commit:* 47c657ae0ec201da2670b3556112dcff983d212b

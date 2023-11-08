@@ -105,7 +105,7 @@ async function _save_cpp_json(array)
 {
 	try
 	{
-		if (Fs.accessSync(ZunoConstant.PATH.JSON_DIR) == false)
+		if (Fs.existsSync(ZunoConstant.PATH.JSON_DIR) == false)
 			Fs.mkdirSync(ZunoConstant.PATH.JSON_DIR);
 		Fs.writeFileSync(ZunoConstant.PATH.JSON_CPPTOOLS, JSON.stringify(array, null, 4));
 	} catch (error) {}
