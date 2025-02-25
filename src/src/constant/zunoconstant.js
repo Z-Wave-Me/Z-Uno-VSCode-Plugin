@@ -175,7 +175,7 @@ _this.BOARD =
 		JSON_URL: 'https://z-uno.z-wave.me/files/z-uno2/package_z-wave2.me_beta_index.json',
 		EXAMPLES: Path.join('libraries', 'Z-Uno-2G', 'examples'),
 		chip_name: 'ZGM130S037HGN1',
-		core: 'Z-Uno2 (Beta)',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
+		core: 'Z-Uno2-Beta',//Нужно что бы соответсвовало скачеваему файлу от INSTALL_URL array.packages.name
 		description: _this.Z_UNO2_BETA_DESCRIPTION,
 		security: _this.SECURITY2,
 		pid : 0xEA60,

@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.18
+- *Release date:* Wed Nov 8 16:30:23 2023 +0300
+- *Commit:* e0745ec1f31983afdd430504e8c270f97d11b59a
+### Fix
+1. Update naming
+
 ## Version 0.2.17
 - *Release date:* Wed Nov 8 16:29:51 2023 +0300
 - *Commit:* ae90888a157c1ca888e83f0c9367a1c24f10c994
