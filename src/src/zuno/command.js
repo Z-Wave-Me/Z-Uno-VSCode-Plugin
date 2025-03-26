@@ -857,7 +857,7 @@ const _this = {
 			if (ZunoConstant.BOARD_CURRENT.sketch_encryption == true)
 			{
 				args_build.push('-ski');
-				args_build.push(StatusBar.sketch_encryption.get());
+				args_build.push(StatusBar.sketch_encryption.get()["key"]);
 			}
 			let args_update;
 			if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
