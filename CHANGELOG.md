@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - *Commit:* 
 ### Fix
 1. Added support for Sketch Encryption (B2B)
+2. Fixed a bug due to which the component was not installed the first time.
 
 ## Version 0.2.18
 - *Release date:* Wed Nov 8 16:30:23 2023 +0300
