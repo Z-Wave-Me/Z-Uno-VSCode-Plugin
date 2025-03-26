@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Version 0.2.19
+- *Release date:* 
+- *Commit:* 
+### Fix
+1. Added support for Sketch Encryption (B2B)
+
 ## Version 0.2.18
 - *Release date:* Wed Nov 8 16:30:23 2023 +0300
 - *Commit:* e0745ec1f31983afdd430504e8c270f97d11b59a
