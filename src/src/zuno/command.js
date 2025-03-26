@@ -1020,15 +1020,13 @@ const _this = {
 				const name = element.name;
 				progress.report({message: `${ZunoConstant.INSTALL_REPORT_PACK} '${name}'`});
 				const version = element.version;
-				if (array_setting[name] != version) {
-					const obj_tools = CommandInstall.findJsonTools(array_tools, name, version, _this.array_host.host_install);
-					array_setting[name] = false;
-					array_setting_new[name] = version;
-					if (await CommandInstall.installFile(path_cache, path_tools, obj_tools.url, obj_tools.checksum) == false)
-					{
-						await File.delete(path_cache_version);
-						return (CommandGeneral.installEpilogue(_this));
-					}
+				const obj_tools = CommandInstall.findJsonTools(array_tools, name, version, _this.array_host.host_install);
+				array_setting[name] = false;
+				array_setting_new[name] = version;
+				if (await CommandInstall.installFile(path_cache, path_tools, obj_tools.url, obj_tools.checksum) == false)
+				{
+					await File.delete(path_cache_version);
+					return (CommandGeneral.installEpilogue(_this));
 				}
 			}
 			array_setting_new.time = array_setting.time;
