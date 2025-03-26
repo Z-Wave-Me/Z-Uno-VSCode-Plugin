@@ -162,6 +162,20 @@ const _this = {
 			return (_this.power.value);
 		}
 	},
+	sketch_encryption:
+	{
+		set(sketch_encryption)
+		{
+			_this.sketch_encryption.value = sketch_encryption;
+		},
+		get()
+		{
+			if (_this.sketch_encryption.value == undefined) {
+				_this.sketch_encryption.value = Config.getSketchEncryption();
+			}
+			return (_this.sketch_encryption.value);
+		}
+	},
 	multi_chip:
 	{
 		set(multi_chip)

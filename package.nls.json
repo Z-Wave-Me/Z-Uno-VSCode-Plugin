@@ -10,6 +10,7 @@
 	"zuno.command.security.title": "Z-Uno: Select security mode",
 	"zuno.command.frequency.title": "Z-Uno: Select frequency",
 	"zuno.command.power.title": "Z-Uno: Select radio signal strength",
+	"zuno.command.sketch_encryption.title": "Z-Uno: Sketch Encryption (B2B)",
 	"zuno.command.multi_chip.title": "Z-Uno: Choose the chip with which you will work",
 	"zuno.command.install.title": "Z-Uno: Install the necessary components",
 	"zuno.command.port.title": "Z-Uno: Select serial port",

@@ -180,7 +180,9 @@ const _this = {
 /*-------------------------------*/
 	UART_BAUDRATE_PLACEHOLDER: 'Select the desired speed from the supported ones: %baudrate%',
 /*-------------------------------*/
-	FREQUENCY_PLACEHOLDER: 'Select a frequency'
+	FREQUENCY_PLACEHOLDER: 'Select a frequency',
+/*-------------------------------*/
+	SKETCH_ENCRYPTION_PLACEHOLDER: 'Select a key',
 }
 
 module.exports = _this;

@@ -74,6 +74,23 @@ const _this = {//У нас активируеться только когда п
 	{
 		_set('power', Number(value));
 	},
+	getSketchEncryption()
+	{
+		const key = _get('sketch_encryption');
+		for (let item of ZunoConstant.SKETCH_ENCRYPTION_DICT_ARRAY) {
+			if (item["key"] == key)
+				return (item);
+		}
+		for (let item of ZunoConstant.SKETCH_ENCRYPTION_DICT_ARRAY) {
+			if (item["key"] == ZunoConstant.SKETCH_ENCRYPTION_DEFAULT_KEY)
+				return (item);
+		}
+		return (undefined);
+	},
+	setSketchEncryption(value)
+	{
+		_set('sketch_encryption', value);
+	},
 	getMultiChip()
 	{
 		let value;

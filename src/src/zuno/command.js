@@ -36,6 +36,7 @@ const _this = {
 		_this.array_host = array_host;//Хост системы для конфига качаемого
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SKETCH, _this.sketch));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.FREQUENCY, _this.frequency));
+		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.SKETCH_ENCRYPTION, _this.sketch_encryption));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.UART_BAUDRATE, _this.uart_baudrate));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.POWER, _this.power));
 		context.subscriptions.push(VsCode.commands.registerCommand(ZunoConstant.CMD.MULTI_CHIP, _this.multi_chip));
@@ -222,6 +223,21 @@ const _this = {
 		StatusBar.frequency.set(select);
 		return (select["freq"]);
 	},
+	sketch_encryption: async function()
+	{
+		if (ZunoConstant.BOARD_CURRENT.sketch_encryption == false)
+			return (false);
+		const key = StatusBar.sketch_encryption.get();
+		const select = await VsCode.window.showQuickPick(ZunoConstant.SKETCH_ENCRYPTION_DICT_ARRAY.map((element) => {
+			return {description: element["description"], label: element["key"]};
+		}), {placeHolder: `${key["key"]} - ${key["description"]}`});
+		if (select == undefined)
+			return (false);
+		select["key"] = select["label"];
+		Config.setSketchEncryption(select["key"]);
+		StatusBar.sketch_encryption.set(select);
+		return (select["key"]);
+	},
 	settings: async function()
 	{
 		let options =
@@ -249,6 +265,10 @@ const _this = {
 			let placeholder = ZunoConstant.POWER_PLACEHOLDER.replace("%min%", ZunoConstant.POWER.POWER_MIN);
 			placeholder = placeholder.replace("%max%", ZunoConstant.POWER.POWER_MAX);
 			options.push(['power', value + ' raw', placeholder]);
+		}
+		if (ZunoConstant.BOARD_CURRENT.sketch_encryption == true)
+		{
+			options.push(['sketch_encryption', StatusBar.sketch_encryption.get()["key"], ZunoConstant.SKETCH_ENCRYPTION_PLACEHOLDER],);
 		}
 		if (ZunoConstant.BOARD_CURRENT.generation != 0x1)
 		{
@@ -292,6 +312,12 @@ const _this = {
 					if (frequency == false)
 						break ;
 					element[1] = frequency;
+					break;
+				case 'sketch_encryption':
+					const sketch_encryption = await _this.sketch_encryption();
+					if (sketch_encryption == false)
+						break ;
+					element[1] = sketch_encryption;
 					break;
 				case 'multi_chip':
 					const multi_chip = await _this.multi_chip();
@@ -828,6 +854,11 @@ const _this = {
 					'-B', Path.join(tmp, Path.basename(sketch).replace(Path.extname(sketch), ''))
 				];
 			}
+			if (ZunoConstant.BOARD_CURRENT.sketch_encryption == true)
+			{
+				args_build.push('-ski');
+				args_build.push(StatusBar.sketch_encryption.get());
+			}
 			let args_update;
 			if (ZunoConstant.BOARD_CURRENT.generation == 0x1)
 			{
@@ -1231,6 +1262,12 @@ async function _process_boards_txt(path_install)
 	{
 		ZunoConstant.BOARD_CURRENT.uart_baudrate = true
 	}
+	x = content.search('menu.SketchEncryption');
+	if (x != -1)
+	{
+		ZunoConstant.BOARD_CURRENT.sketch_encryption = true
+	}
+
 }
 
 async function _ptiValidOnly(oldvalue)

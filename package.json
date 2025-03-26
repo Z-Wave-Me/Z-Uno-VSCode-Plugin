@@ -87,6 +87,11 @@
 			},
 			{
 				"when": "workspaceFolderCount != 0",
+				"command": "zuno.sketch_encryption",
+				"title": "%zuno.command.sketch_encryption.title%"
+			},
+			{
+				"when": "workspaceFolderCount != 0",
 				"command": "zuno.multi_chip",
 				"title": "%zuno.command.multi_chip.title%"
 			},

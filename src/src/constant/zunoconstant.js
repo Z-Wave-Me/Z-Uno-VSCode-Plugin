@@ -46,6 +46,7 @@ _this.CMD =
 	SECURITY: 'zuno.security',
 	FREQUENCY: 'zuno.frequency',
 	POWER: 'zuno.power',
+	SKETCH_ENCRYPTION: 'zuno.sketch_encryption',
 	MULTI_CHIP: 'zuno.multi_chip',
 	SKETCH: 'zuno.sketch',
 	PORT: 'zuno.port',
@@ -111,7 +112,8 @@ _this.BOARD =
 		PTI: false,
 		boardInfo: false,
 		license: false,
-		uart_baudrate: false
+		uart_baudrate: false,
+		sketch_encryption: false
 	},
 	ZUNO2:
 	{
@@ -149,7 +151,8 @@ _this.BOARD =
 		PTI: true,
 		boardInfo: true,
 		license: true,
-		uart_baudrate: false
+		uart_baudrate: false,
+		sketch_encryption: false
 	},
 	ZUNO2_BETA:
 	{
@@ -187,7 +190,8 @@ _this.BOARD =
 		PTI: true,
 		boardInfo: true,
 		license: true,
-		uart_baudrate: false
+		uart_baudrate: false,
+		sketch_encryption: false
 	}
 }
 
@@ -267,4 +271,14 @@ _this.FREQUENCY_DICT_ARRAY =
 	{"freq": 'US', "description": 'USA'}
 ]
 
+
+_this.SKETCH_ENCRYPTION_DEFAULT_KEY = '-1'
+_this.SKETCH_ENCRYPTION_DICT_ARRAY =
+[
+	{"key": '-1', "description": 'None (Default)'},
+	{"key": '1', "description": 'Key#1'},
+	{"key": '2', "description": 'Key#2'},
+	{"key": '3', "description": 'Key#3'},
+	{"key": '4', "description": 'Key#4'},
+]
 module.exports = _this;
